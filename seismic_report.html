@@ -1279,7 +1279,14 @@
         // ── Viewer Count ─────────────────────────────────────────────────────────
         (function () {
             const el = document.getElementById('viewer-num');
-            const wsHost = (window.location.hostname && window.location.hostname !== '') ? window.location.hostname : 'localhost';
+
+            // ARCHITECTURE PATCH: Point to your deployed backend for production (Vercel)
+            // Once you deploy the backend, replace '' with your public URL (e.g., 'tsra-backend.onrender.com')
+            const PUBLIC_BACKEND_URL = 'tectonic-strain-ratchet-analyzer-production.up.railway.app';
+            
+            const wsHost = (window.location.hostname === 'localhost')
+                ? 'localhost:5173'
+                : PUBLIC_BACKEND_URL;
 
             // 1. Get or create persistent device ID
             let clientId;
