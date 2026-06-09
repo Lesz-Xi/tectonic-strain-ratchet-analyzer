@@ -236,6 +236,43 @@
     }
     .explainer-block p{font-size:.77rem;color:var(--text-sub);line-height:1.6}
 
+    /* ─── RESPONSIVE ─── */
+    @media (max-width:768px){
+      body{padding:1rem}
+      header{flex-wrap:wrap;gap:.6rem;padding-bottom:.9rem}
+      .header-left{flex-wrap:wrap;gap:.5rem}
+      .header-right{gap:.4rem;flex-wrap:wrap}
+      .header-pill{font-size:.68rem;padding:.25rem .6rem}
+      .stats{grid-template-columns:1fr 1fr;gap:.7rem}
+      .stat{padding:1rem 1.1rem}
+      .stat-value{font-size:1.3rem}
+      .tabs{gap:.25rem}
+      .tab-btn{padding:.38rem .75rem;font-size:.7rem}
+      .card{padding:1.1rem}
+      #tab-pending .grid{grid-template-columns:1fr!important}
+      #tab-pending .hero-window{margin-bottom:.75rem}
+      .explainer-grid{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr!important}
+      table{font-size:.75rem;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+      th,td{padding:.45rem .65rem;white-space:nowrap}
+      .modal{padding:1.4rem 1.2rem;max-width:calc(100vw - 2rem)}
+      .modal-value{font-size:1.6rem}
+      .disclosure-header{font-size:1.1rem}
+      .disclosure-body{font-size:.8rem}
+      .hero-time{font-size:1.5rem}
+    }
+    @media (max-width:480px){
+      header h1{font-size:.9rem}
+      .zone-tag{display:none}
+      .stats{grid-template-columns:1fr 1fr;gap:.6rem}
+      .stat-value{font-size:1.2rem}
+      .stat-hint{display:none}
+      #date-pill{display:none}
+      .tab-btn{padding:.35rem .65rem;font-size:.68rem}
+      .explainer-block h4{font-size:.68rem}
+      .explainer-block p{font-size:.73rem}
+    }
+
     /* ─── DISCLOSURE ─── */
     .disclosure-wrap{max-width:680px;margin:0 auto}
     .disclosure-header{
@@ -615,7 +652,10 @@ Multiplier   | Accumulation Window  | Expected Arrival Time  | Status
   // Fallback: BroadcastChannel (same browser, multi-tab)
   (function () {
     const el = document.getElementById('viewer-num');
-    const WS_URL = 'ws://localhost:5173';
+    // If served via HTTP (http://192.168.x.x:5173), use that host.
+    // If opened as file://, fall back to localhost.
+    const wsHost = (window.location.hostname && window.location.hostname !== '') ? window.location.hostname : 'localhost';
+    const WS_URL = `ws://${wsHost}:5173`;
 
     // ── WebSocket path ──
     // Single instance guard: only one WS connection ever exists at a time.
