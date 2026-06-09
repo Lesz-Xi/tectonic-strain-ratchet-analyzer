@@ -613,56 +613,77 @@ Multiplier   | Accumulation Window  | Expected Arrival Time  | Status
   // ── Viewer Count ─────────────────────────────────────────────────────────
   // Primary: WebSocket server (cross-machine, real count)
   // Fallback: BroadcastChannel (same browser, multi-tab)
-  (function(){
+  (function () {
     const el = document.getElementById('viewer-num');
     const WS_URL = 'ws://localhost:5173';
-    let wsActive = false;
 
     // ── WebSocket path ──
-    function connectWS() {
-      let ws;
-      try { ws = new WebSocket(WS_URL); } catch(e) { startBC(); return; }
+    // Single instance guard: only one WS connection ever exists at a time.
+    let ws = null;
+    let retryTimer = null;
+    let wsEverConnected = false;
+    let destroyed = false; // set true on page unload — stop all retries
 
-      ws.onopen = () => { wsActive = true; };
+    function connectWS() {
+      if (destroyed) return;
+      if (ws && (ws.readyState === WebSocket.CONNECTING || ws.readyState === WebSocket.OPEN)) return;
+
+      // clean up any previous dead instance
+      if (ws) { ws.onopen = ws.onclose = ws.onerror = ws.onmessage = null; ws = null; }
+
+      try { ws = new WebSocket(WS_URL); } catch (e) { fallbackToBC(); return; }
+
+      ws.onopen = () => {
+        wsEverConnected = true;
+        if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
+      };
+
       ws.onmessage = e => {
-        try {
-          const { viewers } = JSON.parse(e.data);
-          el.textContent = viewers;
-        } catch(_) {}
+        try { el.textContent = JSON.parse(e.data).viewers; } catch (_) {}
       };
+
       ws.onclose = () => {
-        if (wsActive) { wsActive = false; el.textContent = '1'; }
-        // retry after 5s in case server restarts
-        setTimeout(connectWS, 5000);
+        if (destroyed) return;
+        // schedule exactly one retry — never stack
+        if (!retryTimer) retryTimer = setTimeout(() => { retryTimer = null; connectWS(); }, 5000);
       };
+
       ws.onerror = () => {
-        if (!wsActive) { ws.close(); startBC(); }
+        // if we've never connected, WS server isn't running — fall back to BC
+        if (!wsEverConnected) { destroyed = true; fallbackToBC(); }
+        // if we have connected before, onclose will handle the retry
       };
     }
 
-    // ── BroadcastChannel fallback ──
-    function startBC() {
+    window.addEventListener('beforeunload', () => {
+      destroyed = true;
+      if (retryTimer) clearTimeout(retryTimer);
+      if (ws) ws.close();
+    });
+
+    // ── BroadcastChannel fallback (same-browser multi-tab only) ──
+    function fallbackToBC() {
       if (!window.BroadcastChannel) return;
       const TAB_ID = Math.random().toString(36).slice(2);
-      const HEARTBEAT_MS = 3000;
-      const EXPIRE_MS = 8000;
+      const HEARTBEAT_MS = 4000;
+      const EXPIRE_MS = 10000;
       const peers = {};
       const bc = new BroadcastChannel('tsra-viewers');
-      function send(type) { bc.postMessage({ type, id: TAB_ID }); }
+
+      function send(type) { try { bc.postMessage({ type, id: TAB_ID }); } catch (_) {} }
       function refresh() {
         const now = Date.now();
-        Object.keys(peers).forEach(id => { if (now - peers[id] > EXPIRE_MS) delete peers[id]; });
+        for (const id of Object.keys(peers)) { if (now - peers[id] > EXPIRE_MS) delete peers[id]; }
         el.textContent = Object.keys(peers).length + 1;
       }
-      bc.onmessage = e => {
-        const { type, id } = e.data;
+      bc.onmessage = ({ data: { type, id } }) => {
         if (id === TAB_ID) return;
         if (type === 'leave') delete peers[id]; else peers[id] = Date.now();
         refresh();
       };
       send('join');
-      setInterval(() => { send('heartbeat'); refresh(); }, HEARTBEAT_MS);
-      window.addEventListener('beforeunload', () => send('leave'));
+      const hb = setInterval(() => { send('heartbeat'); refresh(); }, HEARTBEAT_MS);
+      window.addEventListener('beforeunload', () => { send('leave'); clearInterval(hb); bc.close(); });
       refresh();
     }
 
