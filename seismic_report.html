@@ -1284,9 +1284,9 @@
             // Once you deploy the backend, replace '' with your public URL (e.g., 'tsra-backend.onrender.com')
             const PUBLIC_BACKEND_URL = 'tectonic-strain-ratchet-analyzer-production.up.railway.app';
             
-            const wsHost = (window.location.hostname === 'localhost')
-                ? 'localhost:5173'
-                : PUBLIC_BACKEND_URL;
+            const isLocal = window.location.hostname === 'localhost';
+            const wsHost = isLocal ? 'localhost' : PUBLIC_BACKEND_URL;
+            const wsPort = isLocal ? ':5173' : ''; // Railway public domain uses 443 — no port needed
 
             // 1. Get or create persistent device ID
             let clientId;
@@ -1302,7 +1302,7 @@
 
             // 2. Try WebSocket for cross-device tracking (Use wss: for https)
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const WS_URL = `${protocol}//${wsHost}:5173/?clientId=${clientId}`;
+            const WS_URL = `${protocol}//${wsHost}${wsPort}/?clientId=${clientId}`;
 
             let ws = null;
             let retryTimer = null;

@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { WebSocketServer, WebSocket } = require('ws');
 
-const PORT = 5173;
+const PORT = process.env.PORT || 5173;
 const ROOT = __dirname;
 const PING_INTERVAL_MS = 10000;
 
