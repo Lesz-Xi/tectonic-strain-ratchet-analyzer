@@ -223,19 +223,19 @@
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
+            border-radius: 8px;
+            padding: 0.8rem;
+            box-shadow: var(--shadow-sm);
             transition: background .2s, border-color .2s
         }
 
         .card-title {
-            font-size: .6rem;
+            font-size: .55rem;
             font-weight: 600;
-            letter-spacing: .1em;
+            letter-spacing: .15em;
             text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 1.1rem
+            color: var(--text-sub);
+            margin-bottom: 0.75rem
         }
 
         .stats {
@@ -303,23 +303,23 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: .8rem
+            font-size: .75rem
         }
 
         th {
             text-align: left;
-            font-size: .59rem;
+            font-size: .55rem;
             text-transform: uppercase;
             letter-spacing: .08em;
             color: var(--muted);
-            padding: .55rem .9rem;
-            border-bottom: 1px solid var(--border);
+            padding: 0.4rem 0.6rem;
+            border-bottom: 0.5px solid var(--border);
             font-weight: 500
         }
 
         td {
-            padding: .6rem .9rem;
-            border-bottom: 1px solid var(--td-border);
+            padding: 0.4rem 0.6rem;
+            border-bottom: 0.5px solid var(--td-border);
             color: var(--text-sub);
             transition: background .1s
         }
@@ -970,14 +970,14 @@
     </div>
 
     <div class='tabs'>
-        <button class='tab-btn active' onclick="switchTab('events',event)">Event Log</button>
-        <button class='tab-btn' onclick="switchTab('pending',event)">Pending Windows</button>
+        <button class='tab-btn' onclick="switchTab('events',event)">Event Log</button>
+        <button class='tab-btn active' onclick="switchTab('pending',event)">Pending Windows</button>
         <button class='tab-btn' onclick="switchTab('chart',event)">Dashboard Chart</button>
         <button class='tab-btn' onclick="switchTab('forecast',event)">Raw Forecast</button>
         <button class='tab-btn' onclick="switchTab('origin',event)">Origin</button>
     </div>
 
-    <div class='tab-panel active' id='tab-events'>
+    <div class='tab-panel' id='tab-events'>
         <div class='card'>
             <div class='card-title'>Confirmed Event Log</div>
             <table>
@@ -1065,7 +1065,7 @@
         </div>
     </div>
 
-    <div class='tab-panel' id='tab-pending'>
+    <div class='tab-panel active' id='tab-pending'>
         <div class='grid' style='grid-template-columns:1fr 2fr;align-items:start'>
             <div class='hero-window' id='next-window-hero'>
                 <div class='hero-label'>Next Expected Window</div>
@@ -1082,6 +1082,7 @@
                             <th>Window</th>
                             <th>Expected Arrival</th>
                             <th>Remaining</th>
+                            <th>Interpretation</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -1091,6 +1092,7 @@
                             <td>35.6 min</td>
                             <td class='mono'>Jun 10 &middot; 04:11 AM</td>
                             <td class='countdown' data-arrival='2026-06-10T04:11:33'>&mdash;</td>
+                            <td>Micro-pulse check</td>
                             <td class='status-cell' data-arrival='2026-06-10T04:11:33'>&mdash;</td>
                         </tr>
                         <tr data-arrival='2026-06-10T05:40:24'>
@@ -1098,6 +1100,7 @@
                             <td>124.4 min</td>
                             <td class='mono'>Jun 10 &middot; 05:40 AM</td>
                             <td class='countdown' data-arrival='2026-06-10T05:40:24'>&mdash;</td>
+                            <td>Significant window</td>
                             <td class='status-cell' data-arrival='2026-06-10T05:40:24'>&mdash;</td>
                         </tr>
                         <tr data-arrival='2026-06-10T07:44:51'>
@@ -1105,6 +1108,7 @@
                             <td>248.9 min</td>
                             <td class='mono'>Jun 10 &middot; 07:44 AM</td>
                             <td class='countdown' data-arrival='2026-06-10T07:44:51'>&mdash;</td>
+                            <td>High-capacity window</td>
                             <td class='status-cell' data-arrival='2026-06-10T07:44:51'>&mdash;</td>
                         </tr>
                         <tr data-arrival='2026-06-10T09:13:42'>
@@ -1112,6 +1116,7 @@
                             <td>337.7 min</td>
                             <td class='mono'>Jun 10 &middot; 09:13 AM</td>
                             <td class='countdown' data-arrival='2026-06-10T09:13:42'>&mdash;</td>
+                            <td>Max strain release</td>
                             <td class='status-cell' data-arrival='2026-06-10T09:13:42'>&mdash;</td>
                         </tr>
                     </tbody>
