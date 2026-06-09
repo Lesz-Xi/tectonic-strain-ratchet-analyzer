@@ -1282,6 +1282,7 @@
 
             let ws = null;
             let retryTimer = null;
+            let retryAttempts = 0;
             let wsEverConnected = false;
             let destroyed = false;
 
@@ -1301,6 +1302,7 @@
 
                 ws.onopen = () => {
                     wsEverConnected = true;
+                    retryAttempts = 0;
                     if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
                     console.log("Connected to TSRA Live Server.");
                 };
@@ -1314,15 +1316,15 @@
 
                 ws.onclose = () => {
                     if (destroyed) return;
-                    if (!retryTimer) retryTimer = setTimeout(() => { retryTimer = null; connectWS(); }, 5000);
+                    // Always retry with capped backoff. Never permanently give up.
+                    retryAttempts = Math.min(retryAttempts + 1, 6);
+                    const delay = Math.min(1000 * retryAttempts, 6000);
+                    if (!retryTimer) retryTimer = setTimeout(() => { retryTimer = null; connectWS(); }, delay);
                 };
 
-                ws.onerror = (err) => {
-                    if (!wsEverConnected) {
-                        destroyed = true;
-                        console.warn(`Could not connect to ${WS_URL}. If you are hosting on Vercel, or your Mac firewall is blocking port 5173, cross-device sync is unavailable. Falling back to local tab counting.`);
-                        fallbackToBC();
-                    }
+                ws.onerror = () => {
+                    // Do not latch a permanent fallback. Let onclose drive the retry loop.
+                    if (ws) { try { ws.close(); } catch (_) { } }
                 };
             }
 
