@@ -35,7 +35,7 @@ const server = http.createServer((req, res) => {
 });
 
 // ── WebSocket — live viewer count ─────────────────────────────────────────
-const wss = new WebSocketServer({ server });
+const wss = new WebSocketServer({ server, perMessageDeflate: false });
 
 // Ensure server handles upgrade events explicitly
 server.on('upgrade', (request, socket, head) => {
