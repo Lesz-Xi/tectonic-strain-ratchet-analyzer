@@ -3,7 +3,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const { WebSocketServer } = require('ws');
+const { WebSocketServer, WebSocket } = require('ws');
 
 const PORT = 5173;
 const ROOT = __dirname;
@@ -40,22 +40,21 @@ const wss = new WebSocketServer({ server });
 function getUniqueViewerCount() {
   const uniqueClients = new Set();
   for (const c of wss.clients) {
-    if (c.readyState === 1 && c.clientId) {
+    if (c.readyState === WebSocket.OPEN && c.clientId) {
       uniqueClients.add(c.clientId);
     }
   }
-  return uniqueClients.size;
+  return uniqueClients.size || 1;
 }
 
 function broadcast() {
   const n = getUniqueViewerCount();
   const msg = JSON.stringify({ viewers: n });
   for (const c of wss.clients) {
-    if (c.readyState === 1) c.send(msg);
+    if (c.readyState === WebSocket.OPEN) c.send(msg);
   }
 }
 
-// Ping/pong heartbeat — kills zombie connections
 const pingInterval = setInterval(() => {
   for (const ws of wss.clients) {
     if (!ws.isAlive) { ws.terminate(); continue; }
@@ -69,26 +68,24 @@ wss.on('connection', (ws, req) => {
   ws.isAlive = true;
   ws.on('pong', () => { ws.isAlive = true; });
 
-  // Extract persistent clientId from URL to group tabs by device
-  try {
-    const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-    ws.clientId = url.searchParams.get('clientId') || req.socket.remoteAddress;
-  } catch (err) {
-    ws.clientId = req.socket.remoteAddress;
+  // Robust parsing: extract clientId safely
+  let clientId = req.socket.remoteAddress;
+  if (req.url && req.url.includes('clientId=')) {
+    clientId = req.url.split('clientId=')[1].split('&')[0];
   }
+  ws.clientId = clientId;
 
-  console.log(`[+] connected  — viewers: ${getUniqueViewerCount()}  (ID: ${ws.clientId.substring(0, 6)}...)`);
+  console.log(`[+] connected  — viewers: ${getUniqueViewerCount()}  (ID: ${ws.clientId})`);
   broadcast();
 
   ws.on('close', () => {
-    // 500ms debounce prevents count flickering during rapid tab reloads
     setTimeout(() => {
       console.log(`[-] disconnected — viewers: ${getUniqueViewerCount()}`);
       broadcast();
     }, 500);
   });
 
-  ws.on('error', err => console.error(`[!] ${err.message}`));
+  ws.on('error', err => console.error(`[!] WS Error: ${err.message}`));
 });
 
 // ── Start ─────────────────────────────────────────────────────────────────

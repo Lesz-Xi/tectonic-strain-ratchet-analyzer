@@ -17,7 +17,6 @@
             padding: 0
         }
 
-        /* ─── DARK — sumi ink + amber ─── */
         :root,
         [data-theme='dark'] {
             --bg: #17171a;
@@ -50,7 +49,6 @@
             --modal-bg: #202024;
         }
 
-        /* ─── LIGHT — washi paper ─── */
         [data-theme='light'] {
             --bg: #f0ede8;
             --surface: #faf8f4;
@@ -82,7 +80,6 @@
             --modal-bg: #faf8f4;
         }
 
-        /* ─── BASE ─── */
         body {
             background: var(--bg);
             color: var(--text);
@@ -91,10 +88,9 @@
             line-height: 1.55;
             min-height: 100vh;
             padding: 1.75rem 2rem;
-            transition: background .2s, color .2s;
+            transition: background .2s, color .2s
         }
 
-        /* ─── HEADER ─── */
         header {
             display: flex;
             align-items: center;
@@ -102,7 +98,7 @@
             margin-bottom: 1.75rem;
             border-bottom: 1px solid var(--border);
             padding-bottom: 1.1rem;
-            gap: 1rem;
+            gap: 1rem
         }
 
         .header-left {
@@ -122,7 +118,7 @@
             font-size: 1.05rem;
             font-weight: 600;
             letter-spacing: .03em;
-            color: var(--accent);
+            color: var(--accent)
         }
 
         header h1 span {
@@ -138,7 +134,7 @@
             border: 1px solid var(--border);
             border-radius: 5px;
             padding: .2rem .6rem;
-            letter-spacing: .02em;
+            letter-spacing: .02em
         }
 
         #clock {
@@ -150,7 +146,7 @@
             border-radius: 7px;
             border: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
-            letter-spacing: .03em;
+            letter-spacing: .03em
         }
 
         .header-pill {
@@ -167,7 +163,7 @@
             box-shadow: var(--shadow-sm);
             letter-spacing: .02em;
             white-space: nowrap;
-            transition: border-color .15s;
+            transition: border-color .15s
         }
 
         .viewer-pill {
@@ -199,7 +195,7 @@
             color: var(--text-sub);
             transition: all .15s;
             box-shadow: var(--shadow-sm);
-            user-select: none;
+            user-select: none
         }
 
         .theme-toggle:hover {
@@ -213,7 +209,6 @@
             flex-shrink: 0
         }
 
-        /* ─── GRID ─── */
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -225,14 +220,13 @@
             grid-column: 1/-1
         }
 
-        /* ─── CARD ─── */
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 1.5rem;
             box-shadow: var(--shadow);
-            transition: background .2s, border-color .2s;
+            transition: background .2s, border-color .2s
         }
 
         .card-title {
@@ -241,10 +235,9 @@
             letter-spacing: .1em;
             text-transform: uppercase;
             color: var(--muted);
-            margin-bottom: 1.1rem;
+            margin-bottom: 1.1rem
         }
 
-        /* ─── STAT TILES ─── */
         .stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -260,7 +253,7 @@
             box-shadow: var(--shadow);
             cursor: pointer;
             transition: background .15s, border-color .2s, transform .15s, box-shadow .15s;
-            position: relative;
+            position: relative
         }
 
         .stat:hover {
@@ -276,7 +269,7 @@
             font-size: .55rem;
             color: var(--muted);
             letter-spacing: .04em;
-            opacity: .6;
+            opacity: .6
         }
 
         .stat-label {
@@ -307,7 +300,6 @@
             margin-top: .35rem
         }
 
-        /* ─── TABLES ─── */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -322,7 +314,7 @@
             color: var(--muted);
             padding: .55rem .9rem;
             border-bottom: 1px solid var(--border);
-            font-weight: 500;
+            font-weight: 500
         }
 
         td {
@@ -344,7 +336,6 @@
             background: var(--row-hover)
         }
 
-        /* ─── BADGES ─── */
         .badge {
             display: inline-block;
             font-family: var(--mono);
@@ -386,7 +377,6 @@
             color: var(--accent2)
         }
 
-        /* ─── PILLS ─── */
         .pill {
             display: inline-block;
             font-size: .62rem;
@@ -451,7 +441,6 @@
             }
         }
 
-        /* ─── MONO / PRE ─── */
         .mono {
             font-family: var(--mono);
             font-size: .76rem
@@ -469,10 +458,9 @@
             overflow-x: auto;
             color: var(--text-sub);
             max-height: 340px;
-            overflow-y: auto;
+            overflow-y: auto
         }
 
-        /* ─── CHART ─── */
         img.chart {
             display: block;
             width: 100%;
@@ -480,7 +468,6 @@
             border: 1px solid var(--border)
         }
 
-        /* ─── TABS ─── */
         .tabs {
             display: flex;
             gap: .35rem;
@@ -498,7 +485,7 @@
             font-weight: 500;
             cursor: pointer;
             transition: all .15s;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-sm)
         }
 
         .tab-btn:hover {
@@ -520,7 +507,6 @@
             display: block
         }
 
-        /* ─── HERO WINDOW ─── */
         .hero-window {
             background: var(--hero-bg);
             border: 1px solid var(--hero-border);
@@ -529,7 +515,7 @@
             display: flex;
             flex-direction: column;
             gap: .4rem;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow)
         }
 
         .hero-label {
@@ -554,7 +540,6 @@
             font-weight: 500
         }
 
-        /* ─── CHART EXPLAINER ─── */
         .explainer {
             margin-top: 1.5rem;
             border-top: 1px solid var(--border);
@@ -567,7 +552,7 @@
             letter-spacing: .1em;
             text-transform: uppercase;
             color: var(--muted);
-            margin-bottom: 1.1rem;
+            margin-bottom: 1.1rem
         }
 
         .explainer-grid {
@@ -588,7 +573,7 @@
             font-weight: 600;
             color: var(--accent);
             margin-bottom: .4rem;
-            letter-spacing: .01em;
+            letter-spacing: .01em
         }
 
         .explainer-block p {
@@ -597,7 +582,6 @@
             line-height: 1.6
         }
 
-        /* ─── RESPONSIVE ─── */
         @media (max-width:768px) {
             body {
                 padding: 1rem
@@ -741,7 +725,6 @@
             }
         }
 
-        /* ─── DISCLOSURE ─── */
         .disclosure-wrap {
             max-width: 680px;
             margin: 0 auto
@@ -753,7 +736,7 @@
             font-weight: 600;
             color: var(--text);
             margin-bottom: .5rem;
-            line-height: 1.3;
+            line-height: 1.3
         }
 
         .disclosure-sub {
@@ -791,7 +774,7 @@
             border-radius: 0 8px 8px 0;
             font-size: .76rem;
             color: var(--text-sub);
-            line-height: 1.65;
+            line-height: 1.65
         }
 
         .disclosure-note strong {
@@ -799,7 +782,6 @@
             font-weight: 500
         }
 
-        /* ─── MODAL ─── */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -808,7 +790,7 @@
             background: var(--modal-overlay);
             backdrop-filter: blur(4px);
             align-items: center;
-            justify-content: center;
+            justify-content: center
         }
 
         .modal-overlay.open {
@@ -824,7 +806,7 @@
             width: 90%;
             box-shadow: 0 8px 40px rgba(0, 0, 0, .4);
             position: relative;
-            animation: modalIn .18s ease;
+            animation: modalIn .18s ease
         }
 
         @keyframes modalIn {
@@ -855,7 +837,7 @@
             align-items: center;
             justify-content: center;
             transition: all .12s;
-            line-height: 1;
+            line-height: 1
         }
 
         .modal-close:hover {
@@ -1295,20 +1277,25 @@
         setInterval(updateClock, 1000); updateClock();
 
         // ── Viewer Count ─────────────────────────────────────────────────────────
-        // Primary: WebSocket server (cross-machine, real count)
-        // Fallback: Local fallback (no server running)
         (function () {
             const el = document.getElementById('viewer-num');
             const wsHost = (window.location.hostname && window.location.hostname !== '') ? window.location.hostname : 'localhost';
 
-            // Generate or retrieve persistent ID for this browser
-            let clientId = localStorage.getItem('tsra-client-id');
-            if (!clientId) {
-                clientId = Math.random().toString(36).substring(2, 15);
-                localStorage.setItem('tsra-client-id', clientId);
+            // 1. Get or create persistent device ID
+            let clientId;
+            try {
+                clientId = localStorage.getItem('tsra-client-id');
+                if (!clientId) {
+                    clientId = 'dev_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('tsra-client-id', clientId);
+                }
+            } catch (e) {
+                clientId = 'dev_' + Math.random().toString(36).substr(2, 9);
             }
 
-            const WS_URL = `ws://${wsHost}:5173/?clientId=${clientId}`;
+            // 2. Try WebSocket for cross-device tracking (Use wss: for https)
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const WS_URL = `${protocol}//${wsHost}:5173/?clientId=${clientId}`;
 
             let ws = null;
             let retryTimer = null;
@@ -1321,15 +1308,25 @@
 
                 if (ws) { ws.onopen = ws.onclose = ws.onerror = ws.onmessage = null; ws = null; }
 
-                try { ws = new WebSocket(WS_URL); } catch (e) { fallbackOffline(); return; }
+                try {
+                    ws = new WebSocket(WS_URL);
+                } catch (e) {
+                    console.warn("WebSocket init failed:", e);
+                    fallbackToBC();
+                    return;
+                }
 
                 ws.onopen = () => {
                     wsEverConnected = true;
                     if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
+                    console.log("Connected to TSRA Live Server.");
                 };
 
                 ws.onmessage = e => {
-                    try { el.textContent = JSON.parse(e.data).viewers; } catch (_) { }
+                    try {
+                        const data = JSON.parse(e.data);
+                        if (data.viewers) el.textContent = data.viewers;
+                    } catch (_) { }
                 };
 
                 ws.onclose = () => {
@@ -1337,8 +1334,12 @@
                     if (!retryTimer) retryTimer = setTimeout(() => { retryTimer = null; connectWS(); }, 5000);
                 };
 
-                ws.onerror = () => {
-                    if (!wsEverConnected) { destroyed = true; fallbackOffline(); }
+                ws.onerror = (err) => {
+                    if (!wsEverConnected) {
+                        destroyed = true;
+                        console.warn(`Could not connect to ${WS_URL}. If you are hosting on Vercel, or your Mac firewall is blocking port 5173, cross-device sync is unavailable. Falling back to local tab counting.`);
+                        fallbackToBC();
+                    }
                 };
             }
 
@@ -1348,10 +1349,31 @@
                 if (ws) ws.close();
             });
 
-            function fallbackOffline() {
-                // If WS fails permanently, we are running entirely locally.
-                // A local environment inherently means 1 device.
-                el.textContent = '1';
+            // 3. Fallback: BroadcastChannel (Counts multiple tabs on the SAME device)
+            function fallbackToBC() {
+                if (!window.BroadcastChannel) { el.textContent = '1'; return; }
+
+                const TAB_ID = Math.random().toString(36).substr(2, 9);
+                const peers = {};
+                const bc = new BroadcastChannel('tsra-viewers');
+
+                function send(type) { try { bc.postMessage({ type, id: TAB_ID }); } catch (_) { } }
+                function refresh() {
+                    const now = Date.now();
+                    for (const id in peers) { if (now - peers[id] > 10000) delete peers[id]; }
+                    el.textContent = Object.keys(peers).length + 1;
+                }
+
+                bc.onmessage = ({ data: { type, id } }) => {
+                    if (id === TAB_ID) return;
+                    if (type === 'leave') delete peers[id]; else peers[id] = Date.now();
+                    refresh();
+                };
+
+                send('join');
+                const hb = setInterval(() => { send('heartbeat'); refresh(); }, 4000);
+                window.addEventListener('beforeunload', () => { send('leave'); clearInterval(hb); bc.close(); });
+                refresh();
             }
 
             connectWS();
