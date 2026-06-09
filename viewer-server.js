@@ -37,14 +37,6 @@ const server = http.createServer((req, res) => {
 // ── WebSocket — live viewer count ─────────────────────────────────────────
 const wss = new WebSocketServer({ server, perMessageDeflate: false });
 
-// Ensure server handles upgrade events explicitly
-server.on('upgrade', (request, socket, head) => {
-  console.log(`[?] Upgrade request received — URL: ${request.url}`);
-  wss.handleUpgrade(request, socket, head, (ws) => {
-    wss.emit('connection', ws, request);
-  });
-});
-
 function getUniqueViewerCount() {
   const uniqueClients = new Set();
   for (const c of wss.clients) {
