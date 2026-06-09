@@ -70,6 +70,7 @@ wss.on('connection', (ws, req) => {
 
   // Robust parsing: extract clientId safely
   let clientId = req.socket.remoteAddress;
+  console.log(`[?] connection attempt — URL: ${req.url}  (Remote: ${req.socket.remoteAddress})`);
   if (req.url && req.url.includes('clientId=')) {
     clientId = req.url.split('clientId=')[1].split('&')[0];
   }
