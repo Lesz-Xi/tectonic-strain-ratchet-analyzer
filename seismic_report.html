@@ -3178,9 +3178,9 @@
                 </section>
                 <aside class='now-side' aria-label='Latest observation note'>
                     <div class='now-note'>
-                        <div class='now-mini-label'>Latest felt-only note</div>
-                        <div class='now-note-title'>~07:36 PM · subtle local movement</div>
-                        <div class='now-note-body'>Felt for about one minute and linked to the 07:41 PM long-phase watch. This remains a local felt observation, not a confirmed seismic event.</div>
+                        <div class='now-mini-label'>Latest local outcome</div>
+                        <div class='now-note-title'>09:10 PM · no local shake observed</div>
+                        <div class='now-note-body'>The 9.5&times; extended-phase watch elapsed without a locally felt shake. This is a local observation outcome, not an official confirmation or event record.</div>
                         <div class='now-boundary'>Observation surface only · not a certified warning system</div>
                     </div>
                     <div class='now-action-panel'>
@@ -3342,6 +3342,14 @@
                         <td>Subtle local movement felt for ~1 min</td>
                         <td><span class='pill observed-pill'>Felt-only</span></td>
                     </tr>
+                    <tr>
+                        <td><span class='badge badge-as'>OBS</span></td>
+                        <td class='mono'>Jun 10 &middot; 09:10 PM</td>
+                        <td class='mono'>9.5&times; extended-phase watch</td>
+                        <td>Nothing happened during the watch</td>
+                        <td>No local shake observed</td>
+                        <td><span class='pill elapsed-pill'>Elapsed</span></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -3355,7 +3363,7 @@
                 <div class='hero-remain' id='hero-remain'>Calculating...</div>
             </div>
             <div class='card pending-card'>
-                <div class='card-title pending-card-title'><span>Provisional Observation Windows</span><span class='pending-card-note'>~07:36 PM subtle felt report · not confirmed</span></div>
+                <div class='card-title pending-card-title'><span>Provisional Observation Windows</span><span class='pending-card-note'>09:10 PM elapsed · no local shake observed</span></div>
                 <table id='pending-table'>
                     <thead>
                         <tr>
@@ -3396,12 +3404,12 @@
                             <td class='status-cell' data-arrival='2026-06-10T19:41:36'>&mdash;</td>
                             <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
                         </tr>
-                        <tr data-arrival='2026-06-10T21:10:29'>
+                        <tr data-arrival='2026-06-10T21:10:29' data-observed='true' data-observed-report='no shake 09:10 PM' data-observed-label='No local outcome'>
                             <td><span class='mult-badge'>9.5&times;</span></td>
                             <td>337.7 min</td>
                             <td class='mono'>Jun 10 &middot; 09:10 PM</td>
                             <td class='countdown' data-arrival='2026-06-10T21:10:29'>&mdash;</td>
-                            <td>Extended-phase watch</td>
+                            <td>No local shake observed during watch</td>
                             <td class='status-cell' data-arrival='2026-06-10T21:10:29'>&mdash;</td>
                             <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
                         </tr>
@@ -3409,27 +3417,27 @@
                 </table>
             </div>
             <div class='card full anchor-card'>
-                <div class='card-title'>Provisional Felt-Report Anchor</div>
+                <div class='card-title'>Latest Observation Anchor</div>
                 <div class='anchor-summary'>
                     <div class='anchor-field'>
                         <div class='anchor-label'>Anchor source</div>
-                        <div class='anchor-value strong'>Latest felt observation · near-window 07:41 watch</div>
+                        <div class='anchor-value strong'>Latest local outcome · 09:10 watch elapsed</div>
                     </div>
                     <div class='anchor-field'>
                         <div class='anchor-label'>Report time</div>
-                        <div class='anchor-value mono'>Jun 10 · ~07:36 PM</div>
+                        <div class='anchor-value mono'>Jun 10 · 09:10 PM</div>
                     </div>
                     <div class='anchor-field'>
                         <div class='anchor-label'>Window relation</div>
-                        <div class='anchor-value'>Subtle movement felt for ~1 min; ~5 min before anchor</div>
+                        <div class='anchor-value'>No local shake observed during the watch</div>
                     </div>
                     <div class='anchor-field'>
                         <div class='anchor-label'>Next watch band</div>
-                        <div class='anchor-value mono strong'>~08:55&ndash;09:25 PM</div>
+                        <div class='anchor-value mono strong'>No active watch listed</div>
                     </div>
                     <div class='anchor-field'>
                         <div class='anchor-label'>Evidence status</div>
-                        <div class='anchor-value'><span class='pill observed-pill'>Felt-only · external check pending</span></div>
+                        <div class='anchor-value'><span class='pill elapsed-pill'>Elapsed · local observation only</span></div>
                     </div>
                 </div>
             </div>
@@ -3560,19 +3568,19 @@
                 ================================================================================
 
                 ================================================================================
-                TECTONIC PHASE-OBSERVATION MODEL (POST-07:36 FELT OBSERVATION UPDATE)
+                TECTONIC PHASE-OBSERVATION MODEL (POST-09:10 ELAPSED WATCH UPDATE)
                 Watch Schedule From Latest Felt-Only Observation (Reference Time: 2026-06-10 19:36:00 approx.)
                 ================================================================================
                 - Fitted Baseline Pulse Period: 35.552 minutes
-                - Architecture Rule: no confirmed event is added; felt observations stay separate from confirmed seismic records
-                - Operational Relation: ~07:36 PM subtle local movement lasted ~1 min and is logged as a felt-only outcome for the 07:41 PM watch (-5 min offset)
+                - Architecture Rule: no confirmed event is added; felt observations and elapsed local outcomes stay separate from confirmed seismic records
+                - Operational Relation: 09:10 PM 9.5x extended-phase watch elapsed with no local shake observed
 
                 Phase | Observation Window | Watch Center | Operational Status
                 --------------------------------------------------------------------------------
                 1.0x phase | 35.6 minutes | 2026-06-10 16:08:17 | elapsed -> no local outcome observed
                 3.5x phase | 124.4 minutes | 2026-06-10 17:37:10 | early-band felt report at ~05:14 PM; external confirmation pending/not checked
                 7.0x phase | 248.9 minutes | 2026-06-10 19:41:36 | felt-only report at ~07:36 PM; subtle movement lasted ~1 min; external confirmation pending/not checked
-                9.5x phase | 337.7 minutes | 2026-06-10 21:10:29 | next extended-phase watch -> observe ~08:55-09:25 PM
+                9.5x phase | 337.7 minutes | 2026-06-10 21:10:29 | elapsed -> no local shake observed at 09:10 PM
                 ================================================================================
             </div>
         </div>
@@ -3764,7 +3772,7 @@
                     <div class='field-report-section field-report-section-full'>
                         <div class='field-report-kicker'>What this does not tell us</div>
                         <h3>Honest limits</h3>
-                        <p>The model is built on 11 confirmed events across a roughly 44-hour window. That is enough to fit a baseline and open watch windows, but not enough to treat the multiplier pattern as a permanent feature of this fault&rsquo;s behaviour. Two forward-looking windows on the afternoon of June&nbsp;10 elapsed without a locally felt outcome. Felt observations at ~05:14&nbsp;PM and ~07:36&nbsp;PM remain useful timing notes, but they are not confirmed seismic events.</p>
+                        <p>The model is built on 11 confirmed events across a roughly 44-hour window. That is enough to fit a baseline and open watch windows, but not enough to treat the multiplier pattern as a permanent feature of this fault&rsquo;s behaviour. Two forward-looking windows on the afternoon of June&nbsp;10 elapsed without a locally felt outcome, and the 09:10&nbsp;PM extended-phase watch also elapsed with no local shake observed. Felt observations at ~05:14&nbsp;PM and ~07:36&nbsp;PM remain useful timing notes, but they are not confirmed seismic events.</p>
                         <p>TSRA does not know how much strain remains stored. It does not know whether the next window will produce surface motion strong enough to feel. It does not substitute for PHIVOLCS advisories, civil defence instructions, or professional seismological assessment. What it does is keep the timing record visible during an active sequence, in plain language, for anyone watching the ground.</p>
                     </div>
 
