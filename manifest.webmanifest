@@ -1,0 +1,20 @@
+{
+  "name": "TSRA — Tectonic Strain Ratchet Analyzer",
+  "short_name": "TSRA",
+  "description": "Observation-first seismic timing report with offline app-shell support for low-signal field access.",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#17171a",
+  "theme_color": "#17171a",
+  "categories": ["education", "utilities", "science"],
+  "icons": [
+    {
+      "src": "/seismic_pattern_analysis.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

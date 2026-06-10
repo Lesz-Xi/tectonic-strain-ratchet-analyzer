@@ -5,6 +5,10 @@
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>TSRA &mdash; Tectonic Strain Ratchet Analyzer</title>
+    <meta name='theme-color' content='#17171a'>
+    <meta name='description' content='TSRA is an observational timing report for confirmed events, felt observations, and phase-sensitive watch windows.'>
+    <link rel='manifest' href='/manifest.webmanifest'>
+    <link rel='apple-touch-icon' href='/seismic_pattern_analysis.svg'>
     <link
         href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400&family=IBM+Plex+Mono:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap'
         rel='stylesheet'>
@@ -29,9 +33,9 @@
             --warn: #d48a3a;
             --ok: #5fa878;
             --danger: #c45858;
-            --text: #e0dbd2;
-            --text-sub: #9a9488;
-            --muted: #5a5650;
+            --text: #eee8dc;
+            --text-sub: #b8afa2;
+            --muted: #8a8175;
             --shadow: 0 1px 3px rgba(0, 0, 0, .5), 0 4px 14px rgba(0, 0, 0, .3);
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
             --mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
@@ -227,6 +231,118 @@
             width: 13px;
             height: 13px;
             flex-shrink: 0
+        }
+
+        .field-toggle {
+            border-radius: 0;
+            font-family: var(--mono);
+            letter-spacing: .08em;
+            text-transform: uppercase
+        }
+
+        .field-toggle.is-active {
+            color: var(--accent2);
+            border-color: rgba(122, 170, 136, .42);
+            background: rgba(122, 170, 136, .08)
+        }
+
+        .offline-register {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 1rem;
+            align-items: center;
+            margin: -0.8rem 0 1.1rem;
+            padding: .72rem .85rem;
+            border: 1px solid var(--border-sub);
+            background: color-mix(in srgb, var(--surface) 82%, var(--bg));
+            box-shadow: var(--shadow-sm)
+        }
+
+        .offline-register-copy {
+            display: grid;
+            gap: .18rem;
+            min-width: 0
+        }
+
+        .offline-register-kicker {
+            font-family: var(--mono);
+            font-size: .52rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--accent2)
+        }
+
+        .offline-register-text {
+            color: var(--text-sub);
+            font-size: .72rem;
+            line-height: 1.45
+        }
+
+        .offline-register-actions {
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+            flex-wrap: wrap;
+            justify-content: flex-end
+        }
+
+        .cache-status {
+            font-family: var(--mono);
+            font-size: .56rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            white-space: nowrap
+        }
+
+        .cache-action {
+            border: 1px solid var(--border);
+            background: var(--surface2);
+            color: var(--text-sub);
+            padding: .32rem .62rem;
+            font-family: var(--mono);
+            font-size: .56rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color .15s, border-color .15s, background .15s
+        }
+
+        .cache-action:hover,
+        .cache-action:focus-visible {
+            color: var(--text);
+            border-color: var(--accent);
+            outline: none
+        }
+
+        [data-low-data='true'] video {
+            background: #030406
+        }
+
+        [data-theme='dark'] .card-title,
+        [data-theme='dark'] .stat-label,
+        [data-theme='dark'] .anchor-label,
+        [data-theme='dark'] .learning-cinema-kicker,
+        [data-theme='dark'] .video-kicker,
+        [data-theme='dark'] .transcript-meta,
+        [data-theme='dark'] .transcript-footer,
+        [data-theme='dark'] .disclosure-sub,
+        [data-theme='dark'] .explainer-title {
+            color: #a99f91
+        }
+
+        [data-theme='dark'] .chart-description p,
+        [data-theme='dark'] .chart-description-item,
+        [data-theme='dark'] .explainer-block p,
+        [data-theme='dark'] .origin-description-item p,
+        [data-theme='dark'] .disclosure-body,
+        [data-theme='dark'] .disclosure-note,
+        [data-theme='dark'] .transcript-panel p,
+        [data-theme='dark'] .video-subtitle,
+        [data-theme='dark'] .stat-sub,
+        [data-theme='dark'] td,
+        [data-theme='dark'] .anchor-value {
+            color: #c8beb0
         }
 
         .grid {
@@ -1232,6 +1348,27 @@
                 padding: .25rem .6rem
             }
 
+            .field-toggle {
+                font-size: .58rem;
+                padding: .25rem .55rem
+            }
+
+            .offline-register {
+                grid-template-columns: 1fr;
+                gap: .7rem;
+                margin-top: -.35rem;
+                padding: .75rem
+            }
+
+            .offline-register-actions {
+                justify-content: flex-start
+            }
+
+            .cache-status,
+            .cache-action {
+                font-size: .52rem
+            }
+
             .stats {
                 grid-template-columns: 1fr 1fr;
                 gap: .7rem
@@ -1438,6 +1575,18 @@
             .header-left,
             .header-right {
                 width: 100%
+            }
+
+            .header-right {
+                align-items: flex-start
+            }
+
+            .offline-register-text {
+                font-size: .68rem
+            }
+
+            .offline-register-actions {
+                gap: .45rem
             }
 
             header h1 {
@@ -1840,6 +1989,7 @@
                 </svg>
                 <span id='clock-text'>--:--:--</span>
             </div>
+            <button id='low-data-toggle' class='theme-toggle field-toggle' type='button' onclick='toggleLowDataMode()' title='Reduce video preloading and prefer cached shell'>Low data</button>
             <button class='theme-toggle' onclick='toggleTheme()' title='Toggle theme'>
                 <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round'
                     stroke-linejoin='round'>
@@ -1857,6 +2007,17 @@
             </button>
         </div>
     </header>
+
+    <section class='offline-register' aria-label='Offline and low-data access status'>
+        <div class='offline-register-copy'>
+            <div class='offline-register-kicker'>Field access</div>
+            <div class='offline-register-text'>App shell, chart, and core report can be cached for low-signal areas. Videos are not preloaded in low-data mode.</div>
+        </div>
+        <div class='offline-register-actions'>
+            <span id='cache-status' class='cache-status'>cache checking</span>
+            <button class='cache-action' type='button' onclick='cacheForOffline()'>Cache offline</button>
+        </div>
+    </section>
 
     <div class='stats'>
         <div class='stat' onclick="openModal('pulse')">
@@ -2490,21 +2651,101 @@
 
         showLearningSlide(0);
 
-        // ── Theme ─────────────────────────────────────────────────────────────────
+        // ── Preferences + Offline Field Cache ───────────────────────────────────────
+        function writePreference(name, value) {
+            try { localStorage.setItem(name, value); } catch (_) { }
+            try { document.cookie = `${name}=${encodeURIComponent(value)}; Max-Age=31536000; Path=/; SameSite=Lax`; } catch (_) { }
+        }
+
+        function readPreference(name, fallback) {
+            try {
+                const stored = localStorage.getItem(name);
+                if (stored !== null) return stored;
+            } catch (_) { }
+            try {
+                const found = document.cookie.split('; ').find(row => row.startsWith(`${name}=`));
+                if (found) return decodeURIComponent(found.split('=').slice(1).join('='));
+            } catch (_) { }
+            return fallback;
+        }
+
+        function applyLowDataMode(enabled) {
+            document.documentElement.setAttribute('data-low-data', enabled ? 'true' : 'false');
+            document.querySelectorAll('video').forEach(video => {
+                video.preload = enabled ? 'none' : 'metadata';
+            });
+            const btn = document.getElementById('low-data-toggle');
+            if (btn) {
+                btn.classList.toggle('is-active', enabled);
+                btn.textContent = enabled ? 'Low data on' : 'Low data';
+                btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+            }
+            if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({ type: 'TSRA_LOW_DATA', enabled });
+            }
+        }
+
+        function updateCacheStatus(text) {
+            const el = document.getElementById('cache-status');
+            if (el) el.textContent = text;
+        }
+
+        async function cacheForOffline() {
+            updateCacheStatus('caching');
+            if (!('serviceWorker' in navigator)) { updateCacheStatus('cache unavailable'); return; }
+            try {
+                const registration = await navigator.serviceWorker.ready;
+                const worker = registration.active || registration.waiting || registration.installing;
+                if (!worker) { updateCacheStatus('cache pending'); return; }
+                worker.postMessage({ type: 'TSRA_CACHE_CORE' });
+                updateCacheStatus('core cached');
+            } catch (_) {
+                updateCacheStatus('cache failed');
+            }
+        }
+
         (function () {
-            const saved = localStorage.getItem('tsra-theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', saved);
+            const savedTheme = readPreference('tsra-theme', 'dark');
+            document.documentElement.setAttribute('data-theme', savedTheme);
             const lbl = document.getElementById('theme-label');
-            if (lbl) lbl.textContent = saved === 'dark' ? 'Light' : 'Dark';
+            if (lbl) lbl.textContent = savedTheme === 'dark' ? 'Light' : 'Dark';
+            const prefersReducedData = navigator.connection && navigator.connection.saveData;
+            const savedLowData = readPreference('tsra-low-data', prefersReducedData ? 'true' : 'false') === 'true';
+            applyLowDataMode(savedLowData);
         })();
 
         function toggleTheme() {
             const html = document.documentElement;
             const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
             html.setAttribute('data-theme', next);
-            localStorage.setItem('tsra-theme', next);
+            writePreference('tsra-theme', next);
             document.getElementById('theme-label').textContent = next === 'dark' ? 'Light' : 'Dark';
         }
+
+        function toggleLowDataMode() {
+            const enabled = document.documentElement.getAttribute('data-low-data') !== 'true';
+            writePreference('tsra-low-data', enabled ? 'true' : 'false');
+            applyLowDataMode(enabled);
+        }
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('/service-worker.js');
+                    updateCacheStatus(navigator.onLine ? 'cache ready' : 'offline ready');
+                    if (registration.waiting) updateCacheStatus('update ready');
+                } catch (_) {
+                    updateCacheStatus('cache unavailable');
+                }
+            });
+            navigator.serviceWorker.addEventListener('message', event => {
+                if (event.data && event.data.type === 'TSRA_CACHE_STATUS') updateCacheStatus(event.data.status);
+            });
+        } else {
+            updateCacheStatus('cache unavailable');
+        }
+        window.addEventListener('online', () => updateCacheStatus('online'));
+        window.addEventListener('offline', () => updateCacheStatus('offline ready'));
 
         // ── Clock + Date ────────────────────────────────────────────────────────────
         function updateClock() {
