@@ -535,21 +535,21 @@
         }
 
         .learning-media-grid {
-            max-width: 1080px;
-            margin: .25rem auto 1rem
+            max-width: 920px;
+            margin: .15rem auto .75rem
         }
 
         .learning-cinema {
             display: grid;
-            gap: 1rem
+            gap: .75rem
         }
 
         .learning-cinema-head {
             display: flex;
             align-items: end;
             justify-content: space-between;
-            gap: 1.2rem;
-            padding: .15rem .05rem .45rem
+            gap: 1rem;
+            padding: .05rem .05rem .25rem
         }
 
         .learning-cinema-kicker {
@@ -563,7 +563,7 @@
 
         .learning-cinema-title {
             font-family: var(--serif);
-            font-size: clamp(1.45rem, 3.6vw, 2.6rem);
+            font-size: clamp(1.18rem, 2.8vw, 1.85rem);
             font-weight: 300;
             line-height: 1.02;
             letter-spacing: -.045em;
@@ -608,7 +608,9 @@
         }
 
         .learning-stage {
-            position: relative
+            position: relative;
+            max-width: 860px;
+            margin: 0 auto
         }
 
         .learning-video-card {
@@ -617,7 +619,8 @@
             border-radius: 0;
             overflow: hidden;
             background: linear-gradient(180deg, var(--surface), color-mix(in srgb, var(--surface) 78%, var(--bg)));
-            border-color: var(--border)
+            border-color: var(--border);
+            box-shadow: var(--shadow-sm)
         }
 
         .learning-video-card.is-active {
@@ -628,8 +631,8 @@
             display: grid;
             grid-template-columns: minmax(0, 1fr) auto;
             align-items: end;
-            gap: 1.25rem;
-            padding: 1.25rem 1.35rem 1rem;
+            gap: .9rem;
+            padding: .85rem 1rem .7rem;
             border-bottom: 1px solid var(--border-sub)
         }
 
@@ -639,52 +642,57 @@
 
         .video-kicker {
             font-family: var(--mono);
-            font-size: .52rem;
+            font-size: .5rem;
             text-transform: uppercase;
-            letter-spacing: .14em;
+            letter-spacing: .13em;
             color: var(--muted);
-            margin-bottom: .35rem
+            margin-bottom: .25rem
         }
 
         .video-title {
             font-family: var(--serif);
-            font-size: clamp(1.35rem, 3vw, 2.15rem);
+            font-size: clamp(1.02rem, 2.3vw, 1.42rem);
             font-weight: 300;
             color: var(--text);
-            letter-spacing: -.035em;
-            line-height: 1.06
+            letter-spacing: -.025em;
+            line-height: 1.08
         }
 
         .video-subtitle {
-            max-width: 680px;
-            margin-top: .45rem;
-            font-size: .78rem;
+            max-width: 620px;
+            margin-top: .32rem;
+            font-size: .72rem;
             color: var(--text-sub);
-            line-height: 1.6
+            line-height: 1.48
         }
 
         .video-status {
             flex: 0 0 auto;
             font-family: var(--mono);
-            font-size: .58rem;
+            font-size: .54rem;
             color: var(--accent2);
             border: 1px solid rgba(122, 170, 136, .24);
             background: rgba(122, 170, 136, .08);
             border-radius: 0;
-            padding: .32rem .58rem;
+            padding: .24rem .5rem;
             white-space: nowrap;
             letter-spacing: .08em;
             text-transform: uppercase
         }
 
         .learning-video-card .media-frame {
-            border-radius: 0;
+            width: min(100%, 760px);
+            margin: 0 auto;
+            border: 1px solid var(--border-sub);
             border-top: 0;
+            border-bottom: 0;
+            border-radius: 0;
             background: #030406
         }
 
         .learning-video-card .media-frame video.chart {
             min-height: 0;
+            max-height: min(42vh, 400px);
             aspect-ratio: 16 / 9;
             object-fit: contain
         }
@@ -701,7 +709,7 @@
 
         .transcript-panel {
             margin: 0;
-            padding: clamp(1.1rem, 2.5vw, 1.65rem);
+            padding: clamp(.85rem, 1.8vw, 1.15rem);
             border-top: 1px solid var(--border-sub);
             background: color-mix(in srgb, var(--surface2) 90%, var(--bg));
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, .025)
@@ -716,7 +724,7 @@
             letter-spacing: .14em;
             text-transform: uppercase;
             color: var(--accent);
-            margin-bottom: .75rem
+            margin-bottom: .55rem
         }
 
         .transcript-kicker::before {
@@ -730,8 +738,8 @@
         .transcript-panel p {
             margin: 0;
             color: var(--text-sub);
-            font-size: .8rem;
-            line-height: 1.72
+            font-size: .74rem;
+            line-height: 1.56
         }
 
         .transcript-panel strong {
@@ -791,25 +799,25 @@
         }
 
         .transcript-meta {
-            margin-bottom: .95rem
+            margin-bottom: .65rem
         }
 
         .transcript-footer {
-            margin-top: .95rem;
-            padding-top: .75rem;
+            margin-top: .65rem;
+            padding-top: .55rem;
             border-top: 1px solid var(--border-sub)
         }
 
         .transcript-window {
             display: grid;
-            gap: .65rem;
-            min-height: 11.5rem
+            gap: .42rem;
+            min-height: 6.8rem
         }
 
         .transcript-line {
             display: grid;
-            grid-template-columns: 3.6rem minmax(0, 1fr);
-            gap: .85rem;
+            grid-template-columns: 3.1rem minmax(0, 1fr);
+            gap: .65rem;
             align-items: baseline;
             color: var(--text-sub);
             opacity: .55;
@@ -833,8 +841,8 @@
         }
 
         .transcript-text {
-            font-size: clamp(.86rem, 1.25vw, 1.04rem);
-            line-height: 1.55;
+            font-size: clamp(.78rem, 1.05vw, .92rem);
+            line-height: 1.46;
             letter-spacing: -.01em
         }
 
@@ -1247,19 +1255,23 @@
             }
 
             #tab-learning .learning-media-grid {
+                max-width: 100%;
                 margin-bottom: .85rem
             }
 
+            #tab-learning .learning-stage {
+                max-width: 100%
+            }
+
             #tab-learning .learning-video-card {
-                flex-basis: min(88vw, 520px);
                 padding: 0
             }
 
             .video-card-header {
                 align-items: flex-start;
-                flex-direction: column;
-                gap: .75rem;
-                padding: 1.05rem 1rem .9rem
+                grid-template-columns: 1fr;
+                gap: .55rem;
+                padding: .85rem .9rem .7rem
             }
 
             .video-title {
@@ -1272,12 +1284,38 @@
             }
 
             .media-frame {
-                border-radius: 0 0 10px 10px
+                border-radius: 0
             }
 
+            #tab-learning .learning-video-card .media-frame {
+                width: 100%;
+                border-left: 0;
+                border-right: 0
+            }
+
+            #tab-learning .learning-video-card .media-frame video.chart,
             .media-frame video.chart {
                 min-height: 0;
+                max-height: none;
                 aspect-ratio: 16 / 9
+            }
+
+            .transcript-panel {
+                padding: .85rem .9rem
+            }
+
+            .transcript-window {
+                min-height: 8.2rem
+            }
+
+            .transcript-line {
+                grid-template-columns: 2.8rem minmax(0, 1fr);
+                gap: .55rem
+            }
+
+            .transcript-text {
+                font-size: .78rem;
+                line-height: 1.5
             }
 
             .media-frame img.chart {
@@ -1416,15 +1454,21 @@
                 font-size: .68rem
             }
 
-            #tab-learning .card-title {
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
-                letter-spacing: .1em;
-                line-height: 1.45
+            .learning-cinema-head {
+                gap: .65rem
+            }
+
+            .learning-cinema-title {
+                font-size: 1.06rem
+            }
+
+            .learning-controls {
+                width: 100%;
+                justify-content: space-between
             }
 
             .video-card-header {
-                padding: .95rem .9rem .85rem
+                padding: .75rem .8rem .65rem
             }
 
             .video-title {
@@ -1437,17 +1481,30 @@
             }
 
             .video-status {
-                font-size: .58rem;
-                padding: .24rem .55rem
+                font-size: .52rem;
+                padding: .22rem .48rem
             }
 
-            #tab-learning .learning-video-card {
-                flex-basis: 88vw
+            .transcript-panel {
+                padding: .78rem .8rem
             }
 
-            .learning-carousel {
-                gap: .75rem;
-                padding-bottom: .6rem
+            .transcript-meta,
+            .transcript-footer {
+                font-size: .52rem;
+                gap: .5rem
+            }
+
+            .transcript-window {
+                min-height: 9rem
+            }
+
+            .transcript-line {
+                grid-template-columns: 2.55rem minmax(0, 1fr)
+            }
+
+            .transcript-time {
+                font-size: .52rem
             }
 
             .anchor-summary {
