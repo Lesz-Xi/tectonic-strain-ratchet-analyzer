@@ -4,7 +4,7 @@
 <rect width='2400' height='1600' fill='#f0ede8'/>
 <filter id='grain'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='table' tableValues='0 .045'/></feComponentTransfer></filter>
 <rect width='2400' height='1600' filter='url(#grain)' opacity='.45'/>
-<text x='1200.0' y='56.0' fill='#9a9488' font-family='IBM Plex Mono, monospace' font-size='24' font-weight='500' text-anchor='middle' letter-spacing='.16em'>TSRA observation plate · phase timing register</text>
+<text x='1200.0' y='42.0' fill='#1e1c18' font-family='Inter, Arial, sans-serif' font-size='34' font-weight='700' text-anchor='middle' letter-spacing='.04em'>Tectonic strain sawtooth &amp; discrete slip timeline</text>
 <rect x='190.0' y='95.0' width='2070.0' height='780.0' rx='0' fill='#faf8f4' stroke='#d9d2c5' opacity='1'/>
 <rect x='190.0' y='1015.0' width='2070.0' height='390.0' rx='0' fill='#faf8f4' stroke='#d9d2c5' opacity='1'/>
 <line x1='190.0' y1='95.0' x2='190.0' y2='875.0' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
@@ -25,7 +25,7 @@
 <text x='146.0' y='306.5' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='end'>8</text>
 <line x1='190.0' y1='162.8' x2='2260.0' y2='162.8' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
 <text x='146.0' y='170.8' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='end'>10</text>
-<text x='1200.0' y='65.0' fill='#1e1c18' font-family='Inter, Arial, sans-serif' font-size='38' font-weight='700' text-anchor='middle' letter-spacing='.06em'>Tectonic strain sawtooth &amp; discrete slip timeline</text>
+<text x='1200.0' y='74.0' fill='#9a9488' font-family='IBM Plex Mono, monospace' font-size='18' font-weight='500' text-anchor='middle' letter-spacing='.18em'>TSRA observation plate · phase timing register</text>
 <text x='-485.0' y='76' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' text-anchor='middle' transform='rotate(-90)'>Accumulated strain index S(t)</text>
 <path d='M 190.0 841.1 L 807.5 196.7 L 807.5 841.1 Z M 807.5 841.1 L 1283.8 366.3 L 1283.8 841.1 Z M 1283.8 841.1 L 1346.4 773.3 L 1346.4 841.1 Z M 1346.4 841.1 L 1412.6 773.3 L 1412.6 841.1 Z M 1412.6 841.1 L 1864.8 366.3 L 1864.8 841.1 Z M 1864.8 841.1 L 2096.6 603.7 L 2096.6 841.1 Z' fill='#168b96' opacity='.10'/>
 <path d='M 190.0 841.1 L 807.5 196.7 L 807.5 841.1 L 1283.8 366.3 L 1283.8 841.1 L 1346.4 773.3 L 1346.4 841.1 L 1412.6 773.3 L 1412.6 841.1 L 1864.8 366.3 L 1864.8 841.1 L 2096.6 603.7 L 2096.6 841.1 L 2152.0 783.9' fill='none' stroke='#168b96' stroke-width='5' stroke-linejoin='round' stroke-linecap='round'/>
