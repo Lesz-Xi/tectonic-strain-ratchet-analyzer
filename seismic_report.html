@@ -303,145 +303,12 @@
             color: var(--accent2)
         }
 
-        .offline-register {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            gap: .85rem;
-            align-items: center;
-            margin: -0.9rem 0 1rem;
-            padding: .58rem .68rem;
-            border: 1px solid var(--border-sub);
-            background: color-mix(in srgb, var(--surface) 64%, transparent);
-            box-shadow: none
-        }
-
-        .offline-register-copy {
-            display: grid;
-            gap: .22rem;
-            min-width: 0
-        }
-
-        .offline-register-kicker {
-            flex: 0 0 auto;
-            font-family: var(--mono);
-            font-size: .5rem;
-            letter-spacing: .16em;
-            text-transform: uppercase;
-            color: var(--accent2)
-        }
-
-        .offline-register-text {
-            color: var(--muted);
-            font-size: .68rem;
-            line-height: 1.35;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis
-        }
-
-        .field-memory-meta {
-            display: flex;
-            align-items: center;
-            gap: .5rem;
-            flex-wrap: wrap;
-            font-family: var(--mono);
-            font-size: .47rem;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            color: var(--muted)
-        }
-
-        .field-memory-meta span {
-            white-space: nowrap
-        }
-
-        .field-memory-meta strong {
-            color: var(--text-sub);
-            font-weight: 500
-        }
-
-        .offline-register-actions {
-            display: flex;
-            align-items: center;
-            gap: .45rem;
-            flex-wrap: wrap;
-            justify-content: flex-end
-        }
-
-        .cache-status {
-            font-family: var(--mono);
-            font-size: .5rem;
-            letter-spacing: .11em;
-            text-transform: uppercase;
-            color: var(--muted);
-            white-space: nowrap
-        }
-
-        .cache-action {
-            border: 1px solid var(--border-sub);
-            background: transparent;
-            color: var(--text-sub);
-            padding: .26rem .52rem;
-            font-family: var(--mono);
-            font-size: .5rem;
-            letter-spacing: .11em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: color .15s, border-color .15s, background .15s
-        }
-
-        .cache-action:hover,
-        .cache-action:focus-visible {
-            color: var(--text);
-            border-color: var(--accent);
-            background: rgba(196, 169, 104, .045);
-            outline: none
-        }
-
-        .felt-register {
-            display: grid;
-            grid-template-columns: auto minmax(0, 1fr) auto;
-            gap: .62rem;
-            align-items: center;
-            margin: -0.55rem 0 1rem;
-            padding: .48rem .68rem;
-            border: 1px solid color-mix(in srgb, var(--accent2) 22%, var(--border-sub));
-            background: color-mix(in srgb, var(--accent2) 5%, transparent)
-        }
-
-        .felt-register-kicker,
-        .felt-register-status {
-            font-family: var(--mono);
-            font-size: .48rem;
-            letter-spacing: .14em;
-            text-transform: uppercase;
-            white-space: nowrap
-        }
-
-        .felt-register-kicker {
-            color: var(--accent2)
-        }
-
-        .felt-register-text {
-            min-width: 0;
-            color: var(--text-sub);
-            font-size: .68rem;
-            line-height: 1.35;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis
-        }
-
-        .felt-register-status {
-            color: var(--muted)
-        }
-
         .source-certainty-register {
             display: grid;
             grid-template-columns: auto minmax(0, 1fr);
             gap: .62rem .75rem;
             align-items: center;
-            margin: -0.55rem 0 1rem;
+            margin: 0 0 1rem;
             padding: .5rem .68rem;
             border: 1px solid var(--border-sub);
             background: color-mix(in srgb, var(--surface2) 34%, transparent)
@@ -501,26 +368,6 @@
             gap: .35rem;
             flex-wrap: wrap;
             margin-top: .38rem
-        }
-
-        [data-theme='dark'] .felt-register {
-            background: rgba(122, 170, 136, .045);
-            border-color: rgba(122, 170, 136, .16)
-        }
-
-        [data-theme='light'] .felt-register {
-            background: rgba(122, 170, 136, .055);
-            border-color: rgba(98, 138, 105, .18)
-        }
-
-        [data-theme='dark'] .offline-register {
-            background: rgba(255, 255, 255, .012);
-            border-color: rgba(255, 255, 255, .055)
-        }
-
-        [data-theme='light'] .offline-register {
-            background: rgba(250, 248, 244, .46);
-            border-color: rgba(22, 19, 16, .08)
         }
 
         [data-low-data='true'] video {
@@ -2082,40 +1929,10 @@
                 letter-spacing: .13em
             }
 
-            .offline-register {
-                grid-template-columns: 1fr;
-                gap: .55rem;
-                margin-top: -.35rem;
-                padding: .62rem .68rem
-            }
-
-            .offline-register-copy {
-                display: grid;
-                gap: .2rem
-            }
-
-            .offline-register-text {
-                white-space: normal
-            }
-
-            .field-memory-meta {
-                gap: .32rem;
-                font-size: .43rem
-            }
-
-            .offline-register-actions {
-                justify-content: flex-start
-            }
-
-            .felt-register,
             .source-certainty-register {
                 grid-template-columns: 1fr;
                 gap: .28rem;
-                margin-top: -.45rem
-            }
-
-            .felt-register-text {
-                white-space: normal
+                margin-top: 0
             }
 
             .source-certainty-list {
@@ -2125,11 +1942,6 @@
             .evidence-chip {
                 white-space: normal;
                 line-height: 1.35
-            }
-
-            .cache-status,
-            .cache-action {
-                font-size: .52rem
             }
 
             .stats {
@@ -2425,14 +2237,6 @@
 
             .theme-toggle span:not(.field-toggle-label):not(.field-toggle-icon) {
                 font-size: .54rem
-            }
-
-            .offline-register-text {
-                font-size: .66rem
-            }
-
-            .offline-register-actions {
-                gap: .45rem
             }
 
             .field-toggle {
@@ -3305,29 +3109,6 @@
             </button>
         </div>
     </header>
-
-    <section class='offline-register' aria-label='Offline and low-data access status'>
-        <div class='offline-register-copy'>
-            <div class='offline-register-kicker'>Field access</div>
-            <div class='offline-register-text'>Offline app shell and local Field Memory save automatically for low-signal viewing. Media saves when allowed or after interaction.</div>
-            <div class='field-memory-meta' aria-live='polite'>
-                <span id='field-memory-count'><strong>0</strong> local traces</span>
-                <span id='field-memory-storage'>storage checking</span>
-                <span id='field-memory-detail'>auto-save on · local-only</span>
-            </div>
-        </div>
-        <div class='offline-register-actions'>
-            <span id='cache-status' class='cache-status'>auto-save checking</span>
-            <button class='cache-action' type='button' onclick="cacheFieldMemory('manual', true)">Refresh offline copy</button>
-            <button class='cache-action' type='button' onclick='clearFieldMemory()'>Clear local</button>
-        </div>
-    </section>
-
-    <section class='felt-register' aria-label='Latest subtle movement indicator'>
-        <div class='felt-register-kicker'>Felt signal</div>
-        <div class='felt-register-text' id='felt-register-text'>~11:47 PM · subtle local movement noticed · felt-only</div>
-        <div class='felt-register-status'>not confirmed</div>
-    </section>
 
     <section class='source-certainty-register' aria-label='Source and certainty legend'>
         <div class='source-certainty-kicker'>Source & certainty</div>

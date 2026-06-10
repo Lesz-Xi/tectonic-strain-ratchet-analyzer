@@ -321,23 +321,6 @@ def replace_now_note(report: str, outcome: Outcome) -> str:
     return new_report
 
 
-def replace_felt_register(report: str, outcome: Outcome) -> str:
-    if outcome.kind != "felt":
-        return report
-    signal = html.escape(outcome.note.strip() or "Local movement noticed")
-    text = f"{time_label(outcome.report_time, approximate=True)} · {signal.lower()} · felt-only"
-    pattern = r"<section class='felt-register' aria-label='Latest subtle movement indicator'>\s*<div class='felt-register-kicker'>Felt signal</div>\s*<div class='felt-register-text' id='felt-register-text'>.*?</div>\s*<div class='felt-register-status'>not confirmed</div>\s*</section>"
-    new_block = f"""<section class='felt-register' aria-label='Latest subtle movement indicator'>
-        <div class='felt-register-kicker'>Felt signal</div>
-        <div class='felt-register-text' id='felt-register-text'>{text}</div>
-        <div class='felt-register-status'>not confirmed</div>
-    </section>"""
-    new_report, count = re.subn(pattern, new_block, report, count=1, flags=re.S)
-    if count != 1:
-        die("could not replace felt signal register")
-    return new_report
-
-
 def replace_now_and_hero(report: str, anchor: datetime) -> str:
     first = build_windows(anchor)[0]
     phase, _multiplier, _duration, klass, arrival = first
@@ -477,7 +460,6 @@ def apply_outcome(report: str, service_worker: str, outcome: Outcome) -> tuple[s
     report = append_outcome_log(report, build_outcome_row(outcome, row))
     report = mark_watch_observed(report, outcome)
     report = replace_now_note(report, outcome)
-    report = replace_felt_register(report, outcome)
     if outcome.advance_cycle:
         report = replace_now_and_hero(report, outcome.report_time)
         report = replace_pending_note(report, outcome.report_time)
@@ -502,17 +484,14 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "id='tab-now'",
         "id='pending-table'",
         "id='observation-log-body'",
-        "id='felt-register-text'",
         "source-certainty-register",
         "data-evidence-type",
         "evidence-mini",
-        "id='field-memory-count'",
         "tsraFieldMemory.v1",
         "TSRA_UPDATE_CHECK_INTERVAL",
         "TSRA_AUTO_FIELD_MEMORY_INTERVAL",
         "autoCacheFieldMemory",
         "field-memory-auto-save-requested",
-        "Refresh offline copy",
         "registration.update()",
         "controllerchange",
         "tsraObservationLedger.v1",
@@ -529,6 +508,8 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         errors.append("public capacity text found in report")
     if ">Cache core<" in report or ">Save field memory<" in report:
         errors.append("manual field-memory cache button text found in report")
+    if "<section class='offline-register'" in report or "<section class='felt-register'" in report:
+        errors.append("removed field-access or felt-signal strip found in report")
     required_sw_markers = [
         "TSRA_CACHE_VERSION",
         "networkFirst(request, '/seismic_report.html')",
