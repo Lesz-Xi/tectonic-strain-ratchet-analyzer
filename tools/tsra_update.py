@@ -379,7 +379,7 @@ def replace_anchor(report: str, outcome: Outcome, anchor: datetime) -> str:
         (r"<div class='anchor-value strong'>.*?</div>", f"<div class='anchor-value strong'>{source}</div>"),
         (r"<div class='anchor-value mono'>[^<]*</div>", f"<div class='anchor-value mono'>{plain_month_label(anchor, approximate=outcome.kind == 'felt')}</div>"),
         (r"<div class='anchor-label'>Window relation</div>\s*<div class='anchor-value'>.*?</div>", f"<div class='anchor-label'>Window relation</div>\n                        <div class='anchor-value'>{relation}</div>"),
-        (r"<div class='anchor-label'>Next watch band</div>\s*<div class='anchor-value mono strong'>.*?</div>", f"<div class='anchor-label'>Next watch band</div>\n                        <div class='anchor-value mono strong'>{band_label(first_arrival)}</div>"),
+        (r"<div class='anchor-label'>Next watch (?:band|center)</div>\s*<div class='anchor-value mono strong'>.*?</div>", f"<div class='anchor-label'>Next watch center</div>\n                        <div class='anchor-value mono strong'>{time_label(first_arrival)} · band {band_label(first_arrival)}</div>"),
         (r"<div class='anchor-label'>Evidence status</div>\s*<div class='anchor-value'><span class='pill [^']+'>.*?</span></div>", f"<div class='anchor-label'>Evidence status</div>\n                        <div class='anchor-value'><span class='pill {status_class}'>{status_text}</span></div>"),
     ]
     anchor_match = re.search(r"<div class='card-title'>Latest Observation Anchor</div>.*?</div>\s*</div>\s*</div>\s*</div>\s*<div class='tab-panel' id='tab-chart'>", report, re.S)
