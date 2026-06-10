@@ -11,7 +11,7 @@
   "categories": ["education", "utilities", "science"],
   "icons": [
     {
-      "src": "/seismic_pattern_analysis.svg",
+      "src": "/tsra-field-ring-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

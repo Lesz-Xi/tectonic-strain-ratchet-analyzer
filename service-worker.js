@@ -1,8 +1,9 @@
-const TSRA_CACHE_VERSION = 'tsra-field-cache-v20';
+const TSRA_CACHE_VERSION = 'tsra-field-cache-v21';
 const CORE_ASSETS = [
   '/',
   '/seismic_report.html',
   '/manifest.webmanifest',
+  '/tsra-field-ring-icon.svg',
   '/seismic_pattern_analysis.svg',
   '/seismic_pattern_analysis.png'
 ];

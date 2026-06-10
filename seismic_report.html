@@ -8,7 +8,8 @@
     <meta name='theme-color' content='#0d0c0a'>
     <meta name='description' content='TSRA is an observational timing report for confirmed events, felt observations, and phase-sensitive watch windows.'>
     <link rel='manifest' href='/manifest.webmanifest'>
-    <link rel='apple-touch-icon' href='/seismic_pattern_analysis.svg'>
+    <link rel='icon' href='/tsra-field-ring-icon.svg' type='image/svg+xml'>
+    <link rel='apple-touch-icon' href='/tsra-field-ring-icon.svg'>
     <link
         href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400&family=IBM+Plex+Mono:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap'
         rel='stylesheet'>
@@ -155,6 +156,14 @@
             display: flex;
             align-items: center;
             gap: .75rem
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            display: block;
+            object-fit: contain;
+            flex: 0 0 auto
         }
 
         header h1 {
@@ -3078,6 +3087,7 @@
 
     <header>
         <div class='header-left'>
+            <img class='brand-mark' src='/tsra-field-ring-icon.svg' alt='' width='38' height='38' aria-hidden='true'>
             <h1>TSRA &nbsp;<span>/ Tectonic Strain Ratchet Analyzer</span></h1>
             <span class='zone-tag'>Cotabato · Sarangani</span>
         </div>
