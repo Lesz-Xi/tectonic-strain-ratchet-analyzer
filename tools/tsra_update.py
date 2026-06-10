@@ -486,6 +486,9 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "id='observation-log-body'",
         "source-certainty-register",
         "What this means",
+        "--kuro-field-ground: #0d0c0a",
+        "--old-brass: #b89455",
+        "--moss: #7f9878",
         "data-evidence-type",
         "evidence-mini",
         "tsraFieldMemory.v1",
@@ -507,6 +510,10 @@ def verify_report(report: str, service_worker: str) -> list[str]:
             errors.append(f"missing report marker: {marker}")
     if "capacity" in report.lower():
         errors.append("public capacity text found in report")
+    if "background: radial-gradient(circle at 12% -10%" in report:
+        errors.append("dark backdrop glow found in report")
+    if "--bg: #11110f" in report:
+        errors.append("old relic dark ground token found in report")
     if ">Cache core<" in report or ">Save field memory<" in report:
         errors.append("manual field-memory cache button text found in report")
     if ">Source & certainty<" in report or ">Source &amp; certainty<" in report:

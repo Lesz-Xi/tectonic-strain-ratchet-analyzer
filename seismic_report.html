@@ -5,7 +5,7 @@
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>TSRA &mdash; Tectonic Strain Ratchet Analyzer</title>
-    <meta name='theme-color' content='#11110F'>
+    <meta name='theme-color' content='#0d0c0a'>
     <meta name='description' content='TSRA is an observational timing report for confirmed events, felt observations, and phase-sensitive watch windows.'>
     <link rel='manifest' href='/manifest.webmanifest'>
     <link rel='apple-touch-icon' href='/seismic_pattern_analysis.svg'>
@@ -23,39 +23,49 @@
 
         :root,
         [data-theme='dark'] {
-            --bg: #11110f;
-            --surface: rgba(247, 243, 234, .044);
-            --surface2: rgba(247, 243, 234, .064);
-            --surface-soft: rgba(247, 243, 234, .030);
-            --paper-warm: #1b1a17;
-            --paper-warm-soft: #25221d;
-            --line: rgba(247, 243, 234, .115);
-            --line-strong: rgba(247, 243, 234, .22);
-            --border: rgba(247, 243, 234, .115);
-            --border-sub: rgba(247, 243, 234, .072);
-            --accent: #cdb47e;
-            --accent2: #d8cfb8;
-            --warn: #cda66a;
-            --ok: #8fb39a;
-            --danger: #c98275;
-            --text: #f7f3ea;
-            --text-sub: rgba(247, 243, 234, .68);
-            --muted: rgba(247, 243, 234, .42);
-            --shadow: 0 34px 120px rgba(0, 0, 0, .28);
-            --shadow-sm: 0 18px 72px rgba(0, 0, 0, .20);
+            --kuro-field-ground: #0d0c0a;
+            --sumi-panel: #15130f;
+            --ash-panel: #1d1a14;
+            --ash-panel-soft: rgba(226, 214, 190, .038);
+            --bone-ink: #eee6d6;
+            --stone-ink: rgba(238, 230, 214, .66);
+            --quiet-stone: rgba(238, 230, 214, .39);
+            --old-brass: #b89455;
+            --moss: #7f9878;
+            --rust: #aa7042;
+            --bg: var(--kuro-field-ground);
+            --surface: rgba(226, 214, 190, .052);
+            --surface2: rgba(226, 214, 190, .074);
+            --surface-soft: var(--ash-panel-soft);
+            --paper-warm: var(--sumi-panel);
+            --paper-warm-soft: var(--ash-panel);
+            --line: rgba(226, 214, 190, .105);
+            --line-strong: rgba(226, 214, 190, .19);
+            --border: var(--line);
+            --border-sub: rgba(226, 214, 190, .070);
+            --accent: var(--old-brass);
+            --accent2: var(--moss);
+            --warn: var(--rust);
+            --ok: var(--moss);
+            --danger: #aa6259;
+            --text: var(--bone-ink);
+            --text-sub: var(--stone-ink);
+            --muted: var(--quiet-stone);
+            --shadow: 0 22px 88px rgba(0, 0, 0, .30);
+            --shadow-sm: 0 12px 46px rgba(0, 0, 0, .18);
             --mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
-            --pre-bg: #0f0f0d;
-            --hero-bg: linear-gradient(135deg, rgba(247, 243, 234, .052), rgba(247, 243, 234, .026));
-            --hero-border: rgba(247, 243, 234, .16);
-            --hero-time: #f7f3ea;
-            --hero-remain: rgba(247, 243, 234, .54);
-            --row-hover: rgba(247, 243, 234, .035);
-            --td-border: rgba(247, 243, 234, .075);
-            --toggle-bg: rgba(247, 243, 234, .052);
-            --toggle-border: rgba(247, 243, 234, .14);
-            --tab-active-bg: rgba(247, 243, 234, .074);
-            --modal-overlay: rgba(17, 17, 15, .82);
-            --modal-bg: #191918;
+            --pre-bg: #0a0907;
+            --hero-bg: color-mix(in srgb, var(--surface) 74%, var(--paper-warm));
+            --hero-border: var(--line);
+            --hero-time: var(--bone-ink);
+            --hero-remain: rgba(238, 230, 214, .52);
+            --row-hover: rgba(226, 214, 190, .030);
+            --td-border: rgba(226, 214, 190, .068);
+            --toggle-bg: rgba(226, 214, 190, .042);
+            --toggle-border: rgba(226, 214, 190, .12);
+            --tab-active-bg: rgba(184, 148, 85, .078);
+            --modal-overlay: rgba(13, 12, 10, .84);
+            --modal-bg: #15130f;
             --serif: 'Source Serif 4', Georgia, serif;
             --ease: cubic-bezier(.16, 1, .3, 1);
         }
@@ -114,7 +124,7 @@
             position: fixed;
             inset: 0;
             pointer-events: none;
-            opacity: .028;
+            opacity: .022;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
             mix-blend-mode: overlay;
             z-index: 0
@@ -129,9 +139,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.75rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 1.1rem;
+            margin-bottom: 1.9rem;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 1.18rem;
             gap: 1rem
         }
 
@@ -148,11 +158,11 @@
         }
 
         header h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 600;
-            letter-spacing: .03em;
-            color: var(--accent)
+            font-family: var(--serif);
+            font-size: 1.15rem;
+            font-weight: 300;
+            letter-spacing: -.025em;
+            color: var(--text)
         }
 
         header h1 span {
@@ -166,7 +176,7 @@
             color: var(--text-sub);
             background: var(--surface2);
             border: 1px solid var(--border);
-            border-radius: 5px;
+            border-radius: 0;
             padding: .2rem .6rem;
             letter-spacing: .02em
         }
@@ -177,7 +187,7 @@
             color: var(--text-sub);
             background: var(--surface);
             padding: .3rem .75rem;
-            border-radius: 7px;
+            border-radius: 0;
             border: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
             letter-spacing: .03em
@@ -189,7 +199,7 @@
             gap: .4rem;
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 20px;
+            border-radius: 0;
             padding: .28rem .75rem;
             font-family: var(--mono);
             font-size: .72rem;
@@ -205,7 +215,7 @@
         }
 
         .viewer-pill svg {
-            color: var(--accent2)
+            color: var(--moss)
         }
 
         #date-pill {
@@ -221,7 +231,7 @@
             gap: .4rem;
             background: var(--toggle-bg);
             border: 1px solid var(--toggle-border);
-            border-radius: 20px;
+            border-radius: 0;
             padding: .25rem .65rem;
             cursor: pointer;
             font-size: .68rem;
@@ -293,20 +303,20 @@
 
         .field-toggle:hover .field-toggle-icon,
         .field-toggle:focus-visible .field-toggle-icon {
-            color: var(--accent);
-            border-color: rgba(196, 169, 104, .34)
+            color: var(--old-brass);
+            border-color: color-mix(in srgb, var(--old-brass) 34%, transparent)
         }
 
         .field-toggle.is-active {
-            color: var(--accent2);
-            border-color: rgba(122, 170, 136, .42);
-            background: rgba(122, 170, 136, .08)
+            color: var(--moss);
+            border-color: color-mix(in srgb, var(--moss) 42%, transparent);
+            background: color-mix(in srgb, var(--moss) 9%, transparent)
         }
 
         .field-toggle.is-active .field-toggle-icon {
-            color: var(--accent2);
-            border-color: rgba(122, 170, 136, .38);
-            background: rgba(122, 170, 136, .1)
+            color: var(--moss);
+            border-color: color-mix(in srgb, var(--moss) 38%, transparent);
+            background: color-mix(in srgb, var(--moss) 10%, transparent)
         }
 
         .field-toggle.is-active .field-toggle-label strong {
@@ -407,7 +417,7 @@
         [data-theme='dark'] .stat-sub,
         [data-theme='dark'] td,
         [data-theme='dark'] .anchor-value {
-            color: #c8beb0
+            color: var(--text-sub)
         }
 
         .grid {
@@ -423,11 +433,11 @@
         }
 
         .card {
-            background: color-mix(in srgb, var(--surface) 82%, var(--paper-warm));
+            background: color-mix(in srgb, var(--surface) 64%, var(--paper-warm));
             border: 1px solid var(--line);
             border-radius: 0;
             padding: .95rem;
-            box-shadow: var(--shadow-sm);
+            box-shadow: none;
             transition: background .2s, border-color .2s;
             min-width: 0
         }
@@ -455,11 +465,11 @@
         }
 
         .stat {
-            background: color-mix(in srgb, var(--surface) 82%, var(--paper-warm));
+            background: color-mix(in srgb, var(--surface) 64%, var(--paper-warm));
             border: 1px solid var(--line);
             border-radius: 0;
             padding: 1.05rem 1.1rem 1rem;
-            box-shadow: var(--shadow-sm);
+            box-shadow: none;
             cursor: pointer;
             transition: background .15s, border-color .2s, transform .15s, box-shadow .15s;
             position: relative;
@@ -467,9 +477,9 @@
         }
 
         .stat:hover {
-            border-color: color-mix(in srgb, var(--accent) 34%, var(--line));
+            border-color: color-mix(in srgb, var(--old-brass) 34%, var(--line));
             transform: translateY(-1px);
-            box-shadow: var(--shadow-sm)
+            box-shadow: none
         }
 
         .stat-hint {
@@ -523,7 +533,7 @@
             border: 1px solid var(--border-sub);
             border-radius: 0;
             color: var(--accent);
-            background: rgba(196, 169, 104, .045);
+            background: color-mix(in srgb, var(--old-brass) 7%, transparent);
             line-height: 0
         }
 
@@ -540,7 +550,7 @@
         }
 
         .stat:hover .stat-icon {
-            border-color: rgba(196, 169, 104, .35)
+            border-color: color-mix(in srgb, var(--old-brass) 35%, transparent)
         }
 
         table {
@@ -591,15 +601,15 @@
         }
 
         .badge-ms {
-            background: rgba(196, 169, 104, .15);
-            color: #d4b878;
-            border: 1px solid rgba(196, 169, 104, .3)
+            background: color-mix(in srgb, var(--old-brass) 14%, transparent);
+            color: color-mix(in srgb, var(--old-brass) 82%, var(--text));
+            border: 1px solid color-mix(in srgb, var(--old-brass) 28%, transparent)
         }
 
         .badge-as {
-            background: rgba(122, 170, 136, .12);
-            color: #8abf9c;
-            border: 1px solid rgba(122, 170, 136, .28)
+            background: color-mix(in srgb, var(--moss) 12%, transparent);
+            color: color-mix(in srgb, var(--moss) 82%, var(--text));
+            border: 1px solid color-mix(in srgb, var(--moss) 28%, transparent)
         }
 
         [data-theme='light'] .badge-ms {
@@ -634,34 +644,33 @@
         }
 
         .confirmed {
-            background: rgba(95, 168, 120, .12);
-            color: #7abf94;
-            border: 1px solid rgba(95, 168, 120, .28)
+            background: color-mix(in srgb, var(--moss) 12%, transparent);
+            color: color-mix(in srgb, var(--moss) 78%, var(--text));
+            border: 1px solid color-mix(in srgb, var(--moss) 28%, transparent)
         }
 
         .pending-pill {
-            background: rgba(212, 138, 58, .12);
-            color: #d48a3a;
-            border: 1px solid rgba(212, 138, 58, .28)
+            background: color-mix(in srgb, var(--rust) 12%, transparent);
+            color: color-mix(in srgb, var(--rust) 82%, var(--text));
+            border: 1px solid color-mix(in srgb, var(--rust) 28%, transparent)
         }
 
         .elapsed-pill {
-            background: rgba(90, 86, 80, .12);
+            background: color-mix(in srgb, var(--quiet-stone) 13%, transparent);
             color: var(--muted);
-            border: 1px solid rgba(90, 86, 80, .2)
+            border: 1px solid color-mix(in srgb, var(--quiet-stone) 22%, transparent)
         }
 
         .observed-pill {
-            background: rgba(196, 169, 104, .14);
-            color: #d4b878;
-            border: 1px solid rgba(196, 169, 104, .34)
+            background: color-mix(in srgb, var(--old-brass) 13%, transparent);
+            color: color-mix(in srgb, var(--old-brass) 82%, var(--text));
+            border: 1px solid color-mix(in srgb, var(--old-brass) 32%, transparent)
         }
 
         .active-pill {
-            background: rgba(196, 169, 104, .12);
-            color: #c4a968;
-            border: 1px solid rgba(196, 169, 104, .28);
-            animation: pulse 1.5s infinite
+            background: color-mix(in srgb, var(--old-brass) 12%, transparent);
+            color: color-mix(in srgb, var(--old-brass) 82%, var(--text));
+            border: 1px solid color-mix(in srgb, var(--old-brass) 28%, transparent)
         }
 
         [data-theme='light'] .confirmed {
@@ -814,9 +823,9 @@
             padding: 0;
             border-radius: 0;
             overflow: hidden;
-            background: linear-gradient(180deg, var(--surface), color-mix(in srgb, var(--surface) 78%, var(--bg)));
-            border-color: var(--border);
-            box-shadow: var(--shadow-sm)
+            background: color-mix(in srgb, var(--surface) 64%, var(--paper-warm));
+            border-color: var(--line);
+            box-shadow: none
         }
 
         .learning-video-card.is-active {
@@ -866,9 +875,9 @@
             flex: 0 0 auto;
             font-family: var(--mono);
             font-size: .54rem;
-            color: var(--accent2);
-            border: 1px solid rgba(122, 170, 136, .24);
-            background: rgba(122, 170, 136, .08);
+            color: var(--moss);
+            border: 1px solid color-mix(in srgb, var(--moss) 24%, transparent);
+            background: color-mix(in srgb, var(--moss) 8%, transparent);
             border-radius: 0;
             padding: .24rem .5rem;
             white-space: nowrap;
@@ -1048,8 +1057,8 @@
 
         .transcript-word.is-current {
             color: var(--text);
-            background: rgba(196, 169, 104, .16);
-            box-shadow: 0 0 0 2px rgba(196, 169, 104, .08)
+            background: color-mix(in srgb, var(--old-brass) 14%, transparent);
+            box-shadow: none
         }
 
         [data-theme='light'] .transcript-word.is-current {
@@ -1154,8 +1163,8 @@
 
         .tab-btn.active {
             background: var(--tab-active-bg);
-            border-color: var(--accent);
-            color: var(--accent)
+            border-color: var(--line-strong);
+            color: var(--text)
         }
 
         .tab-panel {
@@ -1168,7 +1177,7 @@
 
         .now-card {
             padding: clamp(1rem, 2.2vw, 1.35rem);
-            background: color-mix(in srgb, var(--surface) 82%, var(--paper-warm))
+            background: color-mix(in srgb, var(--surface) 64%, var(--paper-warm))
         }
 
         .now-shell {
@@ -1235,7 +1244,7 @@
         .now-note,
         .now-action-panel {
             border: 1px solid var(--border-sub);
-            background: color-mix(in srgb, var(--surface2) 56%, var(--bg));
+            background: color-mix(in srgb, var(--surface-soft) 74%, var(--paper-warm));
             padding: .95rem
         }
 
@@ -1302,13 +1311,13 @@
         .hero-window {
             position: relative;
             overflow: hidden;
-            background: color-mix(in srgb, var(--surface) 82%, var(--paper-warm));
+            background: color-mix(in srgb, var(--surface) 64%, var(--paper-warm));
             border: 1px solid var(--line);
             border-radius: 0;
             padding: 1.15rem 1.2rem 1.05rem;
             display: grid;
             gap: .58rem;
-            box-shadow: var(--shadow-sm)
+            box-shadow: none
         }
 
         .hero-window::after {
@@ -1357,7 +1366,7 @@
         }
 
         [data-theme='dark'] .hero-window {
-            background: color-mix(in srgb, var(--surface) 82%, var(--paper-warm));
+            background: color-mix(in srgb, var(--surface) 64%, var(--paper-warm));
             border-color: var(--line)
         }
 
@@ -1408,7 +1417,7 @@
         }
 
         #pending-table tbody tr[data-observed='true'] td:first-child {
-            box-shadow: inset 0 1px 0 rgba(122, 170, 136, .22)
+            box-shadow: inset 0 1px 0 color-mix(in srgb, var(--moss) 22%, transparent)
         }
 
         .record-outcome-btn,
@@ -1462,7 +1471,7 @@
         }
 
         .ledger-local-row td {
-            background: color-mix(in srgb, var(--accent2) 4%, transparent)
+            background: color-mix(in srgb, var(--moss) 4%, transparent)
         }
 
         .ledger-note {
@@ -1491,8 +1500,8 @@
             display: none;
             place-items: center;
             padding: 1rem;
-            background: rgba(10, 10, 8, .42);
-            backdrop-filter: blur(3px)
+            background: rgba(13, 12, 10, .62);
+            backdrop-filter: blur(2px)
         }
 
         .outcome-recorder-overlay.open {
@@ -1504,8 +1513,8 @@
             width: min(92vw, 620px);
             max-height: 88vh;
             overflow: auto;
-            border: 1px solid var(--border);
-            background: var(--surface);
+            border: 1px solid var(--line);
+            background: color-mix(in srgb, var(--surface) 72%, var(--paper-warm));
             box-shadow: var(--shadow)
         }
 
@@ -1835,8 +1844,8 @@
             place-items: center;
             border: 1px solid var(--border-sub);
             border-radius: 0;
-            color: var(--accent);
-            background: rgba(196, 169, 104, .04);
+            color: var(--old-brass);
+            background: color-mix(in srgb, var(--old-brass) 4%, transparent);
             line-height: 0
         }
 
@@ -2421,10 +2430,10 @@
         .origin-seal {
             flex: 0 0 auto;
             border: 1px solid var(--border-sub);
-            border-radius: 999px;
+            border-radius: 0;
             padding: .32rem .7rem;
-            color: var(--accent2);
-            background: rgba(122, 170, 136, .07);
+            color: var(--moss);
+            background: color-mix(in srgb, var(--moss) 7%, transparent);
             font-family: var(--mono);
             font-size: .58rem;
             letter-spacing: .1em;
@@ -2466,9 +2475,9 @@
             width: 1.55rem;
             height: 1.55rem;
             margin-bottom: .65rem;
-            border: 1px solid rgba(196, 169, 104, .25);
-            border-radius: 999px;
-            color: var(--accent);
+            border: 1px solid color-mix(in srgb, var(--old-brass) 25%, transparent);
+            border-radius: 0;
+            color: var(--old-brass);
             font-family: var(--mono);
             font-size: .58rem
         }
@@ -2539,8 +2548,8 @@
         }
 
         .modal {
-            background: color-mix(in srgb, var(--surface) 94%, var(--bg));
-            border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+            background: color-mix(in srgb, var(--surface) 72%, var(--paper-warm));
+            border: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
             border-radius: 0;
             padding: clamp(1.05rem, 3vw, 1.45rem);
             max-width: 520px;
