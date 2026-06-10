@@ -316,9 +316,8 @@
         }
 
         .offline-register-copy {
-            display: flex;
-            align-items: baseline;
-            gap: .65rem;
+            display: grid;
+            gap: .22rem;
             min-width: 0
         }
 
@@ -338,6 +337,27 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis
+        }
+
+        .field-memory-meta {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            flex-wrap: wrap;
+            font-family: var(--mono);
+            font-size: .47rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--muted)
+        }
+
+        .field-memory-meta span {
+            white-space: nowrap
+        }
+
+        .field-memory-meta strong {
+            color: var(--text-sub);
+            font-weight: 500
         }
 
         .offline-register-actions {
@@ -2011,6 +2031,11 @@
                 white-space: normal
             }
 
+            .field-memory-meta {
+                gap: .32rem;
+                font-size: .43rem
+            }
+
             .offline-register-actions {
                 justify-content: flex-start
             }
@@ -3207,11 +3232,18 @@
     <section class='offline-register' aria-label='Offline and low-data access status'>
         <div class='offline-register-copy'>
             <div class='offline-register-kicker'>Field access</div>
-            <div class='offline-register-text'>Offline core cache for low-signal viewing. Videos stay on-demand.</div>
+            <div class='offline-register-text'>Offline core cache plus local field memory for low-signal viewing. Media saves after interaction.</div>
+            <div class='field-memory-meta' aria-live='polite'>
+                <span id='field-memory-count'><strong>0</strong> local traces</span>
+                <span id='field-memory-storage'>storage checking</span>
+                <span id='field-memory-detail'>local-only · no cookie sync</span>
+            </div>
         </div>
         <div class='offline-register-actions'>
             <span id='cache-status' class='cache-status'>cache checking</span>
-            <button class='cache-action' type='button' onclick='cacheForOffline()'>Cache offline</button>
+            <button class='cache-action' type='button' onclick='cacheForOffline()'>Cache core</button>
+            <button class='cache-action' type='button' onclick='cacheFieldMemory()'>Save field memory</button>
+            <button class='cache-action' type='button' onclick='clearFieldMemory()'>Clear local</button>
         </div>
     </section>
 
@@ -4094,6 +4126,10 @@
             const indexEl = document.getElementById('learning-index');
             if (indexEl) indexEl.textContent = `${String(learningSlideIndex + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
             renderLearningTranscript(learningSlideIndex);
+            if (window.__tsraFieldMemoryReady) {
+                const activeVideo = slides[learningSlideIndex] ? slides[learningSlideIndex].querySelector('video') : null;
+                recordFieldMemory('learning-slide-opened', { index: learningSlideIndex, src: activeVideo ? activeVideo.getAttribute('src') : '' });
+            }
         }
 
         function shiftLearningSlide(delta) {
@@ -4103,17 +4139,163 @@
         document.querySelectorAll('[data-learning-slide] video').forEach(video => {
             const slide = video.closest('[data-learning-slide]');
             const index = Number(slide ? slide.dataset.learningSlide : 0);
-            video.addEventListener('timeupdate', () => renderLearningTranscript(index));
+            video.addEventListener('timeupdate', () => {
+                renderLearningTranscript(index);
+                const lastWrite = Number(video.dataset.memoryWrite || 0);
+                if (window.__tsraFieldMemoryReady && video.currentTime - lastWrite >= 10) {
+                    video.dataset.memoryWrite = String(video.currentTime);
+                    recordFieldMemory('media-progress', { index, src: video.currentSrc || video.getAttribute('src'), currentTime: Math.round(video.currentTime), duration: Math.round(video.duration || 0) });
+                }
+            });
             video.addEventListener('loadedmetadata', () => renderLearningTranscript(index));
-            video.addEventListener('seeked', () => renderLearningTranscript(index));
+            video.addEventListener('seeked', () => {
+                renderLearningTranscript(index);
+                if (window.__tsraFieldMemoryReady) recordFieldMemory('media-seeked', { index, src: video.currentSrc || video.getAttribute('src'), currentTime: Math.round(video.currentTime) });
+            });
+            video.addEventListener('play', () => {
+                if (!window.__tsraFieldMemoryReady) return;
+                const src = video.currentSrc || video.getAttribute('src');
+                recordFieldMemory('media-played', { index, src });
+                cacheInteractionAsset(src);
+            });
         });
 
         showLearningSlide(0);
 
+        // ── Offline Field Memory ────────────────────────────────────────────────────
+        const TSRA_FIELD_MEMORY_DB = 'tsraFieldMemory.v1';
+        const TSRA_FIELD_MEMORY_VERSION = 1;
+        const TSRA_FIELD_MEMORY_ASSETS = [
+            '/',
+            '/seismic_report.html',
+            '/manifest.webmanifest',
+            '/seismic_pattern_analysis.svg',
+            '/seismic_pattern_analysis.png',
+            '/safety/80124894-56EA-42FF-BDF0-2F6C37B6453B.png',
+            '/safety/Cotabato_Trench_Rhythm.mp4',
+            '/safety/Twin_Tectonic_Giants.mp4'
+        ];
+        let fieldMemoryDbPromise = null;
+
+        function openFieldMemoryDb() {
+            if (!('indexedDB' in window)) return Promise.reject(new Error('indexedDB unavailable'));
+            if (fieldMemoryDbPromise) return fieldMemoryDbPromise;
+            fieldMemoryDbPromise = new Promise((resolve, reject) => {
+                const request = indexedDB.open(TSRA_FIELD_MEMORY_DB, TSRA_FIELD_MEMORY_VERSION);
+                request.onupgradeneeded = () => {
+                    const db = request.result;
+                    if (!db.objectStoreNames.contains('records')) db.createObjectStore('records', { keyPath: 'id' });
+                    if (!db.objectStoreNames.contains('queue')) db.createObjectStore('queue', { keyPath: 'id' });
+                };
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => {
+                    fieldMemoryDbPromise = null;
+                    reject(request.error || new Error('field memory open failed'));
+                };
+            });
+            return fieldMemoryDbPromise;
+        }
+
+        async function fieldMemoryStore(storeName, record) {
+            const db = await openFieldMemoryDb();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(storeName, 'readwrite');
+                tx.objectStore(storeName).put(record);
+                tx.oncomplete = () => resolve(record);
+                tx.onerror = () => reject(tx.error || new Error('field memory write failed'));
+            });
+        }
+
+        async function fieldMemoryCount(storeName) {
+            const db = await openFieldMemoryDb();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(storeName, 'readonly');
+                const request = tx.objectStore(storeName).count();
+                request.onsuccess = () => resolve(request.result || 0);
+                request.onerror = () => reject(request.error || new Error('field memory count failed'));
+            });
+        }
+
+        async function clearFieldMemoryStore(storeName) {
+            const db = await openFieldMemoryDb();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(storeName, 'readwrite');
+                tx.objectStore(storeName).clear();
+                tx.oncomplete = () => resolve();
+                tx.onerror = () => reject(tx.error || new Error('field memory clear failed'));
+            });
+        }
+
+        function fieldMemoryId(type) {
+            if (window.crypto && typeof window.crypto.randomUUID === 'function') return `${type}-${window.crypto.randomUUID()}`;
+            return `${type}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        }
+
+        function recordFieldMemory(type, payload = {}, queue = false) {
+            const record = { id: fieldMemoryId(type), type, payload, createdAt: new Date().toISOString() };
+            fieldMemoryStore(queue ? 'queue' : 'records', record)
+                .then(updateFieldMemoryStatus)
+                .catch(() => updateFieldMemoryText('local memory unavailable'));
+        }
+
+        function updateFieldMemoryText(text) {
+            const el = document.getElementById('field-memory-detail');
+            if (el) el.textContent = text;
+        }
+
+        function formatBytes(value) {
+            if (!Number.isFinite(value) || value <= 0) return '0 KB';
+            if (value < 1024 * 1024) return `${Math.round(value / 1024)} KB`;
+            return `${(value / (1024 * 1024)).toFixed(1)} MB`;
+        }
+
+        async function updateFieldMemoryStatus() {
+            try {
+                const count = await fieldMemoryCount('records');
+                const countEl = document.getElementById('field-memory-count');
+                if (countEl) countEl.innerHTML = `<strong>${count}</strong> local ${count === 1 ? 'trace' : 'traces'}`;
+            } catch (_) { }
+            if (navigator.storage && navigator.storage.estimate) {
+                try {
+                    const estimate = await navigator.storage.estimate();
+                    const storageEl = document.getElementById('field-memory-storage');
+                    if (storageEl) storageEl.textContent = `${formatBytes(estimate.usage || 0)} local`;
+                } catch (_) { }
+            }
+        }
+
+        async function requestFieldPersistence() {
+            if (!(navigator.storage && navigator.storage.persist)) return false;
+            try {
+                const persisted = await navigator.storage.persist();
+                updateFieldMemoryText(persisted ? 'persistent storage granted' : 'best-effort storage');
+                recordFieldMemory('storage-persistence', { persisted });
+                return persisted;
+            } catch (_) {
+                updateFieldMemoryText('best-effort storage');
+                return false;
+            }
+        }
+
+        function postServiceWorkerMessage(type, payload = {}) {
+            if (!(navigator.serviceWorker && navigator.serviceWorker.controller)) return false;
+            navigator.serviceWorker.controller.postMessage({ type, ...payload });
+            return true;
+        }
+
+        function shouldAutoCacheMedia() {
+            return document.documentElement.getAttribute('data-low-data') !== 'true';
+        }
+
+        function cacheInteractionAsset(url) {
+            if (!url || !shouldAutoCacheMedia()) return;
+            postServiceWorkerMessage('TSRA_CACHE_URLS', { urls: [url] });
+        }
+
         // ── Preferences + Offline Field Cache ───────────────────────────────────────
         function writePreference(name, value) {
             try { localStorage.setItem(name, value); } catch (_) { }
-            try { document.cookie = `${name}=${encodeURIComponent(value)}; Max-Age=31536000; Path=/; SameSite=Lax`; } catch (_) { }
+            recordFieldMemory('preference', { name, value });
         }
 
         function readPreference(name, fallback) {
@@ -4121,12 +4303,9 @@
                 const stored = localStorage.getItem(name);
                 if (stored !== null) return stored;
             } catch (_) { }
-            try {
-                const found = document.cookie.split('; ').find(row => row.startsWith(`${name}=`));
-                if (found) return decodeURIComponent(found.split('=').slice(1).join('='));
-            } catch (_) { }
             return fallback;
         }
+        window.__tsraFieldMemoryReady = true;
 
         function applyLowDataMode(enabled) {
             document.documentElement.setAttribute('data-low-data', enabled ? 'true' : 'false');
@@ -4151,17 +4330,47 @@
         }
 
         async function cacheForOffline() {
-            updateCacheStatus('caching');
+            updateCacheStatus('caching core');
             if (!('serviceWorker' in navigator)) { updateCacheStatus('cache unavailable'); return; }
             try {
                 const registration = await navigator.serviceWorker.ready;
                 const worker = registration.active || registration.waiting || registration.installing;
                 if (!worker) { updateCacheStatus('cache pending'); return; }
                 worker.postMessage({ type: 'TSRA_CACHE_CORE' });
-                updateCacheStatus('core cached');
+                recordFieldMemory('cache-core-requested', { assets: ['core'] });
+                updateCacheStatus('core cache queued');
             } catch (_) {
                 updateCacheStatus('cache failed');
             }
+        }
+
+        async function cacheFieldMemory() {
+            updateCacheStatus('saving field memory');
+            await requestFieldPersistence();
+            if (!('serviceWorker' in navigator)) { updateCacheStatus('cache unavailable'); return; }
+            try {
+                const registration = await navigator.serviceWorker.ready;
+                const worker = registration.active || registration.waiting || registration.installing;
+                if (!worker) { updateCacheStatus('cache pending'); return; }
+                worker.postMessage({ type: 'TSRA_CACHE_FIELD_MEMORY' });
+                recordFieldMemory('field-memory-save-requested', { assets: TSRA_FIELD_MEMORY_ASSETS });
+                updateCacheStatus('field memory queued');
+            } catch (_) {
+                updateCacheStatus('field memory failed');
+            }
+        }
+
+        async function clearFieldMemory() {
+            updateCacheStatus('clearing local');
+            try {
+                await clearFieldMemoryStore('records');
+                await clearFieldMemoryStore('queue');
+            } catch (_) { }
+            try { localStorage.removeItem(OBSERVATION_LEDGER_KEY); } catch (_) { }
+            postServiceWorkerMessage('TSRA_CLEAR_FIELD_MEMORY');
+            renderObservationLedgerEntries();
+            updateFieldMemoryStatus();
+            updateFieldMemoryText('local-only · cleared on this device');
         }
 
         (function () {
@@ -4172,6 +4381,8 @@
             const prefersReducedData = navigator.connection && navigator.connection.saveData;
             const savedLowData = readPreference('tsra-low-data', prefersReducedData ? 'true' : 'false') === 'true';
             applyLowDataMode(savedLowData);
+            recordFieldMemory('app-opened', { path: window.location.pathname, online: navigator.onLine });
+            updateFieldMemoryStatus();
         })();
 
         function toggleTheme() {
@@ -4204,8 +4415,14 @@
         } else {
             updateCacheStatus('cache unavailable');
         }
-        window.addEventListener('online', () => updateCacheStatus('online'));
-        window.addEventListener('offline', () => updateCacheStatus('offline ready'));
+        window.addEventListener('online', () => {
+            updateCacheStatus('online');
+            recordFieldMemory('connection', { state: 'online' });
+        });
+        window.addEventListener('offline', () => {
+            updateCacheStatus('offline ready');
+            recordFieldMemory('connection', { state: 'offline' });
+        });
 
         // ── Clock + Date ────────────────────────────────────────────────────────────
         function updateClock() {
@@ -4335,6 +4552,7 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('tab-' + name).classList.add('active');
             e.currentTarget.classList.add('active');
+            recordFieldMemory('tab-opened', { name });
         }
 
         // ── Modal ─────────────────────────────────────────────────────────────────
@@ -4364,6 +4582,7 @@
         function openModal(id) {
             const d = MODAL_DATA[id];
             if (!d) return;
+            recordFieldMemory('stat-preview-opened', { id, label: d.label });
             document.getElementById('modal-label').textContent = d.label;
             document.getElementById('modal-value').innerHTML = d.value;
             document.getElementById('modal-body').innerHTML = d.body;
@@ -4492,6 +4711,7 @@
             document.body.style.overflow = 'hidden';
             const type = document.getElementById('outcome-type');
             if (type) type.focus();
+            recordFieldMemory('outcome-recorder-opened', context);
         }
         function closeOutcomeRecorder() {
             const overlay = document.getElementById('outcome-recorder-overlay');
@@ -4582,6 +4802,7 @@
             const entries = loadObservationLedgerEntries();
             try {
                 saveObservationLedgerEntries([...entries, entry]);
+                recordFieldMemory('observation-saved', { phase: entry.phase, watchTime: entry.watchTime, observationType: entry.observationType, onsetRelation: entry.onsetRelation }, true);
                 renderObservationLedgerEntries();
                 closeOutcomeRecorder();
             } catch (_) {
@@ -4602,6 +4823,8 @@
         function openImagePreview() {
             const overlay = document.getElementById('image-preview-overlay');
             if (!overlay) return;
+            recordFieldMemory('image-preview-opened', { src: 'safety/80124894-56EA-42FF-BDF0-2F6C37B6453B.png' });
+            cacheInteractionAsset('/safety/80124894-56EA-42FF-BDF0-2F6C37B6453B.png');
             imagePreviewLastFocus = document.activeElement;
             overlay.classList.add('open');
             overlay.setAttribute('aria-hidden', 'false');

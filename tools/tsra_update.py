@@ -484,6 +484,8 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "id='pending-table'",
         "id='observation-log-body'",
         "id='felt-register-text'",
+        "id='field-memory-count'",
+        "tsraFieldMemory.v1",
         "tsraObservationLedger.v1",
         "openOutcomeRecorder(this)",
         "not a certified warning system",
@@ -500,6 +502,8 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "TSRA_CACHE_VERSION",
         "networkFirst(request, '/seismic_report.html')",
         "request.headers.has('range')",
+        "buildRangeResponse",
+        "TSRA_CACHE_FIELD_MEMORY",
         "client.navigate(client.url)",
     ]
     for marker in required_sw_markers:
