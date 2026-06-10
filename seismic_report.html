@@ -234,10 +234,57 @@
         }
 
         .field-toggle {
+            gap: .46rem;
+            min-height: 30px;
             border-radius: 0;
+            padding: .24rem .52rem .24rem .34rem;
             font-family: var(--mono);
             letter-spacing: .08em;
             text-transform: uppercase
+        }
+
+        .field-toggle-icon {
+            width: 22px;
+            height: 22px;
+            display: inline-grid;
+            place-items: center;
+            border: 1px solid var(--border-sub);
+            background: color-mix(in srgb, var(--surface2) 82%, var(--bg));
+            color: var(--muted);
+            line-height: 0;
+            transition: color .15s, border-color .15s, background .15s
+        }
+
+        .field-toggle-icon svg {
+            width: 13px;
+            height: 13px;
+            stroke-width: 1.7
+        }
+
+        .field-toggle-label {
+            display: grid;
+            gap: .02rem;
+            line-height: 1.05;
+            text-align: left
+        }
+
+        .field-toggle-label strong {
+            color: var(--text-sub);
+            font-size: .54rem;
+            font-weight: 500;
+            letter-spacing: .12em
+        }
+
+        .field-toggle-label span {
+            color: var(--muted);
+            font-size: .46rem;
+            letter-spacing: .14em
+        }
+
+        .field-toggle:hover .field-toggle-icon,
+        .field-toggle:focus-visible .field-toggle-icon {
+            color: var(--accent);
+            border-color: rgba(196, 169, 104, .34)
         }
 
         .field-toggle.is-active {
@@ -246,63 +293,78 @@
             background: rgba(122, 170, 136, .08)
         }
 
+        .field-toggle.is-active .field-toggle-icon {
+            color: var(--accent2);
+            border-color: rgba(122, 170, 136, .38);
+            background: rgba(122, 170, 136, .1)
+        }
+
+        .field-toggle.is-active .field-toggle-label strong {
+            color: var(--accent2)
+        }
+
         .offline-register {
             display: grid;
             grid-template-columns: minmax(0, 1fr) auto;
-            gap: 1rem;
+            gap: .85rem;
             align-items: center;
-            margin: -0.8rem 0 1.1rem;
-            padding: .72rem .85rem;
+            margin: -0.9rem 0 1rem;
+            padding: .58rem .68rem;
             border: 1px solid var(--border-sub);
-            background: color-mix(in srgb, var(--surface) 82%, var(--bg));
-            box-shadow: var(--shadow-sm)
+            background: color-mix(in srgb, var(--surface) 64%, transparent);
+            box-shadow: none
         }
 
         .offline-register-copy {
-            display: grid;
-            gap: .18rem;
+            display: flex;
+            align-items: baseline;
+            gap: .65rem;
             min-width: 0
         }
 
         .offline-register-kicker {
+            flex: 0 0 auto;
             font-family: var(--mono);
-            font-size: .52rem;
-            letter-spacing: .14em;
+            font-size: .5rem;
+            letter-spacing: .16em;
             text-transform: uppercase;
             color: var(--accent2)
         }
 
         .offline-register-text {
-            color: var(--text-sub);
-            font-size: .72rem;
-            line-height: 1.45
+            color: var(--muted);
+            font-size: .68rem;
+            line-height: 1.35;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
         }
 
         .offline-register-actions {
             display: flex;
             align-items: center;
-            gap: .55rem;
+            gap: .45rem;
             flex-wrap: wrap;
             justify-content: flex-end
         }
 
         .cache-status {
             font-family: var(--mono);
-            font-size: .56rem;
-            letter-spacing: .1em;
+            font-size: .5rem;
+            letter-spacing: .11em;
             text-transform: uppercase;
             color: var(--muted);
             white-space: nowrap
         }
 
         .cache-action {
-            border: 1px solid var(--border);
-            background: var(--surface2);
+            border: 1px solid var(--border-sub);
+            background: transparent;
             color: var(--text-sub);
-            padding: .32rem .62rem;
+            padding: .26rem .52rem;
             font-family: var(--mono);
-            font-size: .56rem;
-            letter-spacing: .1em;
+            font-size: .5rem;
+            letter-spacing: .11em;
             text-transform: uppercase;
             cursor: pointer;
             transition: color .15s, border-color .15s, background .15s
@@ -312,7 +374,18 @@
         .cache-action:focus-visible {
             color: var(--text);
             border-color: var(--accent);
+            background: rgba(196, 169, 104, .045);
             outline: none
+        }
+
+        [data-theme='dark'] .offline-register {
+            background: rgba(255, 255, 255, .012);
+            border-color: rgba(255, 255, 255, .055)
+        }
+
+        [data-theme='light'] .offline-register {
+            background: rgba(250, 248, 244, .46);
+            border-color: rgba(22, 19, 16, .08)
         }
 
         [data-low-data='true'] video {
@@ -1349,15 +1422,36 @@
             }
 
             .field-toggle {
-                font-size: .58rem;
-                padding: .25rem .55rem
+                padding: .22rem .46rem .22rem .3rem
+            }
+
+            .field-toggle-icon {
+                width: 21px;
+                height: 21px
+            }
+
+            .field-toggle-label strong {
+                font-size: .5rem
+            }
+
+            .field-toggle-label span {
+                font-size: .42rem
             }
 
             .offline-register {
                 grid-template-columns: 1fr;
-                gap: .7rem;
+                gap: .55rem;
                 margin-top: -.35rem;
-                padding: .75rem
+                padding: .62rem .68rem
+            }
+
+            .offline-register-copy {
+                display: grid;
+                gap: .2rem
+            }
+
+            .offline-register-text {
+                white-space: normal
             }
 
             .offline-register-actions {
@@ -1582,11 +1676,19 @@
             }
 
             .offline-register-text {
-                font-size: .68rem
+                font-size: .66rem
             }
 
             .offline-register-actions {
                 gap: .45rem
+            }
+
+            .field-toggle {
+                min-height: 28px
+            }
+
+            .field-toggle-label span {
+                display: none
             }
 
             header h1 {
@@ -1989,7 +2091,18 @@
                 </svg>
                 <span id='clock-text'>--:--:--</span>
             </div>
-            <button id='low-data-toggle' class='theme-toggle field-toggle' type='button' onclick='toggleLowDataMode()' title='Reduce video preloading and prefer cached shell'>Low data</button>
+            <button id='low-data-toggle' class='theme-toggle field-toggle' type='button' onclick='toggleLowDataMode()' title='Reduce video preloading and prefer cached shell' aria-pressed='false'>
+                <span class='field-toggle-icon' aria-hidden='true'>
+                    <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round'>
+                        <path d='M5 18h.01' />
+                        <path d='M9 18v-3' />
+                        <path d='M13 18v-6' />
+                        <path d='M17 18v-9' />
+                        <path d='M20 6c-4.4-2.7-11.6-2.7-16 0' />
+                    </svg>
+                </span>
+                <span class='field-toggle-label'><strong>Low data</strong><span id='low-data-state'>Field cache</span></span>
+            </button>
             <button class='theme-toggle' onclick='toggleTheme()' title='Toggle theme'>
                 <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round'
                     stroke-linejoin='round'>
@@ -2011,7 +2124,7 @@
     <section class='offline-register' aria-label='Offline and low-data access status'>
         <div class='offline-register-copy'>
             <div class='offline-register-kicker'>Field access</div>
-            <div class='offline-register-text'>App shell, chart, and core report can be cached for low-signal areas. Videos are not preloaded in low-data mode.</div>
+            <div class='offline-register-text'>Offline core cache for low-signal viewing. Videos stay on-demand.</div>
         </div>
         <div class='offline-register-actions'>
             <span id='cache-status' class='cache-status'>cache checking</span>
@@ -2677,7 +2790,8 @@
             const btn = document.getElementById('low-data-toggle');
             if (btn) {
                 btn.classList.toggle('is-active', enabled);
-                btn.textContent = enabled ? 'Low data on' : 'Low data';
+                const state = document.getElementById('low-data-state');
+                if (state) state.textContent = enabled ? 'Preload off' : 'Field cache';
                 btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
             }
             if (navigator.serviceWorker && navigator.serviceWorker.controller) {
