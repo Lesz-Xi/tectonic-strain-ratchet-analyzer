@@ -378,6 +378,54 @@
             outline: none
         }
 
+        .felt-register {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr) auto;
+            gap: .62rem;
+            align-items: center;
+            margin: -0.55rem 0 1rem;
+            padding: .48rem .68rem;
+            border: 1px solid color-mix(in srgb, var(--accent2) 22%, var(--border-sub));
+            background: color-mix(in srgb, var(--accent2) 5%, transparent)
+        }
+
+        .felt-register-kicker,
+        .felt-register-status {
+            font-family: var(--mono);
+            font-size: .48rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            white-space: nowrap
+        }
+
+        .felt-register-kicker {
+            color: var(--accent2)
+        }
+
+        .felt-register-text {
+            min-width: 0;
+            color: var(--text-sub);
+            font-size: .68rem;
+            line-height: 1.35;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .felt-register-status {
+            color: var(--muted)
+        }
+
+        [data-theme='dark'] .felt-register {
+            background: rgba(122, 170, 136, .045);
+            border-color: rgba(122, 170, 136, .16)
+        }
+
+        [data-theme='light'] .felt-register {
+            background: rgba(122, 170, 136, .055);
+            border-color: rgba(98, 138, 105, .18)
+        }
+
         [data-theme='dark'] .offline-register {
             background: rgba(255, 255, 255, .012);
             border-color: rgba(255, 255, 255, .055)
@@ -1967,6 +2015,16 @@
                 justify-content: flex-start
             }
 
+            .felt-register {
+                grid-template-columns: 1fr;
+                gap: .28rem;
+                margin-top: -.45rem
+            }
+
+            .felt-register-text {
+                white-space: normal
+            }
+
             .cache-status,
             .cache-action {
                 font-size: .52rem
@@ -3123,6 +3181,12 @@
             <span id='cache-status' class='cache-status'>cache checking</span>
             <button class='cache-action' type='button' onclick='cacheForOffline()'>Cache offline</button>
         </div>
+    </section>
+
+    <section class='felt-register' aria-label='Latest subtle movement indicator'>
+        <div class='felt-register-kicker'>Felt signal</div>
+        <div class='felt-register-text' id='felt-register-text'>~11:47 PM · subtle local movement noticed · felt-only</div>
+        <div class='felt-register-status'>not confirmed</div>
     </section>
 
     <div class='stats'>
