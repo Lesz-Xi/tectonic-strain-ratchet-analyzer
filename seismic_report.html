@@ -3309,17 +3309,16 @@
     <section class='offline-register' aria-label='Offline and low-data access status'>
         <div class='offline-register-copy'>
             <div class='offline-register-kicker'>Field access</div>
-            <div class='offline-register-text'>Offline core cache plus local field memory for low-signal viewing. Media saves after interaction.</div>
+            <div class='offline-register-text'>Offline app shell and local Field Memory save automatically for low-signal viewing. Media saves when allowed or after interaction.</div>
             <div class='field-memory-meta' aria-live='polite'>
                 <span id='field-memory-count'><strong>0</strong> local traces</span>
                 <span id='field-memory-storage'>storage checking</span>
-                <span id='field-memory-detail'>local-only · no cookie sync</span>
+                <span id='field-memory-detail'>auto-save on · local-only</span>
             </div>
         </div>
         <div class='offline-register-actions'>
-            <span id='cache-status' class='cache-status'>cache checking</span>
-            <button class='cache-action' type='button' onclick='cacheForOffline()'>Cache core</button>
-            <button class='cache-action' type='button' onclick='cacheFieldMemory()'>Save field memory</button>
+            <span id='cache-status' class='cache-status'>auto-save checking</span>
+            <button class='cache-action' type='button' onclick="cacheFieldMemory('manual', true)">Refresh offline copy</button>
             <button class='cache-action' type='button' onclick='clearFieldMemory()'>Clear local</button>
         </div>
     </section>
@@ -4389,6 +4388,11 @@
             return document.documentElement.getAttribute('data-low-data') !== 'true';
         }
 
+        function fieldMemoryAssetsForAutoCache() {
+            if (shouldAutoCacheMedia()) return TSRA_FIELD_MEMORY_ASSETS;
+            return TSRA_FIELD_MEMORY_ASSETS.filter(url => !/\.(mp4|webm|m4a|mp3|mov)$/i.test(url));
+        }
+
         function cacheInteractionAsset(url) {
             if (!url || !shouldAutoCacheMedia()) return;
             postServiceWorkerMessage('TSRA_CACHE_URLS', { urls: [url] });
@@ -4446,20 +4450,51 @@
             }
         }
 
-        async function cacheFieldMemory() {
-            updateCacheStatus('saving field memory');
+        const TSRA_AUTO_FIELD_MEMORY_INTERVAL = 5 * 60 * 1000;
+        let tsraFieldMemoryCaching = false;
+        let tsraLastFieldMemoryCacheAt = 0;
+
+        async function cacheFieldMemory(reason = 'manual', force = false) {
+            const automatic = reason !== 'manual';
+            const now = Date.now();
+            if (tsraFieldMemoryCaching) return;
+            if (!force && automatic && now - tsraLastFieldMemoryCacheAt < TSRA_AUTO_FIELD_MEMORY_INTERVAL) return;
+            tsraFieldMemoryCaching = true;
+            tsraLastFieldMemoryCacheAt = now;
+            updateCacheStatus(automatic ? 'auto-saving field memory' : 'refreshing offline copy');
             await requestFieldPersistence();
-            if (!('serviceWorker' in navigator)) { updateCacheStatus('cache unavailable'); return; }
+            if (!('serviceWorker' in navigator)) {
+                updateCacheStatus('cache unavailable');
+                tsraFieldMemoryCaching = false;
+                return;
+            }
             try {
                 const registration = await navigator.serviceWorker.ready;
                 const worker = registration.active || registration.waiting || registration.installing;
-                if (!worker) { updateCacheStatus('cache pending'); return; }
-                worker.postMessage({ type: 'TSRA_CACHE_FIELD_MEMORY' });
-                recordFieldMemory('field-memory-save-requested', { assets: TSRA_FIELD_MEMORY_ASSETS });
-                updateCacheStatus('field memory queued');
+                if (!worker) {
+                    updateCacheStatus('cache pending');
+                    tsraFieldMemoryCaching = false;
+                    return;
+                }
+                const assets = automatic ? fieldMemoryAssetsForAutoCache() : TSRA_FIELD_MEMORY_ASSETS;
+                const fullFieldPackage = assets.length === TSRA_FIELD_MEMORY_ASSETS.length;
+                worker.postMessage(fullFieldPackage ? { type: 'TSRA_CACHE_FIELD_MEMORY' } : { type: 'TSRA_CACHE_URLS', urls: assets });
+                recordFieldMemory(automatic ? 'field-memory-auto-save-requested' : 'field-memory-refresh-requested', { reason, assets });
+                updateFieldMemoryText('auto-saved · persistent when browser allows');
+                updateCacheStatus(automatic ? 'field memory auto-saved' : 'offline copy queued');
             } catch (_) {
                 updateCacheStatus('field memory failed');
+            } finally {
+                tsraFieldMemoryCaching = false;
             }
+        }
+
+        function autoCacheFieldMemory(reason, force = false) {
+            if (!navigator.onLine) {
+                updateCacheStatus('offline ready');
+                return;
+            }
+            cacheFieldMemory(reason, force);
         }
 
         async function clearFieldMemory() {
@@ -4472,7 +4507,7 @@
             postServiceWorkerMessage('TSRA_CLEAR_FIELD_MEMORY');
             renderObservationLedgerEntries();
             updateFieldMemoryStatus();
-            updateFieldMemoryText('local-only · cleared on this device');
+            updateFieldMemoryText('auto-save on · local cleared');
         }
 
         (function () {
@@ -4485,6 +4520,7 @@
             applyLowDataMode(savedLowData);
             recordFieldMemory('app-opened', { path: window.location.pathname, online: navigator.onLine });
             updateFieldMemoryStatus();
+            updateFieldMemoryText('auto-save on · local-only');
         })();
 
         function toggleTheme() {
@@ -4530,12 +4566,20 @@
             window.addEventListener('online', () => check('online'));
         }
 
+        function installFieldMemoryAutoSave() {
+            document.addEventListener('visibilitychange', () => { if (!document.hidden) autoCacheFieldMemory('visible'); });
+            window.addEventListener('focus', () => autoCacheFieldMemory('focus'));
+            window.addEventListener('online', () => autoCacheFieldMemory('online', true));
+        }
+        installFieldMemoryAutoSave();
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', async () => {
                 try {
                     const registration = await navigator.serviceWorker.register('/service-worker.js');
-                    updateCacheStatus(navigator.onLine ? 'cache ready' : 'offline ready');
+                    updateCacheStatus(navigator.onLine ? 'auto-save ready' : 'offline ready');
                     installServiceWorkerUpdateHeartbeat(registration);
+                    autoCacheFieldMemory('service-worker-ready', true);
                     if (registration.waiting) {
                         updateCacheStatus('update ready');
                         registration.waiting.postMessage({ type: 'TSRA_SKIP_WAITING' });
@@ -4558,7 +4602,7 @@
             updateCacheStatus('cache unavailable');
         }
         window.addEventListener('online', () => {
-            updateCacheStatus('online');
+            updateCacheStatus('online · auto-saving');
             recordFieldMemory('connection', { state: 'online' });
         });
         window.addEventListener('offline', () => {

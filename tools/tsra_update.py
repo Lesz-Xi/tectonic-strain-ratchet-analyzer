@@ -509,6 +509,10 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "id='field-memory-count'",
         "tsraFieldMemory.v1",
         "TSRA_UPDATE_CHECK_INTERVAL",
+        "TSRA_AUTO_FIELD_MEMORY_INTERVAL",
+        "autoCacheFieldMemory",
+        "field-memory-auto-save-requested",
+        "Refresh offline copy",
         "registration.update()",
         "controllerchange",
         "tsraObservationLedger.v1",
@@ -523,6 +527,8 @@ def verify_report(report: str, service_worker: str) -> list[str]:
             errors.append(f"missing report marker: {marker}")
     if "capacity" in report.lower():
         errors.append("public capacity text found in report")
+    if ">Cache core<" in report or ">Save field memory<" in report:
+        errors.append("manual field-memory cache button text found in report")
     required_sw_markers = [
         "TSRA_CACHE_VERSION",
         "networkFirst(request, '/seismic_report.html')",
