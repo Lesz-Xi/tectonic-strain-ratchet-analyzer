@@ -2947,9 +2947,9 @@
             z-index: 999;
             display: none;
             place-items: center;
-            padding: 1.5rem;
-            background: rgba(10, 10, 8, .42);
-            backdrop-filter: blur(3px)
+            padding: clamp(.9rem, 3vw, 2rem);
+            background: color-mix(in srgb, var(--bg) 62%, transparent);
+            backdrop-filter: blur(2px)
         }
 
         .image-preview-overlay.open {
@@ -2958,13 +2958,13 @@
 
         .image-preview-card {
             position: relative;
-            width: min(92vw, 980px);
-            max-height: 86vh;
+            width: min(90vw, 940px);
+            max-height: 84vh;
             display: grid;
             grid-template-rows: auto minmax(0, 1fr);
-            background: var(--surface);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
+            background: color-mix(in srgb, var(--surface) 94%, var(--bg));
+            border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+            box-shadow: 0 18px 44px rgba(0, 0, 0, .14);
             overflow: hidden
         }
 
@@ -2972,15 +2972,17 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: .8rem;
-            padding: .65rem .9rem;
-            border-bottom: 1px solid var(--border-sub)
+            gap: .9rem;
+            min-height: 42px;
+            padding: .48rem 2.6rem .48rem .72rem;
+            border-bottom: 1px solid color-mix(in srgb, var(--border-sub) 72%, transparent);
+            background: color-mix(in srgb, var(--surface) 72%, transparent)
         }
 
         .image-preview-title {
             font-family: var(--mono);
-            font-size: .52rem;
-            letter-spacing: .16em;
+            font-size: .46rem;
+            letter-spacing: .18em;
             text-transform: uppercase;
             color: var(--accent);
             font-weight: 500
@@ -2988,24 +2990,24 @@
 
         .image-preview-meta {
             font-family: var(--mono);
-            font-size: .46rem;
-            letter-spacing: .1em;
+            font-size: .42rem;
+            letter-spacing: .11em;
             text-transform: uppercase;
             color: var(--muted)
         }
 
         .image-preview-close {
             position: absolute;
-            top: .48rem;
-            right: .5rem;
-            width: 28px;
-            height: 28px;
+            top: .45rem;
+            right: .55rem;
+            width: 24px;
+            height: 24px;
             display: inline-grid;
             place-items: center;
-            border: 1px solid var(--border-sub);
-            background: color-mix(in srgb, var(--surface2) 78%, var(--bg));
-            color: var(--text-sub);
-            font-size: 1rem;
+            border: 1px solid color-mix(in srgb, var(--border-sub) 78%, transparent);
+            background: transparent;
+            color: var(--muted);
+            font-size: .92rem;
             line-height: 1;
             cursor: pointer;
             z-index: 2;
@@ -3015,15 +3017,15 @@
         .image-preview-close:hover,
         .image-preview-close:focus-visible {
             color: var(--text);
-            border-color: color-mix(in srgb, var(--accent) 34%, var(--border-sub));
-            background: color-mix(in srgb, var(--surface2) 92%, var(--bg));
+            border-color: color-mix(in srgb, var(--accent) 30%, var(--border-sub));
+            background: color-mix(in srgb, var(--surface2) 56%, transparent);
             outline: none
         }
 
         .image-preview-body {
             min-height: 0;
-            padding: .9rem;
-            background: color-mix(in srgb, var(--surface2) 56%, var(--bg));
+            padding: clamp(.55rem, 1.5vw, .85rem);
+            background: color-mix(in srgb, var(--surface2) 34%, var(--bg));
             overflow: auto
         }
 
@@ -3032,8 +3034,8 @@
             width: 100%;
             max-height: 72vh;
             object-fit: contain;
-            background: color-mix(in srgb, var(--surface) 92%, var(--bg));
-            border: 1px solid var(--border-sub)
+            background: color-mix(in srgb, var(--surface) 88%, var(--bg));
+            border: 1px solid color-mix(in srgb, var(--border-sub) 62%, transparent)
         }
 
         @media (max-width: 720px) {
@@ -3048,20 +3050,20 @@
                 padding: .6rem .9rem
             }
             .image-preview-overlay {
-                padding: .8rem
+                padding: .7rem
             }
             .image-preview-card {
                 width: min(94vw, 720px);
                 max-height: 82vh
             }
             .image-preview-head {
-                padding-right: 2.65rem;
+                padding: .5rem 2.55rem .5rem .65rem;
                 align-items: flex-start;
                 flex-direction: column;
-                gap: .22rem
+                gap: .18rem
             }
             .image-preview-body {
-                padding: .6rem
+                padding: .48rem
             }
             .image-preview-img {
                 max-height: 66vh
