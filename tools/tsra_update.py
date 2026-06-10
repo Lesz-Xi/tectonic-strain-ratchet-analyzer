@@ -491,6 +491,7 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "--moss: #7f9878",
         "rel='icon' href='/tsra-field-ring-icon.svg'",
         "class='brand-mark' src='/tsra-field-ring-icon.svg'",
+        "width='46' height='46'",
         "data-evidence-type",
         "evidence-mini",
         "tsraFieldMemory.v1",
