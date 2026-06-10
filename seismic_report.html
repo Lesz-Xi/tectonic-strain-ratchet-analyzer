@@ -717,6 +717,31 @@
             font-weight: 500
         }
 
+        .dashboard-card {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 1rem
+        }
+
+        .dashboard-card .card-title {
+            margin-bottom: .85rem;
+            color: var(--muted)
+        }
+
+        .dashboard-chart-frame {
+            max-width: 860px;
+            margin: 0 auto;
+            background: #030406;
+            border: 1px solid var(--border-sub);
+            border-radius: 10px;
+            overflow: hidden
+        }
+
+        .dashboard-chart-frame img.chart {
+            border: 0;
+            border-radius: 0
+        }
+
         .explainer {
             margin-top: 1.5rem;
             border-top: 1px solid var(--border);
@@ -888,6 +913,14 @@
                 grid-column: 1 / -1
             }
 
+            .dashboard-card {
+                padding: .9rem
+            }
+
+            .dashboard-chart-frame {
+                max-width: 100%
+            }
+
             .explainer-grid {
                 grid-template-columns: 1fr
             }
@@ -1015,6 +1048,16 @@
 
             .anchor-value {
                 font-size: .73rem
+            }
+
+            .dashboard-card {
+                padding: .75rem
+            }
+
+            .dashboard-card .card-title {
+                margin-bottom: .65rem;
+                letter-spacing: .1em;
+                line-height: 1.45
             }
 
             .explainer-block h4 {
@@ -1478,9 +1521,11 @@
     </div>
 
     <div class='tab-panel' id='tab-chart'>
-        <div class='card'>
-            <div class='card-title'>Tectonic Strain Sawtooth &mdash; High-Fidelity Dashboard</div>
-            <img class='chart' src='seismic_pattern_analysis.png' alt='Tectonic Dashboard'>
+        <div class='card dashboard-card'>
+            <div class='card-title'>Dashboard Chart</div>
+            <div class='dashboard-chart-frame'>
+                <img class='chart' src='seismic_pattern_analysis.png' alt='Tectonic Dashboard'>
+            </div>
 
             <div class='explainer'>
                 <div class='explainer-title'>Reading the Chart &mdash; Plain Language Guide</div>
