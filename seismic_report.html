@@ -1,419 +1,1918 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang='en' data-theme='dark'>
+
 <head>
-  <meta charset='UTF-8'>
-  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <title>TSRA &mdash; Tectonic Strain Ratchet Analyzer</title>
-  <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap' rel='stylesheet'>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --bg:#0b0e14;
-      --surface:#111520;
-      --border:#1e2535;
-      --accent:#3b82f6;
-      --accent2:#06b6d4;
-      --warn:#f59e0b;
-      --ok:#10b981;
-      --danger:#ef4444;
-      --text:#cdd6f4;
-      --muted:#6b7280;
-      --mono:'JetBrains Mono',monospace;
-    }
-    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;padding:1.5rem}
-    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;border-bottom:1px solid var(--border);padding-bottom:1rem}
-    header h1{font-size:1.1rem;font-weight:600;letter-spacing:.05em;color:var(--accent);}
-    header h1 span{color:var(--muted);font-weight:300}
-    #clock{font-family:var(--mono);font-size:.8rem;color:var(--muted);background:var(--surface);padding:.3rem .7rem;border-radius:6px;border:1px solid var(--border)}
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>TSRA &mdash; Tectonic Strain Ratchet Analyzer</title>
+    <link
+        href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap'
+        rel='stylesheet'>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
 
-    /* ─ grid ─ */
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem}
-    .full{grid-column:1/-1}
+        :root,
+        [data-theme='dark'] {
+            --bg: #17171a;
+            --surface: #202024;
+            --surface2: #28282d;
+            --border: #2e2e34;
+            --border-sub: #252529;
+            --accent: #c4a968;
+            --accent2: #7aaa88;
+            --warn: #d48a3a;
+            --ok: #5fa878;
+            --danger: #c45858;
+            --text: #e0dbd2;
+            --text-sub: #9a9488;
+            --muted: #5a5650;
+            --shadow: 0 1px 3px rgba(0, 0, 0, .5), 0 4px 14px rgba(0, 0, 0, .3);
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
+            --mono: 'JetBrains Mono', monospace;
+            --pre-bg: #131316;
+            --hero-bg: linear-gradient(135deg, #1e1c17, #1a1d1a);
+            --hero-border: #3a3628;
+            --hero-time: #d4b878;
+            --hero-remain: #a89050;
+            --row-hover: rgba(196, 169, 104, .05);
+            --td-border: #26262b;
+            --toggle-bg: #28282d;
+            --toggle-border: #38383e;
+            --tab-active-bg: rgba(196, 169, 104, .1);
+            --modal-overlay: rgba(10, 10, 12, .75);
+            --modal-bg: #202024;
+        }
 
-    /* ─ card ─ */
-    .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.2rem}
-    .card-title{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+        [data-theme='light'] {
+            --bg: #f0ede8;
+            --surface: #faf8f4;
+            --surface2: #f2efe9;
+            --border: #dedad0;
+            --border-sub: #ebebeb;
+            --accent: #8a6a30;
+            --accent2: #4a8860;
+            --warn: #b87020;
+            --ok: #3a8860;
+            --danger: #b84040;
+            --text: #1e1c18;
+            --text-sub: #5a5448;
+            --muted: #9a9488;
+            --shadow: 0 1px 3px rgba(0, 0, 0, .07), 0 4px 14px rgba(0, 0, 0, .06);
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, .05);
+            --mono: 'JetBrains Mono', monospace;
+            --pre-bg: #f5f2ec;
+            --hero-bg: linear-gradient(135deg, #efe9d8, #e8eedf);
+            --hero-border: #c8b888;
+            --hero-time: #7a5020;
+            --hero-remain: #8a6a30;
+            --row-hover: rgba(138, 106, 48, .04);
+            --td-border: #e4e0d8;
+            --toggle-bg: #faf8f4;
+            --toggle-border: #d0ccc4;
+            --tab-active-bg: rgba(138, 106, 48, .08);
+            --modal-overlay: rgba(20, 18, 14, .55);
+            --modal-bg: #faf8f4;
+        }
 
-    /* ─ stat tiles ─ */
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1rem}
-    .stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem}
-    .stat-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.3rem}
-    .stat-value{font-size:1.4rem;font-weight:600;font-family:var(--mono);color:var(--text)}
-    .stat-sub{font-size:.7rem;color:var(--muted);margin-top:.2rem}
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            line-height: 1.55;
+            min-height: 100vh;
+            padding: 1.75rem 2rem;
+            transition: background .2s, color .2s
+        }
 
-    /* ─ tables ─ */
-    table{width:100%;border-collapse:collapse;font-size:.82rem}
-    th{text-align:left;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:.5rem .8rem;border-bottom:1px solid var(--border)}
-    td{padding:.55rem .8rem;border-bottom:1px solid #151b29}
-    tr:last-child td{border-bottom:none}
-    tr:hover td{background:rgba(59,130,246,.04)}
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.75rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1.1rem;
+            gap: 1rem
+        }
 
-    /* ─ badges ─ */
-    .badge{display:inline-block;font-family:var(--mono);font-size:.7rem;font-weight:600;padding:.15rem .5rem;border-radius:4px}
-    .badge-ms{background:#7c3aed22;color:#a78bfa;border:1px solid #7c3aed44}
-    .badge-as{background:#0e7490;color:#67e8f9;border:1px solid #0891b2}
-    .mult-badge{display:inline-block;font-family:var(--mono);font-size:.75rem;font-weight:600;color:var(--accent2);}
-    .pill{display:inline-block;font-size:.65rem;padding:.15rem .5rem;border-radius:20px;font-weight:500}
-    .confirmed{background:#10b98122;color:#6ee7b7;border:1px solid #10b98144}
-    .pending-pill{background:#f59e0b22;color:#fcd34d;border:1px solid #f59e0b44}
-    .elapsed-pill{background:#6b728022;color:#9ca3af;border:1px solid #6b728044}
-    .active-pill{background:#3b82f622;color:#93c5fd;border:1px solid #3b82f644;animation:pulse 1.5s infinite}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: .9rem
+        }
 
-    /* ─ mono text ─ */
-    .mono{font-family:var(--mono);font-size:.78rem}
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: .75rem
+        }
 
-    /* ─ pre block ─ */
-    .pre-wrap{background:#080b12;border:1px solid var(--border);border-radius:8px;padding:1rem;font-family:var(--mono);font-size:.72rem;line-height:1.6;white-space:pre-wrap;overflow-x:auto;color:#94a3b8;max-height:320px;overflow-y:auto}
+        header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: .03em;
+            color: var(--accent)
+        }
 
-    /* ─ chart ─ */
-    img.chart{display:block;width:100%;border-radius:8px;border:1px solid var(--border)}
+        header h1 span {
+            color: var(--muted);
+            font-weight: 400
+        }
 
-    /* ─ tabs ─ */
-    .tabs{display:flex;gap:.4rem;margin-bottom:1rem}
-    .tab-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:.4rem 1rem;border-radius:6px;font-size:.75rem;font-weight:500;cursor:pointer;transition:all .15s}
-    .tab-btn.active{background:#3b82f618;border-color:var(--accent);color:var(--accent)}
-    .tab-panel{display:none}.tab-panel.active{display:block}
+        .zone-tag {
+            font-size: .63rem;
+            font-weight: 500;
+            color: var(--text-sub);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: .2rem .6rem;
+            letter-spacing: .02em
+        }
 
-    /* ─ next window hero ─ */
-    .hero-window{background:linear-gradient(135deg,#111b2e,#0d1520);border:1px solid #1e3a5f;border-radius:12px;padding:1.4rem;display:flex;flex-direction:column;gap:.3rem}
-    .hero-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:#3b82f6}
-    .hero-time{font-size:1.6rem;font-weight:700;font-family:var(--mono);color:#93c5fd}
-    .hero-remain{font-size:.85rem;color:#60a5fa}
-  </style>
+        #clock {
+            font-family: var(--mono);
+            font-size: .74rem;
+            color: var(--text-sub);
+            background: var(--surface);
+            padding: .3rem .75rem;
+            border-radius: 7px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            letter-spacing: .03em
+        }
+
+        .header-pill {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: .28rem .75rem;
+            font-family: var(--mono);
+            font-size: .72rem;
+            color: var(--text-sub);
+            box-shadow: var(--shadow-sm);
+            letter-spacing: .02em;
+            white-space: nowrap;
+            transition: border-color .15s
+        }
+
+        .viewer-pill {
+            cursor: default
+        }
+
+        .viewer-pill svg {
+            color: var(--accent2)
+        }
+
+        #date-pill {
+            font-family: 'Inter', sans-serif;
+            font-size: .7rem;
+            font-weight: 500;
+            letter-spacing: .03em
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            background: var(--toggle-bg);
+            border: 1px solid var(--toggle-border);
+            border-radius: 20px;
+            padding: .25rem .65rem;
+            cursor: pointer;
+            font-size: .68rem;
+            font-weight: 500;
+            color: var(--text-sub);
+            transition: all .15s;
+            box-shadow: var(--shadow-sm);
+            user-select: none
+        }
+
+        .theme-toggle:hover {
+            color: var(--text);
+            border-color: var(--accent)
+        }
+
+        .theme-toggle svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            min-width: 0
+        }
+
+        .full {
+            grid-column: 1/-1
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.8rem;
+            box-shadow: var(--shadow-sm);
+            transition: background .2s, border-color .2s;
+            min-width: 0
+        }
+
+        .card-title {
+            font-size: .55rem;
+            font-weight: 600;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: var(--text-sub);
+            margin-bottom: 0.75rem
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: .9rem;
+            margin-bottom: 1.1rem
+        }
+
+        .stat {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem 1.4rem;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: background .15s, border-color .2s, transform .15s, box-shadow .15s;
+            position: relative
+        }
+
+        .stat:hover {
+            border-color: var(--accent);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow), 0 0 0 1px var(--accent)22
+        }
+
+        .stat-hint {
+            position: absolute;
+            top: .75rem;
+            right: .75rem;
+            font-size: .55rem;
+            color: var(--muted);
+            letter-spacing: .04em;
+            opacity: .6
+        }
+
+        .stat-label {
+            font-size: .59rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--muted);
+            margin-bottom: .45rem
+        }
+
+        .stat-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.55rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.1
+        }
+
+        .stat-unit {
+            font-size: .8rem;
+            color: var(--muted);
+            font-weight: 400
+        }
+
+        .stat-sub {
+            font-size: .67rem;
+            color: var(--text-sub);
+            margin-top: .35rem
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .75rem
+        }
+
+        th {
+            text-align: left;
+            font-size: .55rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--muted);
+            padding: 0.4rem 0.6rem;
+            border-bottom: 0.5px solid var(--border);
+            font-weight: 500
+        }
+
+        td {
+            padding: 0.4rem 0.6rem;
+            border-bottom: 0.5px solid var(--td-border);
+            color: var(--text-sub);
+            transition: background .1s
+        }
+
+        td:first-child {
+            color: var(--text)
+        }
+
+        tr:last-child td {
+            border-bottom: none
+        }
+
+        tr:hover td {
+            background: var(--row-hover)
+        }
+
+        .badge {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: .67rem;
+            font-weight: 600;
+            padding: .18rem .55rem;
+            border-radius: 5px
+        }
+
+        .badge-ms {
+            background: rgba(196, 169, 104, .15);
+            color: #d4b878;
+            border: 1px solid rgba(196, 169, 104, .3)
+        }
+
+        .badge-as {
+            background: rgba(122, 170, 136, .12);
+            color: #8abf9c;
+            border: 1px solid rgba(122, 170, 136, .28)
+        }
+
+        [data-theme='light'] .badge-ms {
+            background: rgba(138, 106, 48, .1);
+            color: #7a5020;
+            border-color: rgba(138, 106, 48, .25)
+        }
+
+        [data-theme='light'] .badge-as {
+            background: rgba(74, 136, 96, .1);
+            color: #2a7050;
+            border-color: rgba(74, 136, 96, .25)
+        }
+
+        .mult-badge {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: .75rem;
+            font-weight: 600;
+            color: var(--accent2)
+        }
+
+        .pill {
+            display: inline-block;
+            font-size: .62rem;
+            padding: .18rem .55rem;
+            border-radius: 20px;
+            font-weight: 500;
+            letter-spacing: .02em
+        }
+
+        .confirmed {
+            background: rgba(95, 168, 120, .12);
+            color: #7abf94;
+            border: 1px solid rgba(95, 168, 120, .28)
+        }
+
+        .pending-pill {
+            background: rgba(212, 138, 58, .12);
+            color: #d48a3a;
+            border: 1px solid rgba(212, 138, 58, .28)
+        }
+
+        .elapsed-pill {
+            background: rgba(90, 86, 80, .12);
+            color: var(--muted);
+            border: 1px solid rgba(90, 86, 80, .2)
+        }
+
+        .observed-pill {
+            background: rgba(196, 169, 104, .14);
+            color: #d4b878;
+            border: 1px solid rgba(196, 169, 104, .34)
+        }
+
+        .active-pill {
+            background: rgba(196, 169, 104, .12);
+            color: #c4a968;
+            border: 1px solid rgba(196, 169, 104, .28);
+            animation: pulse 1.5s infinite
+        }
+
+        [data-theme='light'] .confirmed {
+            background: rgba(42, 112, 80, .1);
+            color: #2a7050;
+            border-color: rgba(42, 112, 80, .25)
+        }
+
+        [data-theme='light'] .pending-pill {
+            background: rgba(184, 112, 32, .1);
+            color: #8a5010;
+            border-color: rgba(184, 112, 32, .25)
+        }
+
+        [data-theme='light'] .active-pill {
+            background: rgba(138, 106, 48, .1);
+            color: #7a5020;
+            border-color: rgba(138, 106, 48, .25)
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .4
+            }
+        }
+
+        .mono {
+            font-family: var(--mono);
+            font-size: .76rem
+        }
+
+        .pre-wrap {
+            background: var(--pre-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.1rem 1.2rem;
+            font-family: var(--mono);
+            font-size: .7rem;
+            line-height: 1.75;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            color: var(--text-sub);
+            max-height: 340px;
+            overflow-y: auto
+        }
+
+        img.chart,
+        video.chart {
+            display: block;
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #030406
+        }
+
+        .media-frame {
+            position: relative;
+            overflow: hidden;
+            background: #030406;
+            border-radius: 0 0 12px 12px
+        }
+
+        .learning-media-grid {
+            display: flex;
+            justify-content: center;
+            margin: .25rem auto 1rem
+        }
+
+        .learning-video-card {
+            width: min(100%, 1080px);
+            padding: 0;
+            border-radius: 14px;
+            overflow: hidden;
+            background: linear-gradient(180deg, var(--surface), #121316)
+        }
+
+        .video-card-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1.25rem;
+            padding: 1.25rem 1.35rem 1rem
+        }
+
+        .video-copy {
+            min-width: 0
+        }
+
+        .video-kicker {
+            font-size: .52rem;
+            text-transform: uppercase;
+            letter-spacing: .14em;
+            color: var(--muted);
+            margin-bottom: .35rem
+        }
+
+        .video-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: .01em;
+            line-height: 1.2
+        }
+
+        .video-subtitle {
+            max-width: 640px;
+            margin-top: .45rem;
+            font-size: .78rem;
+            color: var(--text-sub);
+            line-height: 1.55
+        }
+
+        .video-status {
+            flex: 0 0 auto;
+            font-family: var(--mono);
+            font-size: .62rem;
+            color: var(--accent2);
+            border: 1px solid rgba(122, 170, 136, .24);
+            background: rgba(122, 170, 136, .08);
+            border-radius: 999px;
+            padding: .28rem .65rem;
+            white-space: nowrap
+        }
+
+        .learning-video-card .media-frame {
+            border-radius: 0;
+            border-top: 1px solid var(--border-sub)
+        }
+
+        .learning-video-card .media-frame video.chart {
+            min-height: 0;
+            aspect-ratio: 16 / 9
+        }
+
+        .media-frame img.chart,
+        .media-frame video.chart {
+            border: 0;
+            border-radius: 0;
+            object-fit: contain
+        }
+
+        .media-frame video.chart {
+            aspect-ratio: 16 / 9;
+            min-height: 220px
+        }
+
+        .media-frame img.chart {
+            height: auto;
+            max-height: min(78vh, 860px)
+        }
+
+        .media-fallback {
+            display: none;
+            padding: 2rem;
+            color: var(--text-sub);
+            border-top: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(122,170,136,.09), rgba(196,169,104,.05));
+            font-size: .78rem;
+            line-height: 1.65
+        }
+
+        .media-fallback strong {
+            display: block;
+            color: var(--accent);
+            font-size: .62rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: .35rem
+        }
+
+        .media-frame.is-broken .media-fallback {
+            display: block
+        }
+
+        .media-frame.is-broken img.chart,
+        .media-frame.is-broken video.chart {
+            display: none
+        }
+
+        .tabs {
+            display: flex;
+            gap: .35rem;
+            margin-bottom: 1.1rem;
+            flex-wrap: wrap
+        }
+
+        .tab-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: .42rem 1.1rem;
+            border-radius: 7px;
+            font-size: .73rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .15s;
+            box-shadow: var(--shadow-sm)
+        }
+
+        .tab-btn:hover {
+            color: var(--text-sub);
+            border-color: var(--accent)
+        }
+
+        .tab-btn.active {
+            background: var(--tab-active-bg);
+            border-color: var(--accent);
+            color: var(--accent)
+        }
+
+        .tab-panel {
+            display: none
+        }
+
+        .tab-panel.active {
+            display: block
+        }
+
+        .hero-window {
+            background: var(--hero-bg);
+            border: 1px solid var(--hero-border);
+            border-radius: 12px;
+            padding: 1.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: .4rem;
+            box-shadow: var(--shadow)
+        }
+
+        .hero-label {
+            font-size: .57rem;
+            text-transform: uppercase;
+            letter-spacing: .13em;
+            color: var(--accent);
+            font-weight: 600
+        }
+
+        .hero-time {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--hero-time);
+            line-height: 1.1
+        }
+
+        .hero-remain {
+            font-size: .84rem;
+            color: var(--hero-remain);
+            font-weight: 500
+        }
+
+        .anchor-card {
+            padding: 1.15rem 1.2rem
+        }
+
+        .anchor-card .card-title {
+            margin-bottom: .9rem
+        }
+
+        .anchor-summary {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: .75rem
+        }
+
+        .anchor-field {
+            background: var(--surface2);
+            border: 1px solid var(--border-sub);
+            border-radius: 9px;
+            padding: .8rem .85rem;
+            min-width: 0
+        }
+
+        .anchor-label {
+            font-size: .52rem;
+            text-transform: uppercase;
+            letter-spacing: .11em;
+            color: var(--muted);
+            margin-bottom: .35rem;
+            line-height: 1.35
+        }
+
+        .anchor-value {
+            font-size: .76rem;
+            color: var(--text-sub);
+            line-height: 1.45
+        }
+
+        .anchor-value.strong {
+            color: var(--text);
+            font-weight: 500
+        }
+
+        .dashboard-card {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 1rem
+        }
+
+        .dashboard-card .card-title {
+            margin-bottom: .85rem;
+            color: var(--muted)
+        }
+
+        .dashboard-chart-frame {
+            max-width: 860px;
+            margin: 0 auto;
+            background: #030406;
+            border: 1px solid var(--border-sub);
+            border-radius: 10px;
+            overflow: hidden
+        }
+
+        .dashboard-chart-frame img.chart {
+            border: 0;
+            border-radius: 0
+        }
+
+        .explainer {
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1.4rem
+        }
+
+        .explainer-title {
+            font-size: .6rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 1.1rem
+        }
+
+        .explainer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem
+        }
+
+        .explainer-block {
+            padding: 1rem 1.1rem;
+            background: var(--surface2);
+            border: 1px solid var(--border-sub);
+            border-radius: 9px
+        }
+
+        .explainer-block h4 {
+            font-size: .7rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: .4rem;
+            letter-spacing: .01em
+        }
+
+        .explainer-block p {
+            font-size: .77rem;
+            color: var(--text-sub);
+            line-height: 1.6
+        }
+
+        @media (max-width:768px) {
+            body {
+                padding: 1rem
+            }
+
+            header {
+                flex-wrap: wrap;
+                gap: .6rem;
+                padding-bottom: .9rem
+            }
+
+            .header-left {
+                flex-wrap: wrap;
+                gap: .5rem
+            }
+
+            .header-right {
+                gap: .4rem;
+                flex-wrap: wrap
+            }
+
+            .header-pill {
+                font-size: .68rem;
+                padding: .25rem .6rem
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: .7rem
+            }
+
+            .stat {
+                padding: 1rem 1.1rem
+            }
+
+            .stat-value {
+                font-size: 1.3rem
+            }
+
+            .tabs {
+                gap: .35rem;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: .25rem;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none
+            }
+
+            .tabs::-webkit-scrollbar {
+                display: none
+            }
+
+            .tab-btn {
+                padding: .38rem .75rem;
+                font-size: .7rem;
+                flex: 0 0 auto;
+                white-space: nowrap
+            }
+
+            .card {
+                padding: 1rem;
+                width: 100%;
+                overflow: hidden
+            }
+
+            #tab-learning .learning-media-grid {
+                margin-bottom: .85rem
+            }
+
+            #tab-learning .learning-video-card {
+                width: 100%;
+                padding: 0
+            }
+
+            .video-card-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: .75rem;
+                padding: 1.05rem 1rem .9rem
+            }
+
+            .video-title {
+                font-size: .98rem
+            }
+
+            .video-subtitle {
+                font-size: .74rem;
+                max-width: none
+            }
+
+            .media-frame {
+                border-radius: 0 0 10px 10px
+            }
+
+            .media-frame video.chart {
+                min-height: 0;
+                aspect-ratio: 16 / 9
+            }
+
+            .media-frame img.chart {
+                max-height: none
+            }
+
+            .media-fallback {
+                padding: 1.25rem;
+                font-size: .74rem
+            }
+
+            #tab-pending .grid {
+                grid-template-columns: 1fr !important
+            }
+
+            #tab-pending .hero-window {
+                margin-bottom: .75rem
+            }
+
+            .anchor-card {
+                padding: 1rem
+            }
+
+            .anchor-summary {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: .65rem
+            }
+
+            .anchor-field:last-child {
+                grid-column: 1 / -1
+            }
+
+            .dashboard-card {
+                padding: .9rem
+            }
+
+            .dashboard-chart-frame {
+                max-width: 100%
+            }
+
+            .explainer-grid {
+                grid-template-columns: 1fr
+            }
+
+            .grid {
+                grid-template-columns: 1fr !important
+            }
+
+            table {
+                font-size: .75rem;
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch
+            }
+
+            th,
+            td {
+                padding: .45rem .65rem;
+                white-space: nowrap
+            }
+
+            .modal {
+                padding: 1.4rem 1.2rem;
+                max-width: calc(100vw - 2rem)
+            }
+
+            .modal-value {
+                font-size: 1.6rem
+            }
+
+            .disclosure-header {
+                font-size: 1.1rem
+            }
+
+            .disclosure-body {
+                font-size: .8rem
+            }
+
+            .hero-time {
+                font-size: 1.5rem
+            }
+        }
+
+        @media (max-width:480px) {
+            body {
+                padding: .75rem
+            }
+
+            header {
+                align-items: flex-start
+            }
+
+            .header-left,
+            .header-right {
+                width: 100%
+            }
+
+            header h1 {
+                font-size: .9rem;
+                line-height: 1.25
+            }
+
+            .zone-tag {
+                display: none
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+                gap: .6rem
+            }
+
+            .stat-value {
+                font-size: 1.2rem
+            }
+
+            .stat-hint {
+                display: none
+            }
+
+            #date-pill {
+                display: none
+            }
+
+            .tab-btn {
+                padding: .35rem .65rem;
+                font-size: .68rem
+            }
+
+            #tab-learning .card-title {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                letter-spacing: .1em;
+                line-height: 1.45
+            }
+
+            .video-card-header {
+                padding: .95rem .9rem .85rem
+            }
+
+            .video-title {
+                font-size: .92rem
+            }
+
+            .video-subtitle {
+                font-size: .72rem;
+                line-height: 1.5
+            }
+
+            .video-status {
+                font-size: .58rem;
+                padding: .24rem .55rem
+            }
+
+            .anchor-summary {
+                grid-template-columns: 1fr
+            }
+
+            .anchor-field:last-child {
+                grid-column: auto
+            }
+
+            .anchor-label {
+                font-size: .5rem
+            }
+
+            .anchor-value {
+                font-size: .73rem
+            }
+
+            .dashboard-card {
+                padding: .75rem
+            }
+
+            .dashboard-card .card-title {
+                margin-bottom: .65rem;
+                letter-spacing: .1em;
+                line-height: 1.45
+            }
+
+            .explainer-block h4 {
+                font-size: .68rem
+            }
+
+            .explainer-block p {
+                font-size: .73rem
+            }
+        }
+
+        .disclosure-wrap {
+            max-width: 680px;
+            margin: 0 auto
+        }
+
+        .disclosure-header {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: .5rem;
+            line-height: 1.3
+        }
+
+        .disclosure-sub {
+            font-size: .75rem;
+            color: var(--muted);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            margin-bottom: 1.8rem
+        }
+
+        .disclosure-body {
+            font-size: .85rem;
+            color: var(--text-sub);
+            line-height: 1.8
+        }
+
+        .disclosure-body p {
+            margin-bottom: 1.1rem
+        }
+
+        .disclosure-body p:last-child {
+            margin-bottom: 0
+        }
+
+        .disclosure-body strong {
+            color: var(--text);
+            font-weight: 500
+        }
+
+        .disclosure-note {
+            margin-top: 1.8rem;
+            padding: 1rem 1.2rem;
+            background: var(--surface2);
+            border-left: 2px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            font-size: .76rem;
+            color: var(--text-sub);
+            line-height: 1.65
+        }
+
+        .disclosure-note strong {
+            color: var(--accent);
+            font-weight: 500
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: var(--modal-overlay);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center
+        }
+
+        .modal-overlay.open {
+            display: flex
+        }
+
+        .modal {
+            background: var(--modal-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.8rem 2rem;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, .4);
+            position: relative;
+            animation: modalIn .18s ease
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--muted);
+            font-size: .8rem;
+            width: 26px;
+            height: 26px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .12s;
+            line-height: 1
+        }
+
+        .modal-close:hover {
+            color: var(--text);
+            border-color: var(--accent)
+        }
+
+        .modal-label {
+            font-size: .58rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--muted);
+            margin-bottom: .5rem
+        }
+
+        .modal-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 1rem
+        }
+
+        .modal-body {
+            font-size: .8rem;
+            color: var(--text-sub);
+            line-height: 1.7
+        }
+
+        .modal-body p {
+            margin-bottom: .75rem
+        }
+
+        .modal-body p:last-child {
+            margin-bottom: 0
+        }
+
+        .modal-body strong {
+            color: var(--text);
+            font-weight: 500
+        }
+
+        .modal-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 1rem 0
+        }
+    </style>
 </head>
+
 <body>
 
-<header>
-  <h1>TSRA &nbsp;<span>/ Tectonic Strain Ratchet Analyzer</span></h1>
-  <div id='clock'>--:--:--</div>
-</header>
-
-<!-- ── STAT TILES ── -->
-<div class='stats'>
-  <div class='stat'>
-    <div class='stat-label'>Baseline Pulse</div>
-    <div class='stat-value'>35.55<span style='font-size:.8rem;color:var(--muted)'> min</span></div>
-    <div class='stat-sub'>Fitted stick-slip period</div>
-  </div>
-  <div class='stat'>
-    <div class='stat-label'>Total Events</div>
-    <div class='stat-value'>8</div>
-    <div class='stat-sub'>Mainshock + 7 aftershocks</div>
-  </div>
-  <div class='stat'>
-    <div class='stat-label'>Last Confirmed</div>
-    <div class='stat-value' style='font-size:1rem'>02:55 AM</div>
-    <div class='stat-sub'>Jun 10, 2026</div>
-  </div>
-  <div class='stat'>
-    <div class='stat-label'>Fault Zone</div>
-    <div class='stat-value' style='font-size:.9rem'>Cotabato</div>
-    <div class='stat-sub'>Sarangani Segment</div>
-  </div>
-</div>
-
-<!-- ── TABS ── -->
-<div class='tabs'>
-  <button class='tab-btn active' onclick="switchTab('events')">Event Log</button>
-  <button class='tab-btn' onclick="switchTab('pending')">Pending Windows</button>
-  <button class='tab-btn' onclick="switchTab('chart')">Dashboard Chart</button>
-  <button class='tab-btn' onclick="switchTab('forecast')">Raw Forecast</button>
-</div>
-
-<!-- ── TAB: EVENTS ── -->
-<div class='tab-panel active' id='tab-events'>
-  <div class='card'>
-    <div class='card-title'>Confirmed Event Log</div>
-    <table>
-      <thead><tr><th>Label</th><th>Timestamp</th><th>Interval</th><th>Status</th></tr></thead>
-      <tbody>
-            <tr>
-              <td><span class='badge badge-ms'>MS</span></td>
-              <td>Jun 08 &middot; 07:37 AM</td>
-              <td class='mono'>&mdash;</td>
-              <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-            </tr>
-            <tr>
-              <td><span class='badge badge-as'>A1</span></td>
-              <td>Jun 08 &middot; 01:12 PM</td>
-              <td class='mono'>334.3 min</td>
-              <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-            </tr>
-            <tr>
-              <td><span class='badge badge-as'>A2</span></td>
-              <td>Jun 08 &middot; 05:16 PM</td>
-              <td class='mono'>578.3 min</td>
-              <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-            </tr>
-            <tr>
-              <td><span class='badge badge-as'>A3</span></td>
-              <td>Jun 08 &middot; 05:51 PM</td>
-              <td class='mono'>613.3 min</td>
-              <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-            </tr>
-            <tr>
-              <td><span class='badge badge-as'>A4</span></td>
-              <td>Jun 08 &middot; 06:26 PM</td>
-              <td class='mono'>648.3 min</td>
-              <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-            </tr>
-            <tr>
-              <td><span class='badge badge-as'>A5</span></td>
-              <td>Jun 08 &middot; 10:30 PM</td>
-              <td class='mono'>892.3 min</td>
-              <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-            </tr>
-            <tr>
-              <td><span class='badge badge-as'>A6</span></td>
-              <td>Jun 09 &middot; 12:36 AM</td>
-              <td class='mono'>1018.3 min</td>
-              <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-            </tr>
-            <tr>
-              <td><span class='badge badge-as'>A7</span></td>
-              <td>Jun 09 &middot; 02:12 AM</td>
-              <td class='mono'>1114.3 min</td>
-              <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-            </tr></tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ── TAB: PENDING ── -->
-<div class='tab-panel' id='tab-pending'>
-  <div class='grid' style='grid-template-columns:1fr 2fr'>
-    <div class='hero-window' id='next-window-hero'>
-      <div class='hero-label'>Next Expected Window</div>
-      <div class='hero-time' id='hero-time'>--:--</div>
-      <div class='hero-remain' id='hero-remain'>Calculating...</div>
-    </div>
-    <div class='card'>
-      <div class='card-title'>Pending Aftershock Windows &mdash; anchored <span class='mono' style='color:var(--accent2)'>02:55 AM</span></div>
-      <table id='pending-table'>
-        <thead><tr><th>Multiplier</th><th>Window</th><th>Expected Arrival</th><th>Remaining</th><th>Status</th></tr></thead>
-        <tbody>
-            <tr data-arrival='2026-06-10T03:30:33'>
-              <td><span class='mult-badge'>1.0×</span></td>
-              <td>35.6 min</td>
-              <td class='mono'>Jun 10 &middot; 03:30 AM</td>
-              <td class='countdown' data-arrival='2026-06-10T03:30:33'>—</td>
-              <td class='status-cell' data-arrival='2026-06-10T03:30:33'>—</td>
-            </tr>
-            <tr data-arrival='2026-06-10T04:59:25'>
-              <td><span class='mult-badge'>3.5×</span></td>
-              <td>124.4 min</td>
-              <td class='mono'>Jun 10 &middot; 04:59 AM</td>
-              <td class='countdown' data-arrival='2026-06-10T04:59:25'>—</td>
-              <td class='status-cell' data-arrival='2026-06-10T04:59:25'>—</td>
-            </tr>
-            <tr data-arrival='2026-06-10T07:03:51'>
-              <td><span class='mult-badge'>7.0×</span></td>
-              <td>248.9 min</td>
-              <td class='mono'>Jun 10 &middot; 07:03 AM</td>
-              <td class='countdown' data-arrival='2026-06-10T07:03:51'>—</td>
-              <td class='status-cell' data-arrival='2026-06-10T07:03:51'>—</td>
-            </tr>
-            <tr data-arrival='2026-06-10T08:32:44'>
-              <td><span class='mult-badge'>9.5×</span></td>
-              <td>337.7 min</td>
-              <td class='mono'>Jun 10 &middot; 08:32 AM</td>
-              <td class='countdown' data-arrival='2026-06-10T08:32:44'>—</td>
-              <td class='status-cell' data-arrival='2026-06-10T08:32:44'>—</td>
-            </tr></tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- ── TAB: CHART ── -->
-<div class='tab-panel' id='tab-chart'>
-  <div class='card'>
-    <div class='card-title'>High-Fidelity Tectonic Dashboard</div>
-    <img class='chart' src='seismic_pattern_analysis.png' alt='Tectonic Dashboard'>
-  </div>
-
-  <!-- Plain-language explainer -->
-  <div style='margin-top:1rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem'>
-
-    <!-- Top chart explainer -->
-    <div class='card'>
-      <div class='card-title' style='color:#06b6d4'>&#9650; Top Chart &mdash; &ldquo;The Stress Buildup&rdquo;</div>
-      <p style='font-size:.82rem;line-height:1.7;color:#94a3b8;margin-bottom:.8rem'>
-        Think of this like a rubber band being slowly stretched. The <strong style='color:#cdd6f4'>rising line</strong> shows
-        stress building up silently underground. When it reaches a breaking point, the fault slips &mdash;
-        that&rsquo;s the <strong style='color:#cdd6f4'>sudden drop</strong> you see on the chart. Then the cycle restarts.
-      </p>
-      <div style='display:flex;flex-direction:column;gap:.5rem'>
-        <div style='display:flex;align-items:flex-start;gap:.7rem'>
-          <span style='width:12px;height:12px;border-radius:50%;background:#3b82f6;flex-shrink:0;margin-top:.2rem'></span>
-          <span style='font-size:.78rem;color:#94a3b8'><strong style='color:#cdd6f4'>Blue line (Observer Notes)</strong> &mdash; What you personally felt and recorded. These are ground-truth observations from the field.</span>
+    <div class='modal-overlay' id='modal-overlay' onclick='closeModalOnBg(event)'>
+        <div class='modal' id='modal'>
+            <button class='modal-close' onclick='closeModal()'>✕</button>
+            <div class='modal-label' id='modal-label'></div>
+            <div class='modal-value' id='modal-value'></div>
+            <div class='modal-divider'></div>
+            <div class='modal-body' id='modal-body'></div>
         </div>
-        <div style='display:flex;align-items:flex-start;gap:.7rem'>
-          <span style='width:12px;height:12px;border-radius:50%;background:#f97316;flex-shrink:0;margin-top:.2rem'></span>
-          <span style='font-size:.78rem;color:#94a3b8'><strong style='color:#cdd6f4'>Orange line (Instrument Catalog)</strong> &mdash; What seismometers officially recorded. Sometimes slightly different due to sensor lag or location.</span>
-        </div>
-        <div style='display:flex;align-items:flex-start;gap:.7rem'>
-          <span style='width:12px;height:2px;background:#6b7280;flex-shrink:0;margin-top:.5rem;border-top:2px dashed #6b7280'></span>
-          <span style='font-size:.78rem;color:#94a3b8'><strong style='color:#cdd6f4'>Dashed lines</strong> &mdash; The model&rsquo;s predicted stress thresholds. When the fault reaches one of these, it releases energy (aftershock).</span>
-        </div>
-        <div style='display:flex;align-items:flex-start;gap:.7rem'>
-          <span style='font-size:.75rem;background:#7c3aed33;color:#a78bfa;padding:.1rem .4rem;border-radius:3px;flex-shrink:0'>×9.5</span>
-          <span style='font-size:.78rem;color:#94a3b8'><strong style='color:#cdd6f4'>Multiplier labels (1×, 3.5×, 7×, 9.5×)</strong> &mdash; How many &ldquo;rhythm beats&rdquo; of ~35 minutes the fault waited before releasing. Bigger number = longer buildup = bigger potential release.</span>
-        </div>
-      </div>
     </div>
 
-    <!-- Bottom chart explainer -->
-    <div class='card'>
-      <div class='card-title' style='color:#06b6d4'>&#9660; Bottom Chart &mdash; &ldquo;Did the Clocks Match?&rdquo;</div>
-      <p style='font-size:.82rem;line-height:1.7;color:#94a3b8;margin-bottom:.8rem'>
-        This chart compares <em>when you felt it</em> vs <em>when machines recorded it</em>.
-        The connecting lines between the two rows show how closely they match. A short line = great agreement.
-        A long line = the observer and instrument disagreed on the timing.
-      </p>
-      <div style='display:flex;flex-direction:column;gap:.5rem'>
-        <div style='display:flex;align-items:flex-start;gap:.7rem'>
-          <span style='width:12px;height:12px;border-radius:50%;background:#3b82f6;flex-shrink:0;margin-top:.2rem'></span>
-          <span style='font-size:.78rem;color:#94a3b8'><strong style='color:#cdd6f4'>Top row (Observer)</strong> &mdash; Each dot is a shock you felt. Plotted on a timeline showing minutes since the mainshock.</span>
+    <header>
+        <div class='header-left'>
+            <h1>TSRA &nbsp;<span>/ Tectonic Strain Ratchet Analyzer</span></h1>
+            <span class='zone-tag'>Cotabato · Sarangani</span>
         </div>
-        <div style='display:flex;align-items:flex-start;gap:.7rem'>
-          <span style='width:12px;height:12px;border-radius:50%;background:#f97316;flex-shrink:0;margin-top:.2rem'></span>
-          <span style='font-size:.78rem;color:#94a3b8'><strong style='color:#cdd6f4'>Bottom row (Instrument)</strong> &mdash; Each dot is a shock the seismometer recorded. If it lines up with yours &mdash; perfect match.</span>
+        <div class='header-right'>
+            <div id='viewer-count' class='header-pill viewer-pill' title='Live viewers (unique devices)'>
+                <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round'
+                    stroke-linejoin='round' style='width:12px;height:12px;flex-shrink:0'>
+                    <path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z' />
+                    <circle cx='12' cy='12' r='3' />
+                </svg>
+                <span id='viewer-num'>1</span>
+            </div>
+            <div id='date-pill' class='header-pill'>--</div>
+            <div id='clock' class='header-pill'>
+                <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round'
+                    stroke-linejoin='round' style='width:12px;height:12px;flex-shrink:0;opacity:.7'>
+                    <circle cx='12' cy='12' r='10' />
+                    <polyline points='12 6 12 12 16 14' />
+                </svg>
+                <span id='clock-text'>--:--:--</span>
+            </div>
+            <button class='theme-toggle' onclick='toggleTheme()' title='Toggle theme'>
+                <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round'
+                    stroke-linejoin='round'>
+                    <circle cx='12' cy='12' r='5' />
+                    <line x1='12' y1='1' x2='12' y2='3' />
+                    <line x1='12' y1='21' x2='12' y2='23' />
+                    <line x1='4.22' y1='4.22' x2='5.64' y2='5.64' />
+                    <line x1='18.36' y1='18.36' x2='19.78' y2='19.78' />
+                    <line x1='1' y1='12' x2='3' y2='12' />
+                    <line x1='21' y1='12' x2='23' y2='12' />
+                    <line x1='4.22' y1='19.78' x2='5.64' y2='18.36' />
+                    <line x1='18.36' y1='5.64' x2='19.78' y2='4.22' />
+                </svg>
+                <span id='theme-label'>Light</span>
+            </button>
         </div>
-        <div style='display:flex;align-items:flex-start;gap:.7rem'>
-          <span style='font-size:.75rem;background:#1e293b;color:#60a5fa;padding:.1rem .4rem;border-radius:3px;flex-shrink:0'>+3m</span>
-          <span style='font-size:.78rem;color:#94a3b8'><strong style='color:#cdd6f4'>Drift labels (+Xm / &minus;Xm)</strong> &mdash; How many minutes apart the two readings were. &ldquo;+3m&rdquo; means the instrument was 3 minutes later than you felt it.</span>
+    </header>
+
+    <div class='stats'>
+        <div class='stat' onclick="openModal('pulse')">
+            <div class='stat-hint'>tap to expand</div>
+            <div class='stat-label'>Baseline Pulse</div>
+            <div class='stat-value'>35.55 <span class='stat-unit'>min</span></div>
+            <div class='stat-sub'>Fitted stick-slip period</div>
         </div>
-        <div style='margin-top:.4rem;padding:.7rem;background:#0f1923;border-radius:6px;border-left:2px solid #10b981'>
-          <span style='font-size:.75rem;color:#6ee7b7'>&#10003; &nbsp;Verification passes when drift is under 15 minutes &mdash; meaning your observations and the official catalog are telling the same story.</span>
+        <div class='stat' onclick="openModal('events')">
+            <div class='stat-hint'>tap to expand</div>
+            <div class='stat-label'>Confirmed Events</div>
+            <div class='stat-value'>11</div>
+            <div class='stat-sub'>Observation notes separate</div>
         </div>
-      </div>
+        <div class='stat' onclick="openModal('anchor')">
+            <div class='stat-hint'>tap to expand</div>
+            <div class='stat-label'>Last Confirmed</div>
+            <div class='stat-value' style='font-size:1.2rem'>03:36 AM</div>
+            <div class='stat-sub'>Jun 10, 2026 · A10</div>
+        </div>
+        <div class='stat' onclick="openModal('fit')">
+            <div class='stat-hint'>tap to expand</div>
+            <div class='stat-label'>Model Fit</div>
+            <div class='stat-value'>87.7 <span class='stat-unit'>%</span></div>
+            <div class='stat-sub'>Timing alignment</div>
+        </div>
     </div>
 
-    <!-- Key insight banner -->
-    <div class='card' style='grid-column:1/-1;background:linear-gradient(135deg,#0f1923,#0b1520);border-color:#1e3a5f'>
-      <div class='card-title' style='color:#3b82f6'>&#128161; The Big Picture &mdash; What This All Means</div>
-      <p style='font-size:.82rem;line-height:1.8;color:#94a3b8'>
-        The Cotabato fault is behaving like a <strong style='color:#cdd6f4'>metronome</strong>. Every ~35 minutes, stress accumulates to a threshold.
-        When it crosses that threshold &mdash; multiplied by 1×, 3.5×, 7×, or 9.5× &mdash; the ground releases energy as an aftershock.
-        The fact that both the <em>observer notes</em> and the <em>instrument catalog</em> show the same rhythm independently is strong evidence
-        that this is a <strong style='color:#cdd6f4'>real, predictable stick-slip pattern</strong> &mdash; not random noise.
-        The pending windows table uses this rhythm to forecast the most likely times for the next releases.
-        <strong style='color:#93c5fd'>Stay alert during those windows.</strong>
-      </p>
+    <div class='tabs'>
+        <button class='tab-btn' onclick="switchTab('events',event)">Event Log</button>
+        <button class='tab-btn active' onclick="switchTab('pending',event)">Pending Windows</button>
+        <button class='tab-btn' onclick="switchTab('chart',event)">Dashboard Chart</button>
+        <button class='tab-btn' onclick="switchTab('forecast',event)">Raw Forecast</button>
+        <button class='tab-btn' onclick="switchTab('learning',event)">Learning Guide</button>
+        <button class='tab-btn' onclick="switchTab('origin',event)">Origin</button>
     </div>
 
-  </div>
-</div>
+    <div class='tab-panel' id='tab-events'>
+        <div class='card'>
+            <div class='card-title'>Confirmed Event Log</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Label</th>
+                        <th>Timestamp</th>
+                        <th>Interval</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class='badge badge-ms'>MS</span></td>
+                        <td>Jun 08 &middot; 07:37 AM</td>
+                        <td class='mono'>&mdash;</td>
+                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class='badge badge-as'>A1</span></td>
+                        <td>Jun 08 &middot; 01:12 PM</td>
+                        <td class='mono'>334.3 min</td>
+                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class='badge badge-as'>A2</span></td>
+                        <td>Jun 08 &middot; 05:16 PM</td>
+                        <td class='mono'>244.0 min</td>
+                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class='badge badge-as'>A3</span></td>
+                        <td>Jun 08 &middot; 05:51 PM</td>
+                        <td class='mono'>35.0 min</td>
+                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class='badge badge-as'>A4</span></td>
+                        <td>Jun 08 &middot; 06:26 PM</td>
+                        <td class='mono'>35.0 min</td>
+                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class='badge badge-as'>A5</span></td>
+                        <td>Jun 08 &middot; 10:30 PM</td>
+                        <td class='mono'>244.0 min</td>
+                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class='badge badge-as'>A6</span></td>
+                        <td>Jun 10 &middot; 12:36 AM</td>
+                        <td class='mono'>126.0 min</td>
+                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class='badge badge-as'>A7</span></td>
+                        <td>Jun 10 &middot; 02:12 AM</td>
+                        <td class='mono'>96.0 min <span style='color:var(--warn);font-size:.63rem'>&minus;28 min
+                                early</span></td>
+                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class='badge badge-as'>A8</span></td>
+                        <td>Jun 10 &middot; 02:55 AM</td>
+                        <td class='mono'>43.0 min <span style='color:var(--text-sub);font-size:.63rem'>+8 min</span>
+                        </td>
+                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class='badge badge-as'>A9</span></td>
+                        <td>Jun 10 &middot; 03:26 AM</td>
+                        <td class='mono'>31.0 min <span style='color:var(--warn);font-size:.63rem'>&minus;4 min
+                                early</span></td>
+                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class='badge badge-as'>A10</span></td>
+                        <td>Jun 10 &middot; 03:36 AM</td>
+                        <td class='mono'>10.0 min <span style='color:var(--accent2);font-size:.63rem'>sub-pulse</span>
+                        </td>
+                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class='card' style='margin-top:1rem'>
+            <div class='card-title'>Observation Outcome Log</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Report Time</th>
+                        <th>Linked Watch</th>
+                        <th>Onset</th>
+                        <th>Outcome</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class='badge badge-as'>FELT</span></td>
+                        <td class='mono'>Jun 10 &middot; by ~09:55 AM</td>
+                        <td class='mono'>09:13 AM extended-phase watch</td>
+                        <td>Earlier / uncertain</td>
+                        <td>Significant felt activity</td>
+                        <td><span class='pill observed-pill'>Pending PHIVOLCS</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
+    <div class='tab-panel active' id='tab-pending'>
+        <div class='grid' style='grid-template-columns:1fr 2fr;align-items:start'>
+            <div class='hero-window' id='next-window-hero'>
+                <div class='hero-label'>Next Observation Window</div>
+                <div class='hero-time' id='hero-time'>--:--</div>
+                <div class='hero-remain' id='hero-remain'>Calculating...</div>
+            </div>
+            <div class='card'>
+                <div class='card-title'>Provisional Observation Windows &mdash; anchored by felt report <span class='mono'
+                        style='color:var(--accent2)'>~09:55 AM &middot; onset uncertain</span></div>
+                <table id='pending-table'>
+                    <thead>
+                        <tr>
+                            <th>Phase</th>
+                            <th>Window</th>
+                            <th>Watch Time</th>
+                            <th>Remaining</th>
+                            <th>Observation Class</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-arrival='2026-06-10T10:30:33'>
+                            <td><span class='mult-badge'>1.0&times;</span></td>
+                            <td>35.6 min</td>
+                            <td class='mono'>Jun 10 &middot; 10:30 AM</td>
+                            <td class='countdown' data-arrival='2026-06-10T10:30:33'>&mdash;</td>
+                            <td>Early post-report check</td>
+                            <td class='status-cell' data-arrival='2026-06-10T10:30:33'>&mdash;</td>
+                        </tr>
+                        <tr data-arrival='2026-06-10T11:59:25'>
+                            <td><span class='mult-badge'>3.5&times;</span></td>
+                            <td>124.4 min</td>
+                            <td class='mono'>Jun 10 &middot; 11:59 AM</td>
+                            <td class='countdown' data-arrival='2026-06-10T11:59:25'>&mdash;</td>
+                            <td>Activity-cluster check</td>
+                            <td class='status-cell' data-arrival='2026-06-10T11:59:25'>&mdash;</td>
+                        </tr>
+                        <tr data-arrival='2026-06-10T14:03:51'>
+                            <td><span class='mult-badge'>7.0&times;</span></td>
+                            <td>248.9 min</td>
+                            <td class='mono'>Jun 10 &middot; 02:03 PM</td>
+                            <td class='countdown' data-arrival='2026-06-10T14:03:51'>&mdash;</td>
+                            <td>Next long-phase watch</td>
+                            <td class='status-cell' data-arrival='2026-06-10T14:03:51'>&mdash;</td>
+                        </tr>
+                        <tr data-arrival='2026-06-10T15:32:44'>
+                            <td><span class='mult-badge'>9.5&times;</span></td>
+                            <td>337.7 min</td>
+                            <td class='mono'>Jun 10 &middot; 03:32 PM</td>
+                            <td class='countdown' data-arrival='2026-06-10T15:32:44'>&mdash;</td>
+                            <td>Extended-phase watch</td>
+                            <td class='status-cell' data-arrival='2026-06-10T15:32:44'>&mdash;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class='card full anchor-card'>
+                <div class='card-title'>Provisional Felt-Report Anchor</div>
+                <div class='anchor-summary'>
+                    <div class='anchor-field'>
+                        <div class='anchor-label'>Anchor source</div>
+                        <div class='anchor-value strong'>Felt activity after 09:13 watch</div>
+                    </div>
+                    <div class='anchor-field'>
+                        <div class='anchor-label'>Report time</div>
+                        <div class='anchor-value mono'>By ~09:55 AM</div>
+                    </div>
+                    <div class='anchor-field'>
+                        <div class='anchor-label'>Onset</div>
+                        <div class='anchor-value'>Earlier / uncertain</div>
+                    </div>
+                    <div class='anchor-field'>
+                        <div class='anchor-label'>Next watch band</div>
+                        <div class='anchor-value mono strong'>~01:40&ndash;02:10 PM</div>
+                    </div>
+                    <div class='anchor-field'>
+                        <div class='anchor-label'>Evidence status</div>
+                        <div class='anchor-value'><span class='pill observed-pill'>Provisional · pending PHIVOLCS</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<!-- ── TAB: FORECAST ── -->
-<div class='tab-panel' id='tab-forecast'>
-  <div class='card'>
-    <div class='card-title'>Raw Model Forecast Output</div>
-    <div class='pre-wrap'>================================================================================
-                   TECTONIC AFTERSHOCK PREDICTIVE MODEL (HISTORICAL REFERENCE)
-          Slip Threshold Forecasts (Reference Time: 2026-06-09 00:49:15)
-================================================================================
-  - Fitted Baseline Pulse Period: 35.552 minutes
+    <div class='tab-panel' id='tab-chart'>
+        <div class='card dashboard-card'>
+            <div class='card-title'>Dashboard Chart</div>
+            <div class='dashboard-chart-frame'>
+                <img class='chart' src='seismic_pattern_analysis.png' alt='Tectonic Dashboard'>
+            </div>
 
-Multiplier   | Accumulation Window  | Expected Arrival Time  | Status
---------------------------------------------------------------------------------
-1.0x capacity | 35.6 minutes         | 2026-06-09 01:24:48    | ELAPSED (2230.0m ago) -> Stress held / bypassed
-3.5x capacity | 124.4 minutes        | 2026-06-09 02:53:40    | ELAPSED (2141.1m ago) -> Stress held / bypassed
-7.0x capacity | 248.9 minutes        | 2026-06-09 04:58:06    | ELAPSED (2016.7m ago) -> Stress held / bypassed
-9.5x capacity | 337.7 minutes        | 2026-06-09 06:26:59    | ELAPSED (1927.8m ago) -> Stress held / bypassed
-================================================================================
+            <div class='explainer'>
+                <div class='explainer-title'>Reading the Chart &mdash; Plain Language Guide</div>
+                <div class='explainer-grid'>
+                    <div class='explainer-block'>
+                        <h4>What is the sawtooth shape?</h4>
+                        <p>Each rising diagonal line represents the fault <strong>silently building up stress</strong>
+                            underground. The tectonic plates are pushing against each other continuously &mdash; like
+                            slowly pressing down on a spring. When the spring can no longer hold, it releases. That
+                            release is the earthquake. The line drops vertically to zero, and the cycle begins again.
+                        </p>
+                    </div>
+                    <div class='explainer-block'>
+                        <h4>Why do some peaks reach higher than others?</h4>
+                        <p>A higher peak means the modeled phase interval lasted longer before an observed release or watch outcome. It does <strong>not</strong> guarantee stronger shaking by itself. Strength is logged separately after observation as micro-pulse, small shake, significant felt shake, clustered activity, delayed release, or no confirmed local release.</p>
+                    </div>
+                    <div class='explainer-block'>
+                        <h4>What are the multipliers (1&times;, 3.5&times;, 7&times;, 9.5&times;)?</h4>
+                        <p>The model uses a natural &ldquo;heartbeat&rdquo; of about 35.5 minutes to mark watch centers. The 1&times;, 3.5&times;, 7&times;, and 9.5&times; values are phase markers. They help organize timing, while observed amplitude and official confirmation remain separate fields.</p>
+                    </div>
+                    <div class='explainer-block'>
+                        <h4>What is the &ldquo;Observer vs Instrument&rdquo; line at the bottom?</h4>
+                        <p>Two timelines are overlaid: the <strong>observer&rsquo;s notes</strong> (manually recorded
+                            times) and the <strong>instrument catalog</strong> (official seismograph records). The small
+                            gap between them is &ldquo;clock drift&rdquo; &mdash; a tiny timing difference between human
+                            observation and machine timestamps. Both lines agree closely, which validates that the
+                            pattern is real, not an artifact of imprecise recording.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-================================================================================
-                   TECTONIC AFTERSHOCK PREDICTIVE MODEL (A7 ANCHOR — 02:12 AM · 1x pulse confirmed at 02:55 AM)
-          Slip Threshold Forecasts (Reference Time: 2026-06-10 02:12:00)
-================================================================================
-  - Fitted Baseline Pulse Period: 35.552 minutes
+    <div class='tab-panel' id='tab-forecast'>
+        <div class='card'>
+            <div class='card-title'>Raw Model Forecast Output</div>
+            <div class='pre-wrap'>================================================================================
+                TECTONIC PHASE-OBSERVATION MODEL (HISTORICAL REFERENCE)
+                Slip Threshold Forecasts (Reference Time: 2026-06-09 00:49:15)
+                ================================================================================
+                - Fitted Baseline Pulse Period: 35.552 minutes
 
-Multiplier   | Accumulation Window  | Expected Arrival Time  | Status
---------------------------------------------------------------------------------
-1.0x capacity | 35.6 minutes         | 2026-06-10 02:47:33    | ELAPSED (707.2m ago) -> Stress held / bypassed
-3.5x capacity | 124.4 minutes        | 2026-06-10 04:16:25    | ELAPSED (618.4m ago) -> Stress held / bypassed
-7.0x capacity | 248.9 minutes        | 2026-06-10 06:20:51    | ELAPSED (493.9m ago) -> Stress held / bypassed
-9.5x capacity | 337.7 minutes        | 2026-06-10 07:49:44    | ELAPSED (405.0m ago) -> Stress held / bypassed
-================================================================================
+                Phase | Observation Window | Watch Time | Post-Window Class
+                --------------------------------------------------------------------------------
+                1.0x phase | 35.6 minutes | 2026-06-09 01:24:48 | ELAPSED -> no confirmed local release
+                3.5x phase | 124.4 minutes | 2026-06-09 02:53:40 | ELAPSED -> no confirmed local release
+                7.0x phase | 248.9 minutes | 2026-06-09 04:58:06 | ELAPSED -> no confirmed local release
+                9.5x phase | 337.7 minutes | 2026-06-09 06:26:59 | ELAPSED -> no confirmed local release
+                ================================================================================
 
-================================================================================
-                   TECTONIC AFTERSHOCK PREDICTIVE MODEL (A8 ANCHOR — 02:55 AM · LIVE PREDICTION)
-          Slip Threshold Forecasts (Reference Time: 2026-06-10 02:55:00)
-================================================================================
-  - Fitted Baseline Pulse Period: 35.552 minutes
+                ================================================================================
+                TECTONIC PHASE-OBSERVATION MODEL (A7 ANCHOR)
+                Slip Threshold Forecasts (Reference Time: 2026-06-10 02:12:00)
+                ================================================================================
+                - Fitted Baseline Pulse Period: 35.552 minutes
 
-Multiplier   | Accumulation Window  | Expected Arrival Time  | Status
---------------------------------------------------------------------------------
-1.0x capacity | 35.6 minutes         | 2026-06-10 03:30:33    | ELAPSED (664.2m ago) -> Stress held / bypassed
-3.5x capacity | 124.4 minutes        | 2026-06-10 04:59:25    | ELAPSED (575.4m ago) -> Stress held / bypassed
-7.0x capacity | 248.9 minutes        | 2026-06-10 07:03:51    | ELAPSED (450.9m ago) -> Stress held / bypassed
-9.5x capacity | 337.7 minutes        | 2026-06-10 08:32:44    | ELAPSED (362.0m ago) -> Stress held / bypassed
-================================================================================
+                Phase | Observation Window | Watch Time | Post-Window Class
+                --------------------------------------------------------------------------------
+                1.0x phase | 35.6 minutes | 2026-06-10 02:47:33 | ELAPSED -> micro-pulse / timing check
+                3.5x phase | 124.4 minutes | 2026-06-10 04:16:25 | WATCH
+                7.0x phase | 248.9 minutes | 2026-06-10 06:20:51 | WATCH
+                9.5x phase | 337.7 minutes | 2026-06-10 07:49:44 | WATCH
+                ================================================================================
 
-</div>
-  </div>
-</div>
+                ================================================================================
+                TECTONIC PHASE-OBSERVATION MODEL (A8 ANCHOR - LIVE)
+                Slip Threshold Forecasts (Reference Time: 2026-06-10 02:55:00)
+                ================================================================================
+                - Fitted Baseline Pulse Period: 35.552 minutes
 
-<script>
-  // ── Clock ──────────────────────────────────────────────────────────────────
-  function updateClock() {
-    const now = new Date();
-    document.getElementById('clock').textContent = now.toLocaleTimeString('en-PH', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  }
-  setInterval(updateClock, 1000); updateClock();
+                Phase | Observation Window | Watch Time | Post-Window Class
+                --------------------------------------------------------------------------------
+                1.0x phase | 35.6 minutes | 2026-06-10 03:30:33 | WATCH
+                3.5x phase | 124.4 minutes | 2026-06-10 04:59:25 | WATCH
+                7.0x phase | 248.9 minutes | 2026-06-10 07:03:51 | WATCH
+                9.5x phase | 337.7 minutes | 2026-06-10 08:32:44 | WATCH
+                ================================================================================
 
-  // ── Tab switch ─────────────────────────────────────────────────────────────
-  function switchTab(name) {
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('tab-' + name).classList.add('active');
-    event.currentTarget.classList.add('active');
-  }
+                ================================================================================
+                TECTONIC PHASE-OBSERVATION MODEL (A10 ANCHOR - UPDATED OUTCOME)
+                Watch Center / Observation Outcome Record (Reference Time: 2026-06-10 03:36:00)
+                ================================================================================
+                - Fitted Baseline Pulse Period: 35.552 minutes
+                - Architecture Rule: confirmed events, felt observations, and model watch windows are separate fields
 
-  // ── Countdown ──────────────────────────────────────────────────────────────
-  function fmtDiff(ms) {
-    if (ms <= 0) return 'elapsed';
-    const totalSec = Math.floor(ms / 1000);
-    const h = Math.floor(totalSec / 3600);
-    const m = Math.floor((totalSec % 3600) / 60);
-    const s = totalSec % 60;
-    if (h > 0) return `In ${h}h ${m}m`;
-    if (m > 0) return `In ${m}m ${s}s`;
-    return `In ${s}s`;
-  }
+                Phase | Observation Window | Watch Center | Observation Outcome
+                --------------------------------------------------------------------------------
+                1.0x phase | 35.6 minutes | 2026-06-10 04:11:33 | elapsed / no local outcome recorded
+                3.5x phase | 124.4 minutes | 2026-06-10 05:40:24 | elapsed / no local outcome recorded
+                7.0x phase | 248.9 minutes | 2026-06-10 07:44:51 | elapsed / no local outcome recorded
+                9.5x phase | 337.7 minutes | 2026-06-10 09:13:42 | significant felt activity reported by ~09:55 AM; exact onset earlier/uncertain; pending official confirmation
+                ================================================================================
 
-  function updateCountdowns() {
-    const now = Date.now();
-    let nextArrival = null, nextTime = null;
-    document.querySelectorAll('#pending-table tbody tr').forEach(row => {
-      const arrival = new Date(row.dataset.arrival);
-      const diff = arrival.getTime() - now;
-      const cdCell = row.querySelector('.countdown');
-      const stCell = row.querySelector('.status-cell');
-      cdCell.textContent = fmtDiff(diff);
-      if (diff <= 0) {
-        stCell.innerHTML = "<span class='pill elapsed-pill'>Elapsed</span>";
-        row.style.opacity = '.45';
-      } else if (diff < 20 * 60 * 1000) {
-        stCell.innerHTML = "<span class='pill active-pill'>&#9679; Imminent</span>";
-        if (!nextArrival || arrival < nextArrival) { nextArrival = arrival; nextTime = diff; }
-      } else {
-        stCell.innerHTML = "<span class='pill pending-pill'>Pending</span>";
-        if (!nextArrival || arrival < nextArrival) { nextArrival = arrival; nextTime = diff; }
-      }
-    });
-    // update hero
-    if (nextArrival) {
-      document.getElementById('hero-time').textContent = nextArrival.toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'});
-      document.getElementById('hero-remain').textContent = fmtDiff(nextTime);
-    }
-  }
-  setInterval(updateCountdowns, 1000); updateCountdowns();
-</script>
+                ================================================================================
+                TECTONIC PHASE-OBSERVATION MODEL (PROVISIONAL FELT-OBSERVATION ANCHOR)
+                Watch Schedule From Report Time (Reference Time: 2026-06-10 09:55:00)
+                ================================================================================
+                - Fitted Baseline Pulse Period: 35.552 minutes
+                - Architecture Rule: this anchor is provisional because exact onset is uncertain
+                - Operational Watch Band: treat the 7.0x phase as ~01:40 PM to ~02:10 PM
+
+                Phase | Observation Window | Watch Center | Operational Status
+                --------------------------------------------------------------------------------
+                1.0x phase | 35.6 minutes | 2026-06-10 10:30:33 | elapsed post-report check
+                3.5x phase | 124.4 minutes | 2026-06-10 11:59:25 | elapsed activity-cluster check
+                7.0x phase | 248.9 minutes | 2026-06-10 14:03:51 | NEXT WATCH -> observe ~01:40-02:10 PM
+                9.5x phase | 337.7 minutes | 2026-06-10 15:32:44 | later extended-phase watch
+                ================================================================================
+            </div>
+        </div>
+    </div>
+
+    <div class='tab-panel' id='tab-learning'>
+        <div class='learning-media-grid'>
+            <div class='card learning-video-card'>
+                <div class='video-card-header'>
+                    <div class='video-copy'>
+                        <div class='video-kicker'>Learning Guide</div>
+                        <div class='video-title'>Subduction & Trench Mechanics</div>
+                        <div class='video-subtitle'>A compact visual guide to trench rhythm, phase windows, and why felt observations are logged separately from confirmed seismic events.</div>
+                    </div>
+                    <div class='video-status'>16:9 field module</div>
+                </div>
+                <div class='media-frame'>
+                    <video class='chart' controls preload='metadata' playsinline onerror='markMediaBroken(this)' src='/safety/Cotabato_Trench_Rhythm.mp4'>
+                        Your browser cannot play this safety video.
+                    </video>
+                    <div class='media-fallback'><strong>Video unavailable</strong>The local safety video did not load. Confirm <span class='mono'>/safety/Cotabato_Trench_Rhythm.mp4</span> is included in the deployed project.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='tab-panel' id='tab-origin'>
+        <div class='card'>
+            <div class='disclosure-wrap'>
+                <div class='disclosure-note'>
+                    <strong>Important:</strong> TSRA is an observational timing tool built from field notes, confirmed
+                    event timestamps, and a fitted phase model. It is designed to help organize watch windows and
+                    compare observations with official records. It is <em>not</em> a certified warning system, magnitude
+                    predictor, or substitute for PHIVOLCS advisories, civil defense instructions, or professional
+                    seismological assessment. Treat every window here as context for observation only: useful for
+                    noticing rhythm, never enough for safety decisions by itself.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function markMediaBroken(el) {
+            const frame = el && el.closest ? el.closest('.media-frame') : null;
+            if (frame) frame.classList.add('is-broken');
+        }
+
+        // ── Theme ─────────────────────────────────────────────────────────────────
+        (function () {
+            const saved = localStorage.getItem('tsra-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', saved);
+            const lbl = document.getElementById('theme-label');
+            if (lbl) lbl.textContent = saved === 'dark' ? 'Light' : 'Dark';
+        })();
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('tsra-theme', next);
+            document.getElementById('theme-label').textContent = next === 'dark' ? 'Light' : 'Dark';
+        }
+
+        // ── Clock + Date ────────────────────────────────────────────────────────────
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock-text').textContent =
+                now.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('date-pill').textContent =
+                now.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        setInterval(updateClock, 1000); updateClock();
+
+        // ── Viewer Count ─────────────────────────────────────────────────────────
+        (function () {
+            const el = document.getElementById('viewer-num');
+
+            // ARCHITECTURE PATCH: Point to your deployed backend for production (Vercel)
+            // Once you deploy the backend, replace '' with your public URL (e.g., 'tsra-backend.onrender.com')
+            const PUBLIC_BACKEND_URL = 'tectonic-strain-ratchet-analyzer-production.up.railway.app';
+            
+            const isLocal = window.location.hostname === 'localhost';
+            const wsHost = isLocal ? 'localhost' : PUBLIC_BACKEND_URL;
+            const wsPort = isLocal ? ':5173' : ''; // Railway public domain uses 443 — no port needed
+
+            // 1. Get or create persistent device ID
+            let clientId;
+            try {
+                clientId = localStorage.getItem('tsra-client-id');
+                if (!clientId) {
+                    clientId = 'dev_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('tsra-client-id', clientId);
+                }
+            } catch (e) {
+                clientId = 'dev_' + Math.random().toString(36).substr(2, 9);
+            }
+
+            // 2. Try WebSocket for cross-device tracking (Use wss: for https)
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const WS_URL = `${protocol}//${wsHost}${wsPort}/?clientId=${clientId}`;
+
+            let ws = null;
+            let retryTimer = null;
+            let retryAttempts = 0;
+            let wsEverConnected = false;
+            let destroyed = false;
+
+            function connectWS() {
+                if (destroyed) return;
+                if (ws && (ws.readyState === WebSocket.CONNECTING || ws.readyState === WebSocket.OPEN)) return;
+
+                if (ws) { ws.onopen = ws.onclose = ws.onerror = ws.onmessage = null; ws = null; }
+
+                try {
+                    ws = new WebSocket(WS_URL);
+                } catch (e) {
+                    console.warn("WebSocket init failed:", e);
+                    fallbackToBC();
+                    return;
+                }
+
+                ws.onopen = () => {
+                    wsEverConnected = true;
+                    retryAttempts = 0;
+                    if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
+                    console.log("Connected to TSRA Live Server.");
+                };
+
+                ws.onmessage = e => {
+                    try {
+                        const data = JSON.parse(e.data);
+                        if (data.viewers) el.textContent = data.viewers;
+                    } catch (_) { }
+                };
+
+                ws.onclose = () => {
+                    if (destroyed) return;
+                    // Always retry with capped backoff. Never permanently give up.
+                    retryAttempts = Math.min(retryAttempts + 1, 6);
+                    const delay = Math.min(1000 * retryAttempts, 6000);
+                    if (!retryTimer) retryTimer = setTimeout(() => { retryTimer = null; connectWS(); }, delay);
+                };
+
+                ws.onerror = () => {
+                    // Do not latch a permanent fallback. Let onclose drive the retry loop.
+                    if (ws) { try { ws.close(); } catch (_) { } }
+                };
+            }
+
+            window.addEventListener('beforeunload', () => {
+                destroyed = true;
+                if (retryTimer) clearTimeout(retryTimer);
+                if (ws) ws.close();
+            });
+
+            // 3. Fallback: BroadcastChannel (Counts multiple tabs on the SAME device)
+            function fallbackToBC() {
+                if (!window.BroadcastChannel) { el.textContent = '1'; return; }
+
+                const TAB_ID = Math.random().toString(36).substr(2, 9);
+                const peers = {};
+                const bc = new BroadcastChannel('tsra-viewers');
+
+                function send(type) { try { bc.postMessage({ type, id: TAB_ID }); } catch (_) { } }
+                function refresh() {
+                    const now = Date.now();
+                    for (const id in peers) { if (now - peers[id] > 10000) delete peers[id]; }
+                    el.textContent = Object.keys(peers).length + 1;
+                }
+
+                bc.onmessage = ({ data: { type, id } }) => {
+                    if (id === TAB_ID) return;
+                    if (type === 'leave') delete peers[id]; else peers[id] = Date.now();
+                    refresh();
+                };
+
+                send('join');
+                const hb = setInterval(() => { send('heartbeat'); refresh(); }, 4000);
+                window.addEventListener('beforeunload', () => { send('leave'); clearInterval(hb); bc.close(); });
+                refresh();
+            }
+
+            connectWS();
+        })();
+
+        // ── Tabs ──────────────────────────────────────────────────────────────────
+        function switchTab(name, e) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + name).classList.add('active');
+            e.currentTarget.classList.add('active');
+        }
+
+        // ── Modal ─────────────────────────────────────────────────────────────────
+        const MODAL_DATA = {
+            pulse: {
+                label: 'Baseline Pulse Period',
+                value: '35.55 min',
+                body: `<p>The fault&rsquo;s natural <strong>recharge interval</strong>. Every ~35.5 minutes, the Sarangani Segment accumulates enough tectonic stress to potentially trigger a slip event.</p><p>Think of it like a clock. The tectonic plates are constantly pushing against each other. Friction holds the fault locked. Stress builds. When it crosses the threshold, the fault slips &mdash; releasing energy as an earthquake &mdash; and the clock resets.</p><p>This value was <strong>fitted from the observed event intervals</strong>, not assumed from prior literature. It is specific to this fault segment under current post-mainshock loading conditions.</p>`
+            },
+            events: {
+                label: 'Confirmed Events',
+                value: '11',
+                body: `<p>The Event Log contains only <strong>confirmed seismic events</strong> in the working sequence.</p><p>Personal felt reports are no longer merged into this log. They are stored as <strong>Observation Outcome Records</strong> with report time, onset uncertainty, amplitude class, and official-confirmation status.</p><p>This keeps the architecture honest: confirmed catalog events, human observations, and model watch windows remain separate but comparable.</p>`
+            },
+            anchor: {
+                label: 'Last Confirmed Event',
+                value: 'A10 &middot; 03:36 AM',
+                body: `<p><strong>A9</strong> struck at 03:26 AM &mdash; 31 minutes after A8. The 1&times; watch center was 03:30 AM, so the observed event arrived about 4 minutes early.</p><p><strong>A10</strong> followed at 03:36 AM &mdash; only 10 minutes after A9. This is a sub-pulse (~0.28&times;), likely a triggered secondary slip on the same fault patch immediately after A9&rsquo;s release. Not a standard phase window.</p><p>A10 remains the <strong>last confirmed event anchor</strong>. The operational pending schedule now uses a separate <strong>provisional felt-observation anchor</strong>: significant activity reported by ~09:55 AM, exact onset unresolved, pending PHIVOLCS confirmation. From that provisional anchor, the next watch center is ~02:03 PM, with a practical watch band around 01:40&ndash;02:10 PM.</p>`
+            },
+            fit: {
+                label: 'Timing Fit',
+                value: '87.7%',
+                body: `<p><strong>87.7% timing alignment</strong> means the model&rsquo;s watch times matched observed event timing within acceptable tolerance across the confirmed event set.</p><p>This does <strong>not</strong> mean the system can predict magnitude, damage, or felt strength. Earthquake behavior varies by depth, rupture area, coupling, attenuation, and whether strain releases as one event, multiple micro-pulses, slow slip, or delayed transfer.</p><p>The useful result is narrower and safer: the model may be tracking a <strong>rhythm / phase pattern</strong>. Amplitude remains unknown until checked against official seismic observations.</p>`
+            }
+        };
+
+        function openModal(id) {
+            const d = MODAL_DATA[id];
+            if (!d) return;
+            document.getElementById('modal-label').textContent = d.label;
+            document.getElementById('modal-value').innerHTML = d.value;
+            document.getElementById('modal-body').innerHTML = d.body;
+            document.getElementById('modal-overlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        function closeModalOnBg(e) {
+            if (e.target === document.getElementById('modal-overlay')) closeModal();
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        // ── Countdown ─────────────────────────────────────────────────────────────
+        function fmtDiff(ms) {
+            if (ms <= 0) return 'elapsed';
+            const s = Math.floor(ms / 1000);
+            const h = Math.floor(s / 3600);
+            const m = Math.floor((s % 3600) / 60);
+            const sec = s % 60;
+            if (h > 0) return `In ${h}h ${m}m`;
+            if (m > 0) return `In ${m}m ${sec}s`;
+            return `In ${sec}s`;
+        }
+        function updateCountdowns() {
+            const now = Date.now();
+            let nextArrival = null, nextTime = null;
+            document.querySelectorAll('#pending-table tbody tr').forEach(row => {
+                const arrival = new Date(row.dataset.arrival);
+                const diff = arrival.getTime() - now;
+                const countdown = row.querySelector('.countdown');
+                const stCell = row.querySelector('.status-cell');
+                if (row.dataset.observed === 'true') {
+                    countdown.textContent = row.dataset.observedReport || 'observed';
+                    stCell.innerHTML = `<span class='pill observed-pill'>${row.dataset.observedLabel || 'Observed'}</span>`;
+                    row.style.opacity = '1';
+                    return;
+                }
+                countdown.textContent = fmtDiff(diff);
+                if (diff <= 0) {
+                    stCell.innerHTML = "<span class='pill elapsed-pill'>Elapsed</span>";
+                    row.style.opacity = '.4';
+                } else if (diff < 20 * 60 * 1000) {
+                    stCell.innerHTML = "<span class='pill active-pill'>&#9679; Imminent</span>";
+                    if (!nextArrival || arrival < nextArrival) { nextArrival = arrival; nextTime = diff; }
+                } else {
+                    stCell.innerHTML = "<span class='pill pending-pill'>Pending</span>";
+                    if (!nextArrival || arrival < nextArrival) { nextArrival = arrival; nextTime = diff; }
+                }
+            });
+            if (nextArrival) {
+                document.getElementById('hero-time').textContent =
+                    nextArrival.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('hero-remain').textContent = fmtDiff(nextTime);
+            }
+        }
+        setInterval(updateCountdowns, 1000); updateCountdowns();
+    </script>
 </body>
+
 </html>
