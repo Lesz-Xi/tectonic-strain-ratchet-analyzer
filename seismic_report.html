@@ -486,17 +486,27 @@
         }
 
         .learning-media-grid {
-            display: flex;
-            justify-content: center;
+            max-width: 1180px;
             margin: .25rem auto 1rem
         }
 
+        .learning-carousel {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: .1rem .05rem .75rem;
+            scroll-snap-type: x proximity;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin
+        }
+
         .learning-video-card {
-            width: min(100%, 1080px);
+            flex: 0 0 min(88vw, 560px);
             padding: 0;
             border-radius: 14px;
             overflow: hidden;
-            background: linear-gradient(180deg, var(--surface), #121316)
+            background: linear-gradient(180deg, var(--surface), #121316);
+            scroll-snap-align: start
         }
 
         .video-card-header {
@@ -556,6 +566,14 @@
         .learning-video-card .media-frame video.chart {
             min-height: 0;
             aspect-ratio: 16 / 9
+        }
+
+        .learning-carousel-note {
+            margin-top: .15rem;
+            font-size: .62rem;
+            color: var(--muted);
+            letter-spacing: .03em;
+            text-align: center
         }
 
         .media-frame img.chart,
@@ -854,7 +872,7 @@
             }
 
             #tab-learning .learning-video-card {
-                width: 100%;
+                flex-basis: min(88vw, 520px);
                 padding: 0
             }
 
@@ -1032,6 +1050,15 @@
             .video-status {
                 font-size: .58rem;
                 padding: .24rem .55rem
+            }
+
+            #tab-learning .learning-video-card {
+                flex-basis: 88vw
+            }
+
+            .learning-carousel {
+                gap: .75rem;
+                padding-bottom: .6rem
             }
 
             .anchor-summary {
@@ -1318,8 +1345,8 @@
         <button class='tab-btn active' onclick="switchTab('pending',event)">Pending Windows</button>
         <button class='tab-btn' onclick="switchTab('chart',event)">Dashboard Chart</button>
         <button class='tab-btn' onclick="switchTab('forecast',event)">Raw Forecast</button>
-        <button class='tab-btn' onclick="switchTab('learning',event)">Learning Guide</button>
         <button class='tab-btn' onclick="switchTab('origin',event)">Origin</button>
+        <button class='tab-btn' onclick="switchTab('learning',event)">Learning Guide</button>
     </div>
 
     <div class='tab-panel' id='tab-events'>
@@ -1638,27 +1665,6 @@
         </div>
     </div>
 
-    <div class='tab-panel' id='tab-learning'>
-        <div class='learning-media-grid'>
-            <div class='card learning-video-card'>
-                <div class='video-card-header'>
-                    <div class='video-copy'>
-                        <div class='video-kicker'>Learning Guide</div>
-                        <div class='video-title'>Subduction & Trench Mechanics</div>
-                        <div class='video-subtitle'>A compact visual guide to trench rhythm, phase windows, and why felt observations are logged separately from confirmed seismic events.</div>
-                    </div>
-                    <div class='video-status'>16:9 field module</div>
-                </div>
-                <div class='media-frame'>
-                    <video class='chart' controls preload='metadata' playsinline onerror='markMediaBroken(this)' src='/safety/Cotabato_Trench_Rhythm.mp4'>
-                        Your browser cannot play this safety video.
-                    </video>
-                    <div class='media-fallback'><strong>Video unavailable</strong>The local safety video did not load. Confirm <span class='mono'>/safety/Cotabato_Trench_Rhythm.mp4</span> is included in the deployed project.</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class='tab-panel' id='tab-origin'>
         <div class='card'>
             <div class='disclosure-wrap'>
@@ -1671,6 +1677,46 @@
                     noticing rhythm, never enough for safety decisions by itself.
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class='tab-panel' id='tab-learning'>
+        <div class='learning-media-grid'>
+            <div class='learning-carousel' aria-label='Learning guide video carousel'>
+                <div class='card learning-video-card'>
+                    <div class='video-card-header'>
+                        <div class='video-copy'>
+                            <div class='video-kicker'>Learning Guide</div>
+                            <div class='video-title'>Subduction & Trench Mechanics</div>
+                            <div class='video-subtitle'>A compact visual guide to trench rhythm, phase windows, and why felt observations are logged separately from confirmed seismic events.</div>
+                        </div>
+                        <div class='video-status'>16:9 field module</div>
+                    </div>
+                    <div class='media-frame'>
+                        <video class='chart' controls preload='metadata' playsinline onerror='markMediaBroken(this)' src='/safety/Cotabato_Trench_Rhythm.mp4'>
+                            Your browser cannot play this safety video.
+                        </video>
+                        <div class='media-fallback'><strong>Video unavailable</strong>The local safety video did not load. Confirm <span class='mono'>/safety/Cotabato_Trench_Rhythm.mp4</span> is included in the deployed project.</div>
+                    </div>
+                </div>
+                <div class='card learning-video-card'>
+                    <div class='video-card-header'>
+                        <div class='video-copy'>
+                            <div class='video-kicker'>Learning Guide</div>
+                            <div class='video-title'>Twin Tectonic Giants</div>
+                            <div class='video-subtitle'>A companion guide framing the major tectonic systems behind the field observations, fault rhythm, and provisional watch-window interpretation.</div>
+                        </div>
+                        <div class='video-status'>new · 16:9</div>
+                    </div>
+                    <div class='media-frame'>
+                        <video class='chart' controls preload='metadata' playsinline onerror='markMediaBroken(this)' src='/safety/Twin_Tectonic_Giants.mp4'>
+                            Your browser cannot play this safety video.
+                        </video>
+                        <div class='media-fallback'><strong>Video unavailable</strong>The local safety video did not load. Confirm <span class='mono'>/safety/Twin_Tectonic_Giants.mp4</span> is included in the deployed project.</div>
+                    </div>
+                </div>
+            </div>
+            <div class='learning-carousel-note'>Swipe or scroll sideways to move between learning cards.</div>
         </div>
     </div>
 
