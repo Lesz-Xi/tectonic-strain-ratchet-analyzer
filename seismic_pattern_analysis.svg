@@ -1,0 +1,108 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2400 1600' role='img' aria-labelledby='title desc'>
+<title id='title'>TSRA light-theme timing chart</title>
+<desc id='desc'>A light-theme evidence chart showing strain sawtooth timing and observer versus instrument clock drift.</desc>
+<rect width='2400' height='1600' fill='#f0ede8'/>
+<filter id='grain'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='table' tableValues='0 .045'/></feComponentTransfer></filter>
+<rect width='2400' height='1600' filter='url(#grain)' opacity='.45'/>
+<text x='1200.0' y='56.0' fill='#9a9488' font-family='IBM Plex Mono, monospace' font-size='24' font-weight='500' text-anchor='middle' letter-spacing='.16em'>TSRA observation plate · phase timing register</text>
+<rect x='190.0' y='95.0' width='2070.0' height='780.0' rx='0' fill='#faf8f4' stroke='#d9d2c5' opacity='1'/>
+<rect x='190.0' y='1015.0' width='2070.0' height='390.0' rx='0' fill='#faf8f4' stroke='#d9d2c5' opacity='1'/>
+<line x1='190.0' y1='95.0' x2='190.0' y2='875.0' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<line x1='559.6' y1='95.0' x2='559.6' y2='875.0' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<line x1='929.3' y1='95.0' x2='929.3' y2='875.0' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<line x1='1298.9' y1='95.0' x2='1298.9' y2='875.0' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<line x1='1668.6' y1='95.0' x2='1668.6' y2='875.0' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<line x1='2038.2' y1='95.0' x2='2038.2' y2='875.0' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<line x1='190.0' y1='841.1' x2='2260.0' y2='841.1' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<text x='146.0' y='849.1' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='end'>0</text>
+<line x1='190.0' y1='705.4' x2='2260.0' y2='705.4' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<text x='146.0' y='713.4' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='end'>2</text>
+<line x1='190.0' y1='569.8' x2='2260.0' y2='569.8' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<text x='146.0' y='577.8' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='end'>4</text>
+<line x1='190.0' y1='434.1' x2='2260.0' y2='434.1' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<text x='146.0' y='442.1' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='end'>6</text>
+<line x1='190.0' y1='298.5' x2='2260.0' y2='298.5' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<text x='146.0' y='306.5' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='end'>8</text>
+<line x1='190.0' y1='162.8' x2='2260.0' y2='162.8' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<text x='146.0' y='170.8' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='end'>10</text>
+<text x='1200.0' y='65.0' fill='#1e1c18' font-family='Inter, Arial, sans-serif' font-size='38' font-weight='700' text-anchor='middle' letter-spacing='.06em'>Tectonic strain sawtooth &amp; discrete slip timeline</text>
+<text x='-485.0' y='76' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' text-anchor='middle' transform='rotate(-90)'>Accumulated strain index S(t)</text>
+<path d='M 190.0 841.1 L 807.5 196.7 L 807.5 841.1 Z M 807.5 841.1 L 1283.8 366.3 L 1283.8 841.1 Z M 1283.8 841.1 L 1346.4 773.3 L 1346.4 841.1 Z M 1346.4 841.1 L 1412.6 773.3 L 1412.6 841.1 Z M 1412.6 841.1 L 1864.8 366.3 L 1864.8 841.1 Z M 1864.8 841.1 L 2096.6 603.7 L 2096.6 841.1 Z' fill='#168b96' opacity='.10'/>
+<path d='M 190.0 841.1 L 807.5 196.7 L 807.5 841.1 L 1283.8 366.3 L 1283.8 841.1 L 1346.4 773.3 L 1346.4 841.1 L 1412.6 773.3 L 1412.6 841.1 L 1864.8 366.3 L 1864.8 841.1 L 2096.6 603.7 L 2096.6 841.1 L 2152.0 783.9' fill='none' stroke='#168b96' stroke-width='5' stroke-linejoin='round' stroke-linecap='round'/>
+<rect x='208.0' y='113.0' width='520.0' height='96.0' rx='6' fill='#f2efe9' stroke='#d9d2c5' opacity='0.95'/>
+<line x1='234.0' y1='147.0' x2='300.0' y2='147.0' stroke='#168b96' stroke-width='5' opacity='1'/>
+<text x='322.0' y='157.0' fill='#1e1c18' font-family='Inter, Arial, sans-serif' font-size='30' font-weight='400' text-anchor='start'>Tectonic strain accumulation S(t)</text>
+<text x='260.0' y='195.0' fill='#8a6a30' font-family='Inter, Arial, sans-serif' font-size='38' font-weight='400' text-anchor='middle'>★</text>
+<text x='322.0' y='198.0' fill='#1e1c18' font-family='Inter, Arial, sans-serif' font-size='30' font-weight='400' text-anchor='start'>Mainshock (Mw 7.2)</text>
+<text x='190.0' y='825.1' fill='#8a6a30' font-family='Inter, Arial, sans-serif' font-size='42' font-weight='400' text-anchor='middle'>★</text>
+<circle cx='807.5' cy='196.7' r='16' fill='#2f8f75' stroke='#faf8f4' stroke-width='5'/>
+<rect x='745.5' y='140.7' width='124.0' height='34.0' rx='5' fill='#f2efe9' stroke='#d9d2c5' opacity='0.96'/>
+<text x='807.5' y='164.7' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='20' font-weight='500' text-anchor='middle'>A1 (9.5×)</text>
+<circle cx='1283.8' cy='366.3' r='16' fill='#2f8f75' stroke='#faf8f4' stroke-width='5'/>
+<rect x='1221.8' y='310.3' width='124.0' height='34.0' rx='5' fill='#f2efe9' stroke='#d9d2c5' opacity='0.96'/>
+<text x='1283.8' y='334.3' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='20' font-weight='500' text-anchor='middle'>A2 (7.0×)</text>
+<circle cx='1346.4' cy='773.3' r='16' fill='#2f8f75' stroke='#faf8f4' stroke-width='5'/>
+<rect x='1290.4' y='717.3' width='112.0' height='34.0' rx='5' fill='#f2efe9' stroke='#d9d2c5' opacity='0.96'/>
+<text x='1346.4' y='741.3' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='20' font-weight='500' text-anchor='middle'>A3 (1.0×)</text>
+<circle cx='1412.6' cy='773.3' r='16' fill='#2f8f75' stroke='#faf8f4' stroke-width='5'/>
+<rect x='1356.6' y='717.3' width='112.0' height='34.0' rx='5' fill='#f2efe9' stroke='#d9d2c5' opacity='0.96'/>
+<text x='1412.6' y='741.3' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='20' font-weight='500' text-anchor='middle'>A4 (1.0×)</text>
+<circle cx='1864.8' cy='366.3' r='16' fill='#2f8f75' stroke='#faf8f4' stroke-width='5'/>
+<rect x='1802.8' y='310.3' width='124.0' height='34.0' rx='5' fill='#f2efe9' stroke='#d9d2c5' opacity='0.96'/>
+<text x='1864.8' y='334.3' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='20' font-weight='500' text-anchor='middle'>A5 (7.0×)</text>
+<circle cx='2096.6' cy='603.7' r='16' fill='#2f8f75' stroke='#faf8f4' stroke-width='5'/>
+<rect x='2034.6' y='547.7' width='124.0' height='34.0' rx='5' fill='#f2efe9' stroke='#d9d2c5' opacity='0.96'/>
+<text x='2096.6' y='571.7' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='20' font-weight='500' text-anchor='middle'>A6 (3.5×)</text>
+<text x='1200.0' y='970.0' fill='#1e1c18' font-family='Inter, Arial, sans-serif' font-size='34' font-weight='700' text-anchor='middle' letter-spacing='.06em'>Observer notes vs instrument catalog clock drift</text>
+<line x1='190.0' y1='1015.0' x2='190.0' y2='1405.0' stroke='#e2dbcf' stroke-width='1' opacity='0.75' stroke-dasharray='8 10'/>
+<line x1='559.6' y1='1015.0' x2='559.6' y2='1405.0' stroke='#e2dbcf' stroke-width='1' opacity='0.75' stroke-dasharray='8 10'/>
+<line x1='929.3' y1='1015.0' x2='929.3' y2='1405.0' stroke='#e2dbcf' stroke-width='1' opacity='0.75' stroke-dasharray='8 10'/>
+<line x1='1298.9' y1='1015.0' x2='1298.9' y2='1405.0' stroke='#e2dbcf' stroke-width='1' opacity='0.75' stroke-dasharray='8 10'/>
+<line x1='1668.6' y1='1015.0' x2='1668.6' y2='1405.0' stroke='#e2dbcf' stroke-width='1' opacity='0.75' stroke-dasharray='8 10'/>
+<line x1='2038.2' y1='1015.0' x2='2038.2' y2='1405.0' stroke='#e2dbcf' stroke-width='1' opacity='0.75' stroke-dasharray='8 10'/>
+<line x1='190.0' y1='1107.4' x2='2260.0' y2='1107.4' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<text x='156.0' y='1116.4' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='end'>Observer</text>
+<line x1='190.0' y1='1312.6' x2='2260.0' y2='1312.6' stroke='#e2dbcf' stroke-width='1' opacity='0.8' stroke-dasharray='8 10'/>
+<text x='156.0' y='1321.6' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='end'>Instrument</text>
+<text x='1200.0' y='1512.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='middle'>Time since mainshock (minutes)</text>
+<text x='190.0' y='1453.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='middle'>0</text>
+<text x='559.6' y='1453.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='middle'>200</text>
+<text x='929.3' y='1453.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='middle'>400</text>
+<text x='1298.9' y='1453.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='middle'>600</text>
+<text x='1668.6' y='1453.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='middle'>800</text>
+<text x='2038.2' y='1453.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='28' font-weight='400' text-anchor='middle'>1000</text>
+<rect x='208.0' y='1033.0' width='380.0' height='82.0' rx='6' fill='#f2efe9' stroke='#d9d2c5' opacity='0.95'/>
+<circle cx='248.0' cy='1061.0' r='12' fill='#b74770' stroke='#faf8f4' stroke-width='4'/>
+<text x='296.0' y='1071.0' fill='#1e1c18' font-family='Inter, Arial, sans-serif' font-size='30' font-weight='400' text-anchor='start'>Observer Notes</text>
+<circle cx='248.0' cy='1101.0' r='12' fill='#2f8f75' stroke='#faf8f4' stroke-width='4'/>
+<text x='296.0' y='1111.0' fill='#1e1c18' font-family='Inter, Arial, sans-serif' font-size='30' font-weight='400' text-anchor='start'>Instrument Catalog</text>
+<line x1='190.0' y1='1107.4' x2='190.0' y2='1312.6' stroke='#5a5448' stroke-width='3' opacity='0.55' stroke-dasharray='5 9'/>
+<text x='190.0' y='1202.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='21' font-weight='400' text-anchor='middle'>+0.0m</text>
+<line x1='807.9' y1='1107.4' x2='807.5' y2='1312.6' stroke='#5a5448' stroke-width='3' opacity='0.55' stroke-dasharray='5 9'/>
+<text x='807.7' y='1202.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='21' font-weight='400' text-anchor='middle'>-0.2m</text>
+<line x1='1258.9' y1='1107.4' x2='1283.8' y2='1312.6' stroke='#5a5448' stroke-width='3' opacity='0.55' stroke-dasharray='5 9'/>
+<text x='1271.4' y='1202.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='21' font-weight='400' text-anchor='middle'>+13.5m</text>
+<line x1='1323.6' y1='1107.4' x2='1346.4' y2='1312.6' stroke='#5a5448' stroke-width='3' opacity='0.55' stroke-dasharray='5 9'/>
+<text x='1335.0' y='1202.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='21' font-weight='400' text-anchor='middle'>+12.3m</text>
+<line x1='1388.3' y1='1107.4' x2='1412.6' y2='1312.6' stroke='#5a5448' stroke-width='3' opacity='0.55' stroke-dasharray='5 9'/>
+<text x='1400.4' y='1202.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='21' font-weight='400' text-anchor='middle'>+13.2m</text>
+<line x1='1839.2' y1='1107.4' x2='1864.8' y2='1312.6' stroke='#5a5448' stroke-width='3' opacity='0.55' stroke-dasharray='5 9'/>
+<text x='1852.0' y='1202.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='21' font-weight='400' text-anchor='middle'>+13.8m</text>
+<line x1='2072.1' y1='1107.4' x2='2096.6' y2='1312.6' stroke='#5a5448' stroke-width='3' opacity='0.55' stroke-dasharray='5 9'/>
+<text x='2084.3' y='1202.0' fill='#5a5448' font-family='Inter, Arial, sans-serif' font-size='21' font-weight='400' text-anchor='middle'>+13.2m</text>
+<circle cx='190.0' cy='1107.4' r='13' fill='#b74770' stroke='#faf8f4' stroke-width='4'/>
+<circle cx='807.9' cy='1107.4' r='13' fill='#b74770' stroke='#faf8f4' stroke-width='4'/>
+<circle cx='1258.9' cy='1107.4' r='13' fill='#b74770' stroke='#faf8f4' stroke-width='4'/>
+<circle cx='1323.6' cy='1107.4' r='13' fill='#b74770' stroke='#faf8f4' stroke-width='4'/>
+<circle cx='1388.3' cy='1107.4' r='13' fill='#b74770' stroke='#faf8f4' stroke-width='4'/>
+<circle cx='1839.2' cy='1107.4' r='13' fill='#b74770' stroke='#faf8f4' stroke-width='4'/>
+<circle cx='2072.1' cy='1107.4' r='13' fill='#b74770' stroke='#faf8f4' stroke-width='4'/>
+<circle cx='190.0' cy='1312.6' r='13' fill='#2f8f75' stroke='#faf8f4' stroke-width='4'/>
+<circle cx='807.5' cy='1312.6' r='13' fill='#2f8f75' stroke='#faf8f4' stroke-width='4'/>
+<circle cx='1283.8' cy='1312.6' r='13' fill='#2f8f75' stroke='#faf8f4' stroke-width='4'/>
+<circle cx='1346.4' cy='1312.6' r='13' fill='#2f8f75' stroke='#faf8f4' stroke-width='4'/>
+<circle cx='1412.6' cy='1312.6' r='13' fill='#2f8f75' stroke='#faf8f4' stroke-width='4'/>
+<circle cx='1864.8' cy='1312.6' r='13' fill='#2f8f75' stroke='#faf8f4' stroke-width='4'/>
+<circle cx='2096.6' cy='1312.6' r='13' fill='#2f8f75' stroke='#faf8f4' stroke-width='4'/>
+<text x='1200.0' y='1560.0' fill='#9a9488' font-family='IBM Plex Mono, monospace' font-size='22' font-weight='500' text-anchor='middle' letter-spacing='.08em'>Light-theme observational chart · confirmed records, observer notes, and watch timing remain separate</text>
+</svg>
