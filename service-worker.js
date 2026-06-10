@@ -1,4 +1,4 @@
-const TSRA_CACHE_VERSION = 'tsra-field-cache-v2';
+const TSRA_CACHE_VERSION = 'tsra-field-cache-v3';
 const CORE_ASSETS = [
   '/',
   '/seismic_report.html',
@@ -24,6 +24,8 @@ self.addEventListener('activate', event => {
         .filter(key => key !== TSRA_CACHE_VERSION)
         .map(key => caches.delete(key))))
       .then(() => self.clients.claim())
+      .then(() => self.clients.matchAll({ type: 'window', includeUncontrolled: true }))
+      .then(clients => Promise.all(clients.map(client => client.navigate(client.url))))
   );
 });
 
