@@ -1286,6 +1286,249 @@
             box-shadow: inset 0 1px 0 rgba(122, 170, 136, .22)
         }
 
+        .record-outcome-btn,
+        .ledger-delete-btn {
+            border: 1px solid var(--border-sub);
+            background: transparent;
+            color: var(--muted);
+            font-family: var(--mono);
+            font-size: .46rem;
+            letter-spacing: .11em;
+            text-transform: uppercase;
+            padding: .22rem .44rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: color .15s, border-color .15s, background .15s
+        }
+
+        .record-outcome-btn:hover,
+        .record-outcome-btn:focus-visible,
+        .ledger-delete-btn:hover,
+        .ledger-delete-btn:focus-visible {
+            color: var(--text);
+            border-color: color-mix(in srgb, var(--accent) 36%, var(--border-sub));
+            background: color-mix(in srgb, var(--accent) 6%, transparent);
+            outline: none
+        }
+
+        .outcome-ledger-toolbar {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: .8rem;
+            margin: -.25rem 0 .75rem;
+            padding-bottom: .55rem;
+            border-bottom: 1px solid var(--border-sub)
+        }
+
+        .outcome-ledger-copy {
+            font-size: .68rem;
+            color: var(--muted);
+            line-height: 1.4
+        }
+
+        .outcome-ledger-status {
+            font-family: var(--mono);
+            font-size: .46rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            white-space: nowrap
+        }
+
+        .ledger-local-row td {
+            background: color-mix(in srgb, var(--accent2) 4%, transparent)
+        }
+
+        .ledger-note {
+            margin-top: .22rem;
+            color: var(--muted);
+            font-size: .62rem;
+            line-height: 1.35
+        }
+
+        .ledger-status-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            flex-wrap: wrap
+        }
+
+        .ledger-delete-btn {
+            font-size: .42rem;
+            padding: .18rem .36rem
+        }
+
+        .outcome-recorder-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            place-items: center;
+            padding: 1rem;
+            background: rgba(10, 10, 8, .42);
+            backdrop-filter: blur(3px)
+        }
+
+        .outcome-recorder-overlay.open {
+            display: grid
+        }
+
+        .outcome-recorder-card {
+            position: relative;
+            width: min(92vw, 620px);
+            max-height: 88vh;
+            overflow: auto;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            box-shadow: var(--shadow)
+        }
+
+        .outcome-recorder-close {
+            position: absolute;
+            top: .56rem;
+            right: .58rem;
+            width: 28px;
+            height: 28px;
+            border: 1px solid var(--border-sub);
+            background: color-mix(in srgb, var(--surface2) 80%, var(--bg));
+            color: var(--text-sub);
+            cursor: pointer;
+            display: inline-grid;
+            place-items: center;
+            font-size: 1rem;
+            line-height: 1
+        }
+
+        .outcome-recorder-head {
+            padding: .95rem 1rem .8rem;
+            border-bottom: 1px solid var(--border-sub)
+        }
+
+        .outcome-recorder-kicker {
+            font-family: var(--mono);
+            font-size: .48rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: .35rem
+        }
+
+        .outcome-recorder-title {
+            font-family: var(--serif);
+            font-size: 1.12rem;
+            font-weight: 300;
+            color: var(--text);
+            line-height: 1.15
+        }
+
+        .outcome-recorder-summary {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: .45rem;
+            padding: .85rem 1rem;
+            border-bottom: 1px solid var(--border-sub);
+            background: color-mix(in srgb, var(--surface2) 62%, var(--bg))
+        }
+
+        .outcome-summary-item {
+            min-width: 0
+        }
+
+        .outcome-summary-label {
+            font-family: var(--mono);
+            font-size: .42rem;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: .24rem
+        }
+
+        .outcome-summary-value {
+            font-family: var(--mono);
+            font-size: .58rem;
+            color: var(--text-sub);
+            line-height: 1.35;
+            overflow-wrap: anywhere
+        }
+
+        .outcome-recorder-form {
+            padding: .95rem 1rem 1rem;
+            display: grid;
+            gap: .8rem
+        }
+
+        .outcome-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .7rem
+        }
+
+        .outcome-field {
+            display: grid;
+            gap: .32rem
+        }
+
+        .outcome-field label {
+            font-family: var(--mono);
+            font-size: .46rem;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            color: var(--muted)
+        }
+
+        .outcome-field input,
+        .outcome-field select,
+        .outcome-field textarea {
+            width: 100%;
+            border: 1px solid var(--border-sub);
+            border-radius: 0;
+            background: color-mix(in srgb, var(--surface2) 64%, var(--bg));
+            color: var(--text);
+            font: inherit;
+            font-size: .72rem;
+            padding: .48rem .52rem;
+            outline: none
+        }
+
+        .outcome-field textarea {
+            min-height: 74px;
+            resize: vertical
+        }
+
+        .outcome-field input:focus,
+        .outcome-field select:focus,
+        .outcome-field textarea:focus {
+            border-color: color-mix(in srgb, var(--accent) 42%, var(--border-sub))
+        }
+
+        .outcome-recorder-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+            border-top: 1px solid var(--border-sub);
+            padding-top: .8rem
+        }
+
+        .outcome-recorder-note {
+            color: var(--muted);
+            font-size: .62rem;
+            line-height: 1.4
+        }
+
+        .outcome-save-btn {
+            border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--border-sub));
+            background: color-mix(in srgb, var(--accent) 8%, transparent);
+            color: var(--accent);
+            font-family: var(--mono);
+            font-size: .5rem;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            padding: .42rem .72rem;
+            cursor: pointer
+        }
+
         .anchor-card {
             padding: 1.15rem 1.2rem
         }
@@ -2619,6 +2862,21 @@
             .image-preview-img {
                 max-height: 66vh
             }
+            .outcome-recorder-card {
+                width: min(94vw, 620px);
+                max-height: 84vh
+            }
+            .outcome-recorder-summary,
+            .outcome-form-grid {
+                grid-template-columns: 1fr
+            }
+            .outcome-recorder-actions {
+                align-items: stretch;
+                flex-direction: column
+            }
+            .outcome-save-btn {
+                width: 100%
+            }
             .field-report-hero-img {
                 max-height: 120px
             }
@@ -2850,6 +3108,10 @@
         </div>
         <div class='card' style='margin-top:1rem'>
             <div class='card-title'>Observation Outcome Log</div>
+            <div class='outcome-ledger-toolbar'>
+                <div class='outcome-ledger-copy'>Local outcome records are stored on this device and remain separate from confirmed seismic events.</div>
+                <div class='outcome-ledger-status' id='outcome-ledger-status'>0 local records</div>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -2861,7 +3123,7 @@
                         <th>Status</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id='observation-log-body'>
                     <tr>
                         <td><span class='badge badge-as'>FELT</span></td>
                         <td class='mono'>Jun 10 &middot; by ~09:55 AM</td>
@@ -2917,6 +3179,7 @@
                             <th>Remaining</th>
                             <th>Observation Class</th>
                             <th>Status</th>
+                            <th>Record</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -2927,6 +3190,7 @@
                             <td class='countdown' data-arrival='2026-06-10T16:08:17'>&mdash;</td>
                             <td>Early post-window check</td>
                             <td class='status-cell' data-arrival='2026-06-10T16:08:17'>&mdash;</td>
+                            <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
                         </tr>
                         <tr data-arrival='2026-06-10T17:37:10' data-observed='true' data-observed-report='felt ~05:14 PM' data-observed-label='Early-band observed'>
                             <td><span class='mult-badge'>3.5&times;</span></td>
@@ -2935,6 +3199,7 @@
                             <td class='countdown' data-arrival='2026-06-10T17:37:10'>&mdash;</td>
                             <td>Brief felt report; ~23 min before anchor</td>
                             <td class='status-cell' data-arrival='2026-06-10T17:37:10'>&mdash;</td>
+                            <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
                         </tr>
                         <tr data-arrival='2026-06-10T19:41:36'>
                             <td><span class='mult-badge'>7.0&times;</span></td>
@@ -2943,6 +3208,7 @@
                             <td class='countdown' data-arrival='2026-06-10T19:41:36'>&mdash;</td>
                             <td>Next long-phase watch</td>
                             <td class='status-cell' data-arrival='2026-06-10T19:41:36'>&mdash;</td>
+                            <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
                         </tr>
                         <tr data-arrival='2026-06-10T21:10:29'>
                             <td><span class='mult-badge'>9.5&times;</span></td>
@@ -2951,6 +3217,7 @@
                             <td class='countdown' data-arrival='2026-06-10T21:10:29'>&mdash;</td>
                             <td>Extended-phase watch</td>
                             <td class='status-cell' data-arrival='2026-06-10T21:10:29'>&mdash;</td>
+                            <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -3330,6 +3597,82 @@
                 <div class='fr-audit-note'>Audit note &mdash; The geological framework (DDS, Cotabato Trench asperity model, stick-slip mechanism) is academically grounded. The specific 1&times;/3.5&times;/7&times;/9.5&times; multiplier framework is an empirical observation from this sequence and is not derived from or validated by a published theoretical model. The 87.7% timing fit is computed from 11 events &mdash; a real dataset, not a large one. Treat forward windows as observational structure, not certified forecasts.</div>
             </div>
 
+        </div>
+    </div>
+
+    <div class='outcome-recorder-overlay' id='outcome-recorder-overlay' aria-hidden='true' onclick='closeOutcomeRecorderOnBackdrop(event)'>
+        <div class='outcome-recorder-card' role='dialog' aria-modal='true' aria-labelledby='outcome-recorder-title'>
+            <button class='outcome-recorder-close' type='button' onclick='closeOutcomeRecorder()' aria-label='Close outcome recorder'>&times;</button>
+            <div class='outcome-recorder-head'>
+                <div class='outcome-recorder-kicker'>Window Outcome Recorder</div>
+                <div class='outcome-recorder-title' id='outcome-recorder-title'>Record one local observation</div>
+            </div>
+            <div class='outcome-recorder-summary' aria-label='Linked observation window'>
+                <div class='outcome-summary-item'>
+                    <div class='outcome-summary-label'>Phase</div>
+                    <div class='outcome-summary-value' id='outcome-summary-phase'>&mdash;</div>
+                </div>
+                <div class='outcome-summary-item'>
+                    <div class='outcome-summary-label'>Watch time</div>
+                    <div class='outcome-summary-value' id='outcome-summary-watch'>&mdash;</div>
+                </div>
+                <div class='outcome-summary-item'>
+                    <div class='outcome-summary-label'>Class</div>
+                    <div class='outcome-summary-value' id='outcome-summary-class'>&mdash;</div>
+                </div>
+            </div>
+            <form class='outcome-recorder-form' id='outcome-recorder-form'>
+                <div class='outcome-form-grid'>
+                    <div class='outcome-field'>
+                        <label for='outcome-report-time'>Report time</label>
+                        <input id='outcome-report-time' name='reportTime' type='datetime-local' required>
+                    </div>
+                    <div class='outcome-field'>
+                        <label for='outcome-type'>Outcome</label>
+                        <select id='outcome-type' name='observationType' required>
+                            <option value='no-outcome'>No local outcome</option>
+                            <option value='felt'>Felt something</option>
+                            <option value='confirmed'>Confirmed later</option>
+                            <option value='uncertain'>Uncertain / ambiguous</option>
+                        </select>
+                    </div>
+                    <div class='outcome-field'>
+                        <label for='outcome-onset'>Onset relation</label>
+                        <select id='outcome-onset' name='onsetRelation' required>
+                            <option value='watch-center'>Watch center elapsed</option>
+                            <option value='early-band'>Early-band</option>
+                            <option value='near-center'>Near-center</option>
+                            <option value='late-band'>Late-band</option>
+                            <option value='unknown'>Unknown</option>
+                        </select>
+                    </div>
+                    <div class='outcome-field'>
+                        <label for='outcome-confidence'>Confidence</label>
+                        <select id='outcome-confidence' name='confidence' required>
+                            <option value='low'>Low</option>
+                            <option value='medium'>Medium</option>
+                            <option value='high'>High</option>
+                        </select>
+                    </div>
+                    <div class='outcome-field'>
+                        <label for='outcome-source'>Source</label>
+                        <select id='outcome-source' name='source' required>
+                            <option value='personal'>Personal observation</option>
+                            <option value='phivolcs'>PHIVOLCS</option>
+                            <option value='usgs'>USGS</option>
+                            <option value='other'>Other source</option>
+                        </select>
+                    </div>
+                    <div class='outcome-field'>
+                        <label for='outcome-note'>Short note</label>
+                        <textarea id='outcome-note' name='note' maxlength='180' placeholder='Optional. Example: brief local shake felt, no sound, external check pending.'></textarea>
+                    </div>
+                </div>
+                <div class='outcome-recorder-actions'>
+                    <div class='outcome-recorder-note'>Saved locally on this device. This is not a warning report or official confirmation.</div>
+                    <button class='outcome-save-btn' type='submit'>Save record</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -3737,6 +4080,226 @@
             if (e.target === document.getElementById('modal-overlay')) closeModal();
         }
 
+        const OBSERVATION_LEDGER_KEY = 'tsraObservationLedger.v1';
+        const OBSERVATION_LEDGER_TYPES = {
+            'no-outcome': 'No local outcome',
+            felt: 'Felt something',
+            confirmed: 'Confirmed later',
+            uncertain: 'Uncertain'
+        };
+        const OBSERVATION_LEDGER_ONSETS = {
+            'watch-center': 'Watch center elapsed',
+            'early-band': 'Early-band',
+            'near-center': 'Near-center',
+            'late-band': 'Late-band',
+            unknown: 'Unknown'
+        };
+        const OBSERVATION_LEDGER_CONFIDENCE = { low: 'Low', medium: 'Medium', high: 'High' };
+        const OBSERVATION_LEDGER_SOURCES = {
+            personal: 'Personal',
+            phivolcs: 'PHIVOLCS',
+            usgs: 'USGS',
+            other: 'Other'
+        };
+        let outcomeRecorderContext = null;
+        let outcomeRecorderLastFocus = null;
+
+        function safeLedgerValue(value, fallback = '') {
+            return typeof value === 'string' ? value.slice(0, 240) : fallback;
+        }
+        function makeLedgerId() {
+            if (window.crypto && typeof window.crypto.randomUUID === 'function') return window.crypto.randomUUID();
+            return `obs-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        }
+        function toDateTimeLocalValue(date) {
+            const pad = value => String(value).padStart(2, '0');
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        }
+        function formatLedgerDate(value) {
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return 'Unknown time';
+            return date.toLocaleString('en-PH', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+        }
+        function normalizeLedgerEntry(entry) {
+            if (!entry || typeof entry !== 'object') return null;
+            const observationType = OBSERVATION_LEDGER_TYPES[entry.observationType] ? entry.observationType : 'uncertain';
+            const onsetRelation = OBSERVATION_LEDGER_ONSETS[entry.onsetRelation] ? entry.onsetRelation : 'unknown';
+            const confidence = OBSERVATION_LEDGER_CONFIDENCE[entry.confidence] ? entry.confidence : 'low';
+            const source = OBSERVATION_LEDGER_SOURCES[entry.source] ? entry.source : 'personal';
+            return {
+                id: safeLedgerValue(entry.id) || makeLedgerId(),
+                createdAt: safeLedgerValue(entry.createdAt) || new Date().toISOString(),
+                reportTime: safeLedgerValue(entry.reportTime) || new Date().toISOString(),
+                windowArrival: safeLedgerValue(entry.windowArrival),
+                phase: safeLedgerValue(entry.phase, 'Unknown phase'),
+                windowDuration: safeLedgerValue(entry.windowDuration),
+                watchTime: safeLedgerValue(entry.watchTime, 'Unknown watch'),
+                observationClass: safeLedgerValue(entry.observationClass),
+                observationType,
+                onsetRelation,
+                confidence,
+                source,
+                note: safeLedgerValue(entry.note).trim().slice(0, 180)
+            };
+        }
+        function loadObservationLedgerEntries() {
+            try {
+                const raw = localStorage.getItem(OBSERVATION_LEDGER_KEY);
+                if (!raw) return [];
+                const parsed = JSON.parse(raw);
+                if (!Array.isArray(parsed)) return [];
+                return parsed.map(normalizeLedgerEntry).filter(Boolean).slice(-100);
+            } catch (_) {
+                return [];
+            }
+        }
+        function saveObservationLedgerEntries(entries) {
+            const normalized = entries.map(normalizeLedgerEntry).filter(Boolean).slice(-100);
+            localStorage.setItem(OBSERVATION_LEDGER_KEY, JSON.stringify(normalized));
+            return normalized;
+        }
+        function getPendingWindowContext(button) {
+            const row = button && button.closest ? button.closest('tr') : null;
+            if (!row) return null;
+            const cells = row.querySelectorAll('td');
+            return {
+                windowArrival: row.dataset.arrival || '',
+                phase: cells[0] ? cells[0].textContent.trim() : '',
+                windowDuration: cells[1] ? cells[1].textContent.trim() : '',
+                watchTime: cells[2] ? cells[2].textContent.trim() : '',
+                observationClass: cells[4] ? cells[4].textContent.trim() : ''
+            };
+        }
+        function setText(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value || '—';
+        }
+        function openOutcomeRecorder(button) {
+            const context = getPendingWindowContext(button);
+            const overlay = document.getElementById('outcome-recorder-overlay');
+            const form = document.getElementById('outcome-recorder-form');
+            if (!context || !overlay || !form) return;
+            outcomeRecorderContext = context;
+            outcomeRecorderLastFocus = document.activeElement;
+            setText('outcome-summary-phase', `${context.phase} · ${context.windowDuration}`);
+            setText('outcome-summary-watch', context.watchTime);
+            setText('outcome-summary-class', context.observationClass);
+            form.reset();
+            const reportTime = document.getElementById('outcome-report-time');
+            if (reportTime) reportTime.value = toDateTimeLocalValue(new Date());
+            const onset = document.getElementById('outcome-onset');
+            if (onset) onset.value = 'watch-center';
+            overlay.classList.add('open');
+            overlay.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            const type = document.getElementById('outcome-type');
+            if (type) type.focus();
+        }
+        function closeOutcomeRecorder() {
+            const overlay = document.getElementById('outcome-recorder-overlay');
+            if (!overlay || !overlay.classList.contains('open')) return;
+            overlay.classList.remove('open');
+            overlay.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            outcomeRecorderContext = null;
+            if (outcomeRecorderLastFocus && typeof outcomeRecorderLastFocus.focus === 'function') outcomeRecorderLastFocus.focus();
+            outcomeRecorderLastFocus = null;
+        }
+        function closeOutcomeRecorderOnBackdrop(e) {
+            if (e.target === document.getElementById('outcome-recorder-overlay')) closeOutcomeRecorder();
+        }
+        function buildTextCell(text, className) {
+            const td = document.createElement('td');
+            if (className) td.className = className;
+            td.textContent = text;
+            return td;
+        }
+        function renderObservationLedgerEntries() {
+            const body = document.getElementById('observation-log-body');
+            const status = document.getElementById('outcome-ledger-status');
+            if (!body) return;
+            body.querySelectorAll('[data-local-ledger-row="true"]').forEach(row => row.remove());
+            const entries = loadObservationLedgerEntries();
+            if (status) status.textContent = `${entries.length} local ${entries.length === 1 ? 'record' : 'records'}`;
+            entries.forEach(entry => {
+                const row = document.createElement('tr');
+                row.className = 'ledger-local-row';
+                row.dataset.localLedgerRow = 'true';
+                const source = document.createElement('td');
+                const badge = document.createElement('span');
+                badge.className = 'badge badge-as';
+                badge.textContent = 'LOCAL';
+                source.append(badge);
+                row.append(source);
+                row.append(buildTextCell(formatLedgerDate(entry.reportTime), 'mono'));
+                row.append(buildTextCell(`${entry.phase} · ${entry.watchTime}`, 'mono'));
+                row.append(buildTextCell(OBSERVATION_LEDGER_ONSETS[entry.onsetRelation] || 'Unknown'));
+                const outcome = document.createElement('td');
+                outcome.textContent = OBSERVATION_LEDGER_TYPES[entry.observationType] || 'Uncertain';
+                if (entry.note) {
+                    const note = document.createElement('div');
+                    note.className = 'ledger-note';
+                    note.textContent = entry.note;
+                    outcome.append(note);
+                }
+                row.append(outcome);
+                const statusCell = document.createElement('td');
+                const actions = document.createElement('span');
+                actions.className = 'ledger-status-actions';
+                const pill = document.createElement('span');
+                pill.className = entry.observationType === 'no-outcome' ? 'pill elapsed-pill' : 'pill observed-pill';
+                pill.textContent = `${OBSERVATION_LEDGER_CONFIDENCE[entry.confidence]} · ${OBSERVATION_LEDGER_SOURCES[entry.source]}`;
+                const del = document.createElement('button');
+                del.className = 'ledger-delete-btn';
+                del.type = 'button';
+                del.textContent = 'Delete';
+                del.setAttribute('aria-label', 'Delete local observation record');
+                del.addEventListener('click', () => deleteObservationLedgerEntry(entry.id));
+                actions.append(pill, del);
+                statusCell.append(actions);
+                row.append(statusCell);
+                body.append(row);
+            });
+        }
+        function saveObservationOutcomeRecord(event) {
+            event.preventDefault();
+            if (!outcomeRecorderContext) return;
+            const form = event.currentTarget;
+            const data = new FormData(form);
+            const reportTimeRaw = safeLedgerValue(data.get('reportTime'));
+            const parsedReportTime = reportTimeRaw ? new Date(reportTimeRaw) : new Date();
+            const reportTime = Number.isNaN(parsedReportTime.getTime()) ? new Date().toISOString() : parsedReportTime.toISOString();
+            const entry = normalizeLedgerEntry({
+                id: makeLedgerId(),
+                createdAt: new Date().toISOString(),
+                reportTime,
+                ...outcomeRecorderContext,
+                observationType: data.get('observationType'),
+                onsetRelation: data.get('onsetRelation'),
+                confidence: data.get('confidence'),
+                source: data.get('source'),
+                note: data.get('note')
+            });
+            if (!entry) return;
+            const entries = loadObservationLedgerEntries();
+            try {
+                saveObservationLedgerEntries([...entries, entry]);
+                renderObservationLedgerEntries();
+                closeOutcomeRecorder();
+            } catch (_) {
+                const status = document.getElementById('outcome-ledger-status');
+                if (status) status.textContent = 'local storage unavailable';
+            }
+        }
+        function deleteObservationLedgerEntry(id) {
+            const entries = loadObservationLedgerEntries().filter(entry => entry.id !== id);
+            try { saveObservationLedgerEntries(entries); } catch (_) { }
+            renderObservationLedgerEntries();
+        }
+        const outcomeRecorderForm = document.getElementById('outcome-recorder-form');
+        if (outcomeRecorderForm) outcomeRecorderForm.addEventListener('submit', saveObservationOutcomeRecord);
+        renderObservationLedgerEntries();
+
         let imagePreviewLastFocus = null;
         function openImagePreview() {
             const overlay = document.getElementById('image-preview-overlay');
@@ -3762,6 +4325,7 @@
         }
         document.addEventListener('keydown', e => {
             if (e.key !== 'Escape') return;
+            closeOutcomeRecorder();
             closeImagePreview();
             closeModal();
         });
