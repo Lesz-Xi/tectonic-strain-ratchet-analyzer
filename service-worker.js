@@ -1,4 +1,4 @@
-const TSRA_CACHE_VERSION = 'tsra-field-cache-v12';
+const TSRA_CACHE_VERSION = 'tsra-field-cache-v13';
 const CORE_ASSETS = [
   '/',
   '/seismic_report.html',
@@ -39,6 +39,10 @@ self.addEventListener('message', event => {
   const data = event.data || {};
   if (data.type === 'TSRA_LOW_DATA') {
     lowDataMode = Boolean(data.enabled);
+    return;
+  }
+  if (data.type === 'TSRA_SKIP_WAITING') {
+    self.skipWaiting();
     return;
   }
   if (data.type === 'TSRA_CACHE_CORE') {

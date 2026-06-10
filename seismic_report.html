@@ -4399,15 +4399,55 @@
             applyLowDataMode(enabled);
         }
 
+        const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
+        let tsraReloadingForUpdate = false;
+
+        async function checkForServiceWorkerUpdate(registration, reason) {
+            if (!registration || !navigator.onLine || document.hidden) return;
+            try {
+                await registration.update();
+                recordFieldMemory('service-worker-update-check', { reason });
+            } catch (_) { }
+        }
+
+        function installServiceWorkerUpdateHeartbeat(registration) {
+            const check = reason => checkForServiceWorkerUpdate(registration, reason);
+            registration.addEventListener('updatefound', () => {
+                updateCacheStatus('update found');
+                const worker = registration.installing;
+                if (!worker) return;
+                worker.addEventListener('statechange', () => {
+                    if (worker.state === 'installed' && navigator.serviceWorker.controller) updateCacheStatus('update installing');
+                });
+            });
+            check('load');
+            const updateTimer = window.setInterval(() => check('heartbeat'), TSRA_UPDATE_CHECK_INTERVAL);
+            window.addEventListener('beforeunload', () => window.clearInterval(updateTimer), { once: true });
+            document.addEventListener('visibilitychange', () => { if (!document.hidden) check('visible'); });
+            window.addEventListener('focus', () => check('focus'));
+            window.addEventListener('online', () => check('online'));
+        }
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', async () => {
                 try {
                     const registration = await navigator.serviceWorker.register('/service-worker.js');
                     updateCacheStatus(navigator.onLine ? 'cache ready' : 'offline ready');
-                    if (registration.waiting) updateCacheStatus('update ready');
+                    installServiceWorkerUpdateHeartbeat(registration);
+                    if (registration.waiting) {
+                        updateCacheStatus('update ready');
+                        registration.waiting.postMessage({ type: 'TSRA_SKIP_WAITING' });
+                    }
                 } catch (_) {
                     updateCacheStatus('cache unavailable');
                 }
+            });
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (tsraReloadingForUpdate) return;
+                tsraReloadingForUpdate = true;
+                updateCacheStatus('refreshing update');
+                recordFieldMemory('service-worker-refresh', { reason: 'controllerchange' });
+                window.location.reload();
             });
             navigator.serviceWorker.addEventListener('message', event => {
                 if (event.data && event.data.type === 'TSRA_CACHE_STATUS') updateCacheStatus(event.data.status);

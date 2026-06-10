@@ -486,6 +486,9 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "id='felt-register-text'",
         "id='field-memory-count'",
         "tsraFieldMemory.v1",
+        "TSRA_UPDATE_CHECK_INTERVAL",
+        "registration.update()",
+        "controllerchange",
         "tsraObservationLedger.v1",
         "openOutcomeRecorder(this)",
         "not a certified warning system",
@@ -504,6 +507,7 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "request.headers.has('range')",
         "buildRangeResponse",
         "TSRA_CACHE_FIELD_MEMORY",
+        "TSRA_SKIP_WAITING",
         "client.navigate(client.url)",
     ]
     for marker in required_sw_markers:
