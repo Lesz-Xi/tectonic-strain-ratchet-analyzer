@@ -26,6 +26,11 @@
             --bg: #11110f;
             --surface: rgba(247, 243, 234, .044);
             --surface2: rgba(247, 243, 234, .064);
+            --surface-soft: rgba(247, 243, 234, .030);
+            --paper-warm: #1b1a17;
+            --paper-warm-soft: #25221d;
+            --line: rgba(247, 243, 234, .115);
+            --line-strong: rgba(247, 243, 234, .22);
             --border: rgba(247, 243, 234, .115);
             --border-sub: rgba(247, 243, 234, .072);
             --accent: #cdb47e;
@@ -59,6 +64,11 @@
             --bg: #f0ede8;
             --surface: #faf8f4;
             --surface2: #f2efe9;
+            --surface-soft: rgba(243, 239, 231, .50);
+            --paper-warm: #f0eadf;
+            --paper-warm-soft: #e7e0d3;
+            --line: rgba(22, 19, 16, .12);
+            --line-strong: rgba(22, 19, 16, .20);
             --border: #dedad0;
             --border-sub: #ebebeb;
             --accent: #8a6a30;
@@ -310,8 +320,8 @@
             align-items: center;
             margin: 0 0 1rem;
             padding: .5rem .68rem;
-            border: 1px solid var(--border-sub);
-            background: color-mix(in srgb, var(--surface2) 34%, transparent)
+            border: 1px solid var(--line);
+            background: color-mix(in srgb, var(--surface) 82%, var(--paper-warm))
         }
 
         .source-certainty-kicker {
@@ -383,7 +393,7 @@
         [data-theme='dark'] .transcript-footer,
         [data-theme='dark'] .disclosure-sub,
         [data-theme='dark'] .explainer-title {
-            color: #a99f91
+            color: var(--muted)
         }
 
         [data-theme='dark'] .chart-description p,
@@ -413,8 +423,8 @@
         }
 
         .card {
-            background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 92%, var(--bg)), color-mix(in srgb, var(--surface2) 72%, var(--bg)));
-            border: 1px solid var(--border);
+            background: color-mix(in srgb, var(--surface) 82%, var(--paper-warm));
+            border: 1px solid var(--line);
             border-radius: 0;
             padding: .95rem;
             box-shadow: var(--shadow-sm);
@@ -445,8 +455,8 @@
         }
 
         .stat {
-            background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 94%, var(--bg)), color-mix(in srgb, var(--surface2) 70%, var(--bg)));
-            border: 1px solid var(--border);
+            background: color-mix(in srgb, var(--surface) 82%, var(--paper-warm));
+            border: 1px solid var(--line);
             border-radius: 0;
             padding: 1.05rem 1.1rem 1rem;
             box-shadow: var(--shadow-sm);
@@ -457,9 +467,9 @@
         }
 
         .stat:hover {
-            border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
+            border-color: color-mix(in srgb, var(--accent) 34%, var(--line));
             transform: translateY(-1px);
-            box-shadow: var(--shadow-sm), 0 0 0 .5px color-mix(in srgb, var(--accent) 16%, transparent)
+            box-shadow: var(--shadow-sm)
         }
 
         .stat-hint {
@@ -1158,7 +1168,7 @@
 
         .now-card {
             padding: clamp(1rem, 2.2vw, 1.35rem);
-            background: linear-gradient(135deg, color-mix(in srgb, var(--surface) 92%, var(--bg)), color-mix(in srgb, var(--surface2) 78%, var(--bg)))
+            background: color-mix(in srgb, var(--surface) 82%, var(--paper-warm))
         }
 
         .now-shell {
@@ -1175,7 +1185,7 @@
             min-height: 250px;
             border: 1px solid var(--border-sub);
             padding: clamp(1.1rem, 2vw, 1.55rem);
-            background: color-mix(in srgb, var(--surface2) 60%, var(--bg))
+            background: color-mix(in srgb, var(--surface-soft) 78%, var(--paper-warm))
         }
 
         .now-kicker,
@@ -1292,8 +1302,8 @@
         .hero-window {
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, color-mix(in srgb, var(--surface) 84%, var(--bg)), color-mix(in srgb, var(--surface2) 72%, var(--bg)));
-            border: 1px solid var(--hero-border);
+            background: color-mix(in srgb, var(--surface) 82%, var(--paper-warm));
+            border: 1px solid var(--line);
             border-radius: 0;
             padding: 1.15rem 1.2rem 1.05rem;
             display: grid;
@@ -1347,8 +1357,8 @@
         }
 
         [data-theme='dark'] .hero-window {
-            background: linear-gradient(135deg, rgba(34, 32, 26, .92), rgba(25, 29, 25, .9));
-            border-color: rgba(196, 169, 104, .22)
+            background: color-mix(in srgb, var(--surface) 82%, var(--paper-warm));
+            border-color: var(--line)
         }
 
         [data-theme='light'] .hero-window {
@@ -1659,7 +1669,7 @@
         }
 
         .anchor-field {
-            background: color-mix(in srgb, var(--surface2) 82%, var(--bg));
+            background: color-mix(in srgb, var(--surface-soft) 78%, var(--paper-warm));
             border: 1px solid var(--border-sub);
             border-radius: 0;
             padding: .78rem .82rem;
@@ -1690,7 +1700,7 @@
             max-width: 1040px;
             margin: 0 auto;
             padding: clamp(1rem, 2vw, 1.35rem);
-            background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 94%, var(--bg)), color-mix(in srgb, var(--surface2) 88%, var(--bg)));
+            background: color-mix(in srgb, var(--surface) 82%, var(--paper-warm));
         }
 
         .dashboard-card .card-title {
@@ -1703,8 +1713,8 @@
             max-width: 940px;
             margin: 0 auto;
             padding: clamp(.42rem, 1.2vw, .72rem);
-            background: color-mix(in srgb, var(--surface2) 88%, var(--bg));
-            border: 1px solid var(--border);
+            background: color-mix(in srgb, var(--surface-soft) 78%, var(--paper-warm));
+            border: 1px solid var(--line);
             border-radius: 0;
             overflow: hidden;
             box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .025), var(--shadow-sm)
@@ -3111,7 +3121,7 @@
     </header>
 
     <section class='source-certainty-register' aria-label='Source and certainty legend'>
-        <div class='source-certainty-kicker'>Source & certainty</div>
+        <div class='source-certainty-kicker'>What this means</div>
         <div class='source-certainty-list'>
             <span class='evidence-chip'><strong>Confirmed</strong> official seismic record</span>
             <span class='evidence-chip'><strong>Felt-only</strong> local observation · not confirmed</span>
@@ -3443,7 +3453,7 @@
                         <div class='anchor-value'><span class='pill observed-pill'>Felt-only anchor · new observation cycle</span></div>
                     </div>
                     <div class='anchor-field' data-evidence-type='local-felt-anchor' data-certainty='observational-low' data-official-status='not-confirmed'>
-                        <div class='anchor-label'>Source & certainty</div>
+                        <div class='anchor-label'>What this means</div>
                         <div class='anchor-value'>Local felt-only observation · low certainty · not confirmed · used only as a pattern anchor</div>
                     </div>
                 </div>

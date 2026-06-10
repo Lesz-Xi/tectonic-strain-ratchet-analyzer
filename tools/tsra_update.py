@@ -382,7 +382,7 @@ def replace_anchor(report: str, outcome: Outcome, anchor: datetime) -> str:
         (r"<div class='anchor-label'>Window relation</div>\s*<div class='anchor-value'>.*?</div>", f"<div class='anchor-label'>Window relation</div>\n                        <div class='anchor-value'>{relation}</div>"),
         (r"<div class='anchor-label'>Next watch (?:band|center)</div>\s*<div class='anchor-value mono strong'>.*?</div>", f"<div class='anchor-label'>Next watch center</div>\n                        <div class='anchor-value mono strong'>{time_label(first_arrival)} · band {band_label(first_arrival)}</div>"),
         (r"<div class='anchor-label'>Evidence status</div>\s*<div class='anchor-value'><span class='pill [^']+'>.*?</span></div>", f"<div class='anchor-label'>Evidence status</div>\n                        <div class='anchor-value'><span class='pill {status_class}'>{status_text}</span></div>"),
-        (r"<div class='anchor-field' data-evidence-type='[^']+' data-certainty='[^']+' data-official-status='[^']+'>\s*<div class='anchor-label'>Source (?:&|&amp;) certainty</div>\s*<div class='anchor-value'>.*?</div>\s*</div>", f"<div class='anchor-field' data-evidence-type='{anchor_evidence_type}' data-certainty='{anchor_certainty}' data-official-status='{anchor_official}'>\n                        <div class='anchor-label'>Source &amp; certainty</div>\n                        <div class='anchor-value'>{source_certainty}</div>\n                    </div>"),
+        (r"<div class='anchor-field' data-evidence-type='[^']+' data-certainty='[^']+' data-official-status='[^']+'>\s*<div class='anchor-label'>(?:Source (?:&|&amp;) certainty|What this means)</div>\s*<div class='anchor-value'>.*?</div>\s*</div>", f"<div class='anchor-field' data-evidence-type='{anchor_evidence_type}' data-certainty='{anchor_certainty}' data-official-status='{anchor_official}'>\n                        <div class='anchor-label'>What this means</div>\n                        <div class='anchor-value'>{source_certainty}</div>\n                    </div>"),
     ]
     anchor_match = re.search(r"<div class='card-title'>Latest Observation Anchor</div>.*?</div>\s*</div>\s*</div>\s*</div>\s*<div class='tab-panel' id='tab-chart'>", report, re.S)
     if not anchor_match:
@@ -485,6 +485,7 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "id='pending-table'",
         "id='observation-log-body'",
         "source-certainty-register",
+        "What this means",
         "data-evidence-type",
         "evidence-mini",
         "tsraFieldMemory.v1",
@@ -508,6 +509,8 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         errors.append("public capacity text found in report")
     if ">Cache core<" in report or ">Save field memory<" in report:
         errors.append("manual field-memory cache button text found in report")
+    if ">Source & certainty<" in report or ">Source &amp; certainty<" in report:
+        errors.append("technical source/certainty label found in report")
     if "<section class='offline-register'" in report or "<section class='felt-register'" in report:
         errors.append("removed field-access or felt-signal strip found in report")
     required_sw_markers = [
