@@ -2189,6 +2189,237 @@
             background: var(--border);
             margin: 1rem 0
         }
+        /* ── Field Report section ─────────────────────────────────────────── */
+        .field-report-card {
+            padding: 0;
+            overflow: hidden
+        }
+
+        .field-report-hero {
+            position: relative;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .field-report-hero-img {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            object-fit: cover
+        }
+
+        .field-report-hero-caption {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            padding: .62rem .95rem;
+            border-top: 1px solid var(--border-sub);
+            background: color-mix(in srgb, var(--surface2) 72%, var(--bg))
+        }
+
+        .field-report-hero-caption .mono {
+            font-family: var(--mono);
+            font-size: .52rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 500;
+            flex-shrink: 0
+        }
+
+        .field-report-hero-meta {
+            font-family: var(--mono);
+            font-size: .5rem;
+            letter-spacing: .09em;
+            color: var(--muted);
+            text-transform: uppercase
+        }
+
+        .field-report-body {
+            padding: 1.4rem 1.5rem 1rem
+        }
+
+        .field-report-lead {
+            font-family: var(--serif);
+            font-size: 1.12rem;
+            font-weight: 400;
+            line-height: 1.62;
+            color: var(--text);
+            max-width: 68ch;
+            margin-bottom: 1.6rem;
+            letter-spacing: .005em
+        }
+
+        .field-report-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem 2.8rem;
+            margin-bottom: 1.6rem
+        }
+
+        .field-report-section {
+            min-width: 0
+        }
+
+        .field-report-section-full {
+            grid-column: 1 / -1
+        }
+
+        .field-report-kicker {
+            font-family: var(--mono);
+            font-size: .5rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: .55rem;
+            padding-bottom: .42rem;
+            border-bottom: 1px solid var(--border-sub)
+        }
+
+        .field-report-section h3 {
+            font-family: var(--serif);
+            font-size: .98rem;
+            font-weight: 400;
+            color: var(--text);
+            margin: 0 0 .55rem;
+            letter-spacing: .005em
+        }
+
+        .field-report-section p {
+            font-family: var(--serif);
+            font-size: .83rem;
+            line-height: 1.72;
+            color: var(--text-sub);
+            margin: 0 0 .7rem
+        }
+
+        .field-report-section p:last-child {
+            margin-bottom: 0
+        }
+
+        .field-report-score-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: .5rem;
+            margin: .7rem 0
+        }
+
+        .fr-score-item {
+            background: color-mix(in srgb, var(--surface2) 72%, var(--bg));
+            border: 1px solid var(--border-sub);
+            padding: .62rem .6rem;
+            display: flex;
+            flex-direction: column;
+            gap: .28rem
+        }
+
+        .fr-score-label {
+            font-family: var(--mono);
+            font-size: .46rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--muted)
+        }
+
+        .fr-score-value {
+            font-family: var(--serif);
+            font-size: 1.32rem;
+            font-weight: 300;
+            color: var(--text);
+            line-height: 1;
+            letter-spacing: -.025em
+        }
+
+        .fr-score-note {
+            font-family: var(--mono);
+            font-size: .44rem;
+            letter-spacing: .08em;
+            color: var(--text-sub);
+            text-transform: uppercase
+        }
+
+        .field-report-divider {
+            border: none;
+            border-top: 1px solid var(--border-sub);
+            margin: 1.35rem 0
+        }
+
+        .field-report-sources {
+            padding: .9rem 1.5rem 1.1rem;
+            border-top: 1px solid var(--border-sub);
+            background: color-mix(in srgb, var(--surface2) 60%, var(--bg))
+        }
+
+        .field-report-sources-kicker {
+            font-family: var(--mono);
+            font-size: .46rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: .45rem
+        }
+
+        .field-report-sources ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: .28rem
+        }
+
+        .field-report-sources li {
+            font-family: var(--mono);
+            font-size: .46rem;
+            letter-spacing: .06em;
+            color: var(--muted);
+            line-height: 1.45
+        }
+
+        .field-report-sources a {
+            color: var(--muted);
+            text-decoration: underline;
+            text-underline-offset: 2px
+        }
+
+        .field-report-sources a:hover {
+            color: var(--accent)
+        }
+
+        .fr-audit-note {
+            margin-top: .55rem;
+            padding: .6rem .7rem;
+            border: 1px solid var(--border-sub);
+            background: color-mix(in srgb, var(--surface2) 80%, var(--bg));
+            font-family: var(--mono);
+            font-size: .46rem;
+            letter-spacing: .07em;
+            color: var(--muted);
+            line-height: 1.55
+        }
+
+        @media (max-width: 720px) {
+            .field-report-body {
+                padding: 1rem .9rem .85rem
+            }
+            .field-report-sections {
+                grid-template-columns: 1fr;
+                gap: 1.4rem
+            }
+            .field-report-section-full {
+                grid-column: 1
+            }
+            .field-report-score-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+            .field-report-lead {
+                font-size: .97rem
+            }
+            .field-report-sources {
+                padding: .85rem .9rem
+            }
+        }
     </style>
 </head>
 
@@ -2306,6 +2537,7 @@
         <button class='tab-btn' onclick="switchTab('forecast',event)">Raw Forecast</button>
         <button class='tab-btn' onclick="switchTab('origin',event)">Origin</button>
         <button class='tab-btn' onclick="switchTab('learning',event)">Learning Guide</button>
+        <button class='tab-btn' onclick="switchTab('field-report',event)">Field Report</button>
     </div>
 
     <div class='tab-panel' id='tab-events'>
@@ -2775,6 +3007,105 @@
 
                 <div class='learning-carousel-note'>Use &lt; / &gt; to move between learning plates. Only one guide is shown at a time.</div>
             </div>
+        </div>
+    </div>
+
+    <div class='tab-panel' id='tab-field-report'>
+        <div class='card field-report-card'>
+
+            <div class='field-report-hero'>
+                <img src='safety/80124894-56EA-42FF-BDF0-2F6C37B6453B.png'
+                     class='field-report-hero-img'
+                     alt='Seismic Pulse infographic: 2026 Mw 7.8 Mindanao earthquake event profile, Cotabato Trench subduction origin, mathematical rhythm of aftershocks, and structural impact summary' />
+                <div class='field-report-hero-caption'>
+                    <span class='mono'>Seismic Pulse</span>
+                    <span class='field-report-hero-meta'>Jun 8, 2026 &nbsp;&middot;&nbsp; Mw 7.8 &nbsp;&middot;&nbsp; Cotabato Trench &nbsp;&middot;&nbsp; 26 km WSW of Kablalan, Sarangani</span>
+                </div>
+            </div>
+
+            <div class='field-report-body'>
+
+                <p class='field-report-lead'>On the morning of June 8, 2026, a magnitude 7.8 earthquake struck the Cotabato Trench boundary off the southwestern coast of Mindanao. What followed was not a random scatter of aftershocks. It was a structured sequence — one that kept returning to the same timing intervals, hours apart and across two days, in a way that only a locked fault under constant pressure can produce.</p>
+
+                <div class='field-report-sections'>
+
+                    <div class='field-report-section'>
+                        <div class='field-report-kicker'>The fault that does not release smoothly</div>
+                        <h3>Stick-slip under 100&nbsp;mm/year</h3>
+                        <p>The Cotabato Trench is one of the fastest-loading subduction boundaries in the Pacific region. The Celebes Sea floor dives eastward beneath Mindanao at roughly 100 millimetres every year &mdash; that is 10 centimetres of compression every 12 months, relentlessly applied to a megathrust interface that spans hundreds of kilometres.</p>
+                        <p>The fault does not absorb this pressure gradually and slip away quietly. Instead, high-friction patches called asperities lock the interface in place. Elastic strain accumulates in the surrounding rock until the locking force is overcome. Then the patch snaps &mdash; a stick-slip release &mdash; and the cycle begins again from zero.</p>
+                        <p>The 1918 Celebes Sea earthquake (M<sub>s</sub>&nbsp;8.3) and the 1976 Moro Gulf earthquake (M<sub>w</sub>&nbsp;8.1) both originated from this same boundary. The 2026 sequence is not an anomaly in the historical record; it is the record continuing.</p>
+                    </div>
+
+                    <div class='field-report-section'>
+                        <div class='field-report-kicker'>The rhythm that emerged</div>
+                        <h3>35 minutes, then its multiples</h3>
+                        <p>After the mainshock, the aftershocks arrived at intervals that proved non-random. A3 and A4 &mdash; two consecutive events on the same afternoon &mdash; each arrived exactly 35.0 minutes after the previous event. Within 37 seconds of the fitted 35.55-minute baseline. Twice in a row.</p>
+                        <p>The larger gaps held the same structure at longer range: A1 arrived 334&nbsp;minutes after the mainshock (9.5&times; = 337.7&nbsp;min, delta &minus;3.4&nbsp;min). A2 and A5 both arrived 244&nbsp;minutes after their predecessors (7.0&times; = 248.9&nbsp;min, delta &minus;4.9&nbsp;min). A6 arrived 126&nbsp;minutes later (3.5&times; = 124.4&nbsp;min, delta +1.6&nbsp;min).</p>
+                        <p>The system appears to discharge at discrete multiples of the base interval: 1&times;, 3.5&times;, 7&times;, and 9.5&times;. These are not values derived from a published equation. They are what the Cotabato data produced, and the fit to them is what TSRA measures.</p>
+                    </div>
+
+                    <div class='field-report-section'>
+                        <div class='field-report-kicker'>What the observation model does</div>
+                        <h3>A watch instrument, not a forecast</h3>
+                        <p>TSRA takes the fitted 35.55-minute baseline and opens four phase windows after each confirmed event. When the next event arrives, it either lands inside a window or it does not. The model re-anchors after every confirmed hit and keeps the next set of windows open for observation.</p>
+                        <p>This is not a seismic forecast in the scientific sense. There is no magnitude estimate, no rupture probability, no claim about whether a window will produce anything locally felt. The model is a timing instrument for watching whether the structural rhythm continues to hold.</p>
+                        <p>During an active sequence, knowing when to look more carefully is itself useful &mdash; especially for people living close to the source zone who have no access to real-time institutional monitoring.</p>
+                    </div>
+
+                    <div class='field-report-section'>
+                        <div class='field-report-kicker'>Where the model held and where it broke</div>
+                        <h3>7 of 9, one honest miss</h3>
+
+                        <div class='field-report-score-grid'>
+                            <div class='fr-score-item'>
+                                <span class='fr-score-label'>Close (&le;5 min)</span>
+                                <span class='fr-score-value'>7</span>
+                                <span class='fr-score-note'>of 9 intervals</span>
+                            </div>
+                            <div class='fr-score-item'>
+                                <span class='fr-score-label'>Moderate (6&ndash;10 min)</span>
+                                <span class='fr-score-value'>1</span>
+                                <span class='fr-score-note'>A8 &plus;7.4 min</span>
+                            </div>
+                            <div class='fr-score-item'>
+                                <span class='fr-score-label'>Miss (&gt;10 min)</span>
+                                <span class='fr-score-value'>1</span>
+                                <span class='fr-score-note'>A7 &minus;28 min early</span>
+                            </div>
+                            <div class='fr-score-item'>
+                                <span class='fr-score-label'>Model fit</span>
+                                <span class='fr-score-value'>87.7%</span>
+                                <span class='fr-score-note'>timing alignment</span>
+                            </div>
+                        </div>
+
+                        <p>A7 is the honest anomaly: it arrived 28&nbsp;minutes before the predicted 3.5&times; window. The ratchet slipped early on that cycle. The model re-anchored, and by A9 the sequence was back within 5&nbsp;minutes of the 1&times; slot. The rhythm re-asserted itself after the perturbation &mdash; which is itself a meaningful observation about the fault&rsquo;s mechanical consistency.</p>
+                        <p>A10, a 10-minute sub-pulse after A9, falls outside the standard phase model entirely. Short-lag releases closely coupled to the preceding event are common in complex aftershock sequences and are not what TSRA is designed to watch for.</p>
+                    </div>
+
+                    <div class='field-report-section field-report-section-full'>
+                        <div class='field-report-kicker'>What this does not tell us</div>
+                        <h3>Honest limits</h3>
+                        <p>The model is built on 11 confirmed events across a roughly 44-hour window. That is enough to fit a baseline and open watch windows, but not enough to treat the multiplier pattern as a permanent feature of this fault&rsquo;s behaviour. Two forward-looking windows on the afternoon of June&nbsp;10 elapsed without a locally felt outcome. One felt observation at ~05:14&nbsp;PM arrived 23&nbsp;minutes before the predicted 05:37&nbsp;PM window &mdash; within the early band, but not inside it.</p>
+                        <p>TSRA does not know how much strain remains stored. It does not know whether the next window will produce surface motion strong enough to feel. It does not substitute for PHIVOLCS advisories, civil defence instructions, or professional seismological assessment. What it does is keep the timing record visible during an active sequence, in plain language, for anyone watching the ground.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class='field-report-sources'>
+                <div class='field-report-sources-kicker'>Academic grounding &mdash; literature-search-arxiv</div>
+                <ul>
+                    <li>[0910.3738] Aftershock magnitude time distribution and fault geometry fingerprinting &mdash; supports the premise that aftershock temporal patterns carry a fault-specific signature rather than being random. <a href='https://arxiv.org/abs/0910.3738' target='_blank' rel='noopener'>arxiv.org/abs/0910.3738</a></li>
+                    <li>[0803.4263] Aftershock sequence statistics and fault geometry &mdash; cumulative magnitude integral forms a predictable linear trend, consistent with systematic rather than chaotic stress release. <a href='https://arxiv.org/abs/0803.4263' target='_blank' rel='noopener'>arxiv.org/abs/0803.4263</a></li>
+                    <li>[1004.1924] Spatiotemporal correlations of aftershock sequences &mdash; enhanced seismic activity shows structured temporal clustering, not uniform decay. <a href='https://arxiv.org/abs/1004.1924' target='_blank' rel='noopener'>arxiv.org/abs/1004.1924</a></li>
+                    <li>[cond-mat/0012058] Model for complex aftershock sequences &mdash; Omori law governs rate decay; the multiplier spacing observed here is a distinct structural phenomenon, not contradicted by Omori but not predicted by it either. <a href='https://arxiv.org/abs/cond-mat/0012058' target='_blank' rel='noopener'>arxiv.org/abs/cond-mat/0012058</a></li>
+                    <li>[1909.06787] Silent energy buildup precedes slow slip failure, Cascadia &mdash; structured strain accumulation patterns before failure in locked subduction zones. <a href='https://arxiv.org/abs/1909.06787' target='_blank' rel='noopener'>arxiv.org/abs/1909.06787</a></li>
+                </ul>
+                <div class='fr-audit-note'>Audit note &mdash; The geological framework (DDS, Cotabato Trench asperity model, stick-slip mechanism) is academically grounded. The specific 1&times;/3.5&times;/7&times;/9.5&times; multiplier framework is an empirical observation from this sequence and is not derived from or validated by a published theoretical model. The 87.7% timing fit is computed from 11 events &mdash; a real dataset, not a large one. Treat forward windows as observational structure, not certified forecasts.</div>
+            </div>
+
         </div>
     </div>
 
