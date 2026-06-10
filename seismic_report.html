@@ -626,43 +626,69 @@
         }
 
         .transcript-panel {
-            border-top: 1px solid var(--border-sub);
-            padding: .85rem 1.1rem 1rem;
-            background: rgba(255, 255, 255, .012)
+            margin: .9rem 1rem 1rem;
+            padding: .95rem 1rem;
+            border: 1px solid var(--border-sub);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .018)
         }
 
-        .transcript-panel summary {
+        .transcript-kicker {
             display: flex;
             align-items: center;
-            gap: .5rem;
-            list-style: none;
-            cursor: pointer;
+            gap: .45rem;
             font-family: var(--mono);
-            font-size: .62rem;
-            letter-spacing: .1em;
+            font-size: .58rem;
+            letter-spacing: .12em;
             text-transform: uppercase;
-            color: var(--text-sub)
+            color: var(--accent);
+            margin-bottom: .65rem
         }
 
-        .transcript-panel summary::-webkit-details-marker {
-            display: none
-        }
-
-        .transcript-panel summary::before {
+        .transcript-kicker::before {
             content: "";
             width: 7px;
             height: 7px;
             border: 1px solid currentColor;
             border-radius: 999px;
-            color: var(--accent);
             box-shadow: 0 0 0 3px rgba(196, 169, 104, .06)
         }
 
         .transcript-panel p {
-            margin-top: .6rem;
+            margin: 0;
+            color: var(--text-sub);
+            font-size: .74rem;
+            line-height: 1.58
+        }
+
+        .transcript-lines {
+            display: grid;
+            gap: .5rem;
+            margin: .75rem 0;
+            list-style: none
+        }
+
+        .transcript-lines li {
+            display: grid;
+            grid-template-columns: 1.35rem minmax(0, 1fr);
+            gap: .55rem;
             color: var(--text-sub);
             font-size: .72rem;
-            line-height: 1.55
+            line-height: 1.5
+        }
+
+        .transcript-lines span {
+            color: var(--accent2);
+            font-family: var(--mono);
+            font-size: .58rem;
+            letter-spacing: .08em
+        }
+
+        .transcript-note {
+            padding-top: .7rem;
+            border-top: 1px solid var(--border-sub);
+            color: var(--muted) !important;
+            font-size: .66rem !important
         }
 
         .transcript-panel code {
@@ -1386,11 +1412,10 @@
         }
 
         .disclosure-note {
-            padding: 1rem 1.1rem;
-            background: linear-gradient(135deg, rgba(196,169,104,.07), rgba(196,169,104,.025));
-            border: 1px solid rgba(196, 169, 104, .18);
-            border-left: 2px solid var(--accent);
-            border-radius: 10px;
+            padding: .95rem 1rem;
+            background: rgba(255, 255, 255, .015);
+            border: 1px solid var(--border-sub);
+            border-radius: 0;
             font-size: .76rem;
             color: var(--text-sub);
             line-height: 1.65
@@ -1398,7 +1423,9 @@
 
         .disclosure-note strong {
             color: var(--accent);
-            font-weight: 500
+            font-weight: 500;
+            letter-spacing: .04em;
+            text-transform: uppercase
         }
 
         @media (max-width:768px) {
@@ -1997,10 +2024,16 @@
                         </video>
                         <div class='media-fallback'><strong>Video unavailable</strong>The local safety video did not load. Confirm <span class='mono'>/safety/Cotabato_Trench_Rhythm.mp4</span> is included in the deployed project.</div>
                     </div>
-                    <details class='transcript-panel'>
-                        <summary>Transcript / subtitles</summary>
-                        <p>Subtitle wiring is ready, but the actual timed transcript is pending. Add a real <code>Cotabato_Trench_Rhythm.en.vtt</code> file to enable native captions without inventing speech.</p>
-                    </details>
+                    <div class='transcript-panel' aria-label='Read-along description for Subduction and Trench Mechanics'>
+                        <div class='transcript-kicker'>Read-along description</div>
+                        <p>This guide explains why trench zones can feel rhythmic: plates keep pressing, strain accumulates quietly, and release is noticed as confirmed seismic events or local felt observations.</p>
+                        <ul class='transcript-lines'>
+                            <li><span>01</span><p>Subduction means one plate is forced beneath another, creating long-running pressure along the trench.</p></li>
+                            <li><span>02</span><p>TSRA watches timing patterns around that pressure, but keeps timing separate from magnitude or safety claims.</p></li>
+                            <li><span>03</span><p>Felt reports are useful field notes; official instrument records remain the confirmation layer.</p></li>
+                        </ul>
+                        <p class='transcript-note'>Timed captions are still pending. Add <code>Cotabato_Trench_Rhythm.en.vtt</code> when a real transcript is available.</p>
+                    </div>
                 </div>
                 <div class='card learning-video-card'>
                     <div class='video-card-header'>
@@ -2017,10 +2050,16 @@
                         </video>
                         <div class='media-fallback'><strong>Video unavailable</strong>The local safety video did not load. Confirm <span class='mono'>/safety/Twin_Tectonic_Giants.mp4</span> is included in the deployed project.</div>
                     </div>
-                    <details class='transcript-panel'>
-                        <summary>Transcript / subtitles</summary>
-                        <p>Subtitle wiring is ready, but the actual timed transcript is pending. Add a real <code>Twin_Tectonic_Giants.en.vtt</code> file to enable native captions without inventing speech.</p>
-                    </details>
+                    <div class='transcript-panel' aria-label='Read-along description for Twin Tectonic Giants'>
+                        <div class='transcript-kicker'>Read-along description</div>
+                        <p>This guide frames the larger tectonic systems behind the observations: big plate boundaries, trench motion, and the way local reports sit inside a wider regional pattern.</p>
+                        <ul class='transcript-lines'>
+                            <li><span>01</span><p>The major tectonic systems act over large areas, so local shaking can belong to a broader structural rhythm.</p></li>
+                            <li><span>02</span><p>The chart and watch windows help organize when observations occur, without claiming certified prediction.</p></li>
+                            <li><span>03</span><p>The safest reading is layered: official records first, field observations second, model timing as context.</p></li>
+                        </ul>
+                        <p class='transcript-note'>Timed captions are still pending. Add <code>Twin_Tectonic_Giants.en.vtt</code> when a real transcript is available.</p>
+                    </div>
                 </div>
             </div>
             <div class='learning-carousel-note'>Swipe or scroll sideways to move between learning cards.</div>
