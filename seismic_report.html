@@ -3171,10 +3171,10 @@
         <div class='card now-card'>
             <div class='now-shell'>
                 <section class='now-primary' aria-labelledby='now-title'>
-                    <div class='now-kicker' id='now-status'>Observation window open</div>
-                    <div class='now-time' id='now-time'>--:--</div>
-                    <div class='now-phase' id='now-title'>Next watch center · calculating</div>
-                    <div class='now-remain' id='now-remain'>Calculating...</div>
+                    <div class='now-kicker' id='now-status'>Active Observation Window</div>
+                    <div class='now-time' id='now-time'>09:10 PM</div>
+                    <div class='now-phase' id='now-title'>9.5&times; · no local shake observed</div>
+                    <div class='now-remain' id='now-remain'>Elapsed · no local outcome</div>
                 </section>
                 <aside class='now-side' aria-label='Latest observation note'>
                     <div class='now-note'>
@@ -3358,9 +3358,9 @@
     <div class='tab-panel' id='tab-rhythm'>
         <div class='grid' style='grid-template-columns:1fr 2fr;align-items:start'>
             <div class='hero-window' id='next-window-hero'>
-                <div class='hero-label'>Next Observation Window</div>
-                <div class='hero-time' id='hero-time'>--:--</div>
-                <div class='hero-remain' id='hero-remain'>Calculating...</div>
+                <div class='hero-label' id='hero-label'>Latest Observation Outcome</div>
+                <div class='hero-time' id='hero-time'>09:10 PM</div>
+                <div class='hero-remain' id='hero-remain'>No local shake observed</div>
             </div>
             <div class='card pending-card'>
                 <div class='card-title pending-card-title'><span>Provisional Observation Windows</span><span class='pending-card-note'>09:10 PM elapsed · no local shake observed</span></div>
@@ -4548,6 +4548,7 @@
         function updateCountdowns() {
             const now = Date.now();
             let nextArrival = null, nextTime = null, nextRow = null;
+            let latestObservedArrival = null, latestObservedRow = null;
             document.querySelectorAll('#pending-table tbody tr').forEach(row => {
                 delete row.dataset.nowRecord;
                 const arrival = new Date(row.dataset.arrival);
@@ -4558,12 +4559,20 @@
                     countdown.textContent = row.dataset.observedReport || 'observed';
                     stCell.innerHTML = `<span class='pill observed-pill'>${row.dataset.observedLabel || 'Observed'}</span>`;
                     row.style.opacity = '1';
+                    if (!Number.isNaN(arrival.getTime()) && (!latestObservedArrival || arrival > latestObservedArrival)) {
+                        latestObservedArrival = arrival;
+                        latestObservedRow = row;
+                    }
                     return;
                 }
                 countdown.textContent = fmtDiff(diff);
                 if (diff <= 0) {
                     stCell.innerHTML = "<span class='pill elapsed-pill'>Elapsed</span>";
                     row.style.opacity = '.4';
+                    if (!Number.isNaN(arrival.getTime()) && (!latestObservedArrival || arrival > latestObservedArrival)) {
+                        latestObservedArrival = arrival;
+                        latestObservedRow = row;
+                    }
                 } else if (diff < 20 * 60 * 1000) {
                     stCell.innerHTML = "<span class='pill active-pill'>&#9679; Observation window open</span>";
                     if (!nextArrival || arrival < nextArrival) { nextArrival = arrival; nextTime = diff; nextRow = row; }
@@ -4578,17 +4587,34 @@
                 const cells = nextRow.querySelectorAll('td');
                 const phaseLabel = cells[0] && cells[4] ? `${cells[0].textContent.trim()} · ${cells[4].textContent.trim()}` : 'Next watch center';
                 nextRow.dataset.nowRecord = 'true';
+                document.getElementById('hero-label').textContent = 'Next Observation Window';
                 document.getElementById('hero-time').textContent = timeLabel;
                 document.getElementById('hero-remain').textContent = remainLabel;
                 document.getElementById('now-time').textContent = timeLabel;
                 document.getElementById('now-remain').textContent = remainLabel;
                 document.getElementById('now-title').textContent = phaseLabel;
-                document.getElementById('now-status').textContent = nextTime < 20 * 60 * 1000 ? 'Observation window open' : 'Next observation window';
+                document.getElementById('now-status').textContent = nextTime < 20 * 60 * 1000 ? 'Active Observation Window' : 'Next Observation Window';
                 setNowRecordState(true);
+            } else if (latestObservedRow) {
+                const cells = latestObservedRow.querySelectorAll('td');
+                const watchLabel = cells[2] ? cells[2].textContent.trim().replace('Jun 10 · ', '') : 'Latest watch';
+                const phaseLabel = cells[0] && cells[4] ? `${cells[0].textContent.trim()} · ${cells[4].textContent.trim()}` : 'Latest observation outcome';
+                const outcomeLabel = latestObservedRow.dataset.observedLabel || 'Elapsed';
+                document.getElementById('hero-label').textContent = 'Latest Observation Outcome';
+                document.getElementById('hero-time').textContent = watchLabel;
+                document.getElementById('hero-remain').textContent = outcomeLabel;
+                document.getElementById('now-status').textContent = 'Active Observation Window · elapsed';
+                document.getElementById('now-time').textContent = watchLabel;
+                document.getElementById('now-remain').textContent = outcomeLabel;
+                document.getElementById('now-title').textContent = phaseLabel;
+                setNowRecordState(false);
             } else {
-                document.getElementById('now-status').textContent = 'No active observation window';
+                document.getElementById('hero-label').textContent = 'Latest Observation Outcome';
+                document.getElementById('hero-time').textContent = '—';
+                document.getElementById('hero-remain').textContent = 'No listed outcomes';
+                document.getElementById('now-status').textContent = 'Active Observation Window · unavailable';
                 document.getElementById('now-time').textContent = '—';
-                document.getElementById('now-remain').textContent = 'All listed windows elapsed';
+                document.getElementById('now-remain').textContent = 'No listed outcomes';
                 document.getElementById('now-title').textContent = 'Ledger remains available for local notes';
                 setNowRecordState(false);
             }
