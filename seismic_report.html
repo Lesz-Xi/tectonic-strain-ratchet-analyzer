@@ -3118,7 +3118,7 @@
                         <th>Source</th>
                         <th>Report Time</th>
                         <th>Linked Watch</th>
-                        <th>Onset</th>
+                        <th>Timing</th>
                         <th>Outcome</th>
                         <th>Status</th>
                     </tr>
@@ -3637,13 +3637,13 @@
                         </select>
                     </div>
                     <div class='outcome-field'>
-                        <label for='outcome-onset'>Onset relation</label>
+                        <label for='outcome-onset'>When did it happen?</label>
                         <select id='outcome-onset' name='onsetRelation' required>
-                            <option value='watch-center'>Watch center elapsed</option>
-                            <option value='early-band'>Early-band</option>
-                            <option value='near-center'>Near-center</option>
-                            <option value='late-band'>Late-band</option>
-                            <option value='unknown'>Unknown</option>
+                            <option value='watch-center'>Nothing happened during the watch</option>
+                            <option value='early-band'>Before the watch time</option>
+                            <option value='near-center'>Around the watch time</option>
+                            <option value='late-band'>After the watch time</option>
+                            <option value='unknown'>Not sure</option>
                         </select>
                     </div>
                     <div class='outcome-field'>
@@ -4088,11 +4088,11 @@
             uncertain: 'Uncertain'
         };
         const OBSERVATION_LEDGER_ONSETS = {
-            'watch-center': 'Watch center elapsed',
-            'early-band': 'Early-band',
-            'near-center': 'Near-center',
-            'late-band': 'Late-band',
-            unknown: 'Unknown'
+            'watch-center': 'Nothing happened during the watch',
+            'early-band': 'Before the watch time',
+            'near-center': 'Around the watch time',
+            'late-band': 'After the watch time',
+            unknown: 'Not sure'
         };
         const OBSERVATION_LEDGER_CONFIDENCE = { low: 'Low', medium: 'Medium', high: 'High' };
         const OBSERVATION_LEDGER_SOURCES = {
