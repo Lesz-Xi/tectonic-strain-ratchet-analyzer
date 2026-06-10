@@ -205,7 +205,13 @@ def build_outcome_row(outcome: Outcome, row: PendingRow | None) -> str:
 """
 
 
+def compact_html(value: str) -> str:
+    return re.sub(r"\s+", " ", value).strip()
+
+
 def append_outcome_log(report: str, row_html: str) -> str:
+    if compact_html(row_html) in compact_html(report):
+        return report
     marker = "                </tbody>\n            </table>\n        </div>\n    </div>\n\n    <div class='tab-panel' id='tab-rhythm'>"
     if marker not in report:
         die("could not locate end of Observation Outcome Log")
