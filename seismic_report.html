@@ -2251,8 +2251,12 @@
             }
 
             .modal {
-                padding: 1.4rem 1.2rem;
-                max-width: calc(100vw - 2rem)
+                padding: 1rem .95rem;
+                max-width: calc(100vw - 1.4rem)
+            }
+
+            .modal::before {
+                inset: .38rem
             }
 
             .modal-value {
@@ -2607,8 +2611,9 @@
             position: fixed;
             inset: 0;
             z-index: 100;
-            background: var(--modal-overlay);
-            backdrop-filter: blur(4px);
+            padding: clamp(.85rem, 3vw, 1.6rem);
+            background: color-mix(in srgb, var(--bg) 58%, transparent);
+            backdrop-filter: blur(2px);
             align-items: center;
             justify-content: center
         }
@@ -2618,21 +2623,30 @@
         }
 
         .modal {
-            background: var(--modal-bg);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 1.8rem 2rem;
-            max-width: 480px;
-            width: 90%;
-            box-shadow: 0 8px 40px rgba(0, 0, 0, .4);
+            background: color-mix(in srgb, var(--surface) 94%, var(--bg));
+            border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+            border-radius: 0;
+            padding: clamp(1.05rem, 3vw, 1.45rem);
+            max-width: 520px;
+            width: min(92vw, 520px);
+            box-shadow: 0 18px 42px rgba(0, 0, 0, .14);
             position: relative;
-            animation: modalIn .18s ease
+            animation: modalIn .16s ease;
+            overflow: hidden
+        }
+
+        .modal::before {
+            content: "";
+            position: absolute;
+            inset: .5rem;
+            border: 1px solid color-mix(in srgb, var(--border-sub) 62%, transparent);
+            pointer-events: none
         }
 
         @keyframes modalIn {
             from {
                 opacity: 0;
-                transform: translateY(8px)
+                transform: translateY(6px)
             }
 
             to {
@@ -2643,53 +2657,67 @@
 
         .modal-close {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 6px;
+            top: .62rem;
+            right: .62rem;
+            background: transparent;
+            border: 1px solid color-mix(in srgb, var(--border-sub) 78%, transparent);
+            border-radius: 0;
             color: var(--muted);
-            font-size: .8rem;
-            width: 26px;
-            height: 26px;
+            font-size: .82rem;
+            width: 24px;
+            height: 24px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all .12s;
-            line-height: 1
+            transition: color .12s, border-color .12s, background .12s;
+            line-height: 1;
+            z-index: 1
         }
 
-        .modal-close:hover {
+        .modal-close:hover,
+        .modal-close:focus-visible {
             color: var(--text);
-            border-color: var(--accent)
+            border-color: color-mix(in srgb, var(--accent) 32%, var(--border-sub));
+            background: color-mix(in srgb, var(--surface2) 48%, transparent);
+            outline: none
         }
 
         .modal-label {
-            font-size: .58rem;
+            position: relative;
+            z-index: 1;
+            max-width: calc(100% - 2.4rem);
+            font-family: var(--mono);
+            font-size: .48rem;
             text-transform: uppercase;
-            letter-spacing: .1em;
+            letter-spacing: .16em;
             color: var(--muted);
-            margin-bottom: .5rem
+            margin-bottom: .52rem
         }
 
         .modal-value {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            font-family: var(--serif);
+            font-size: clamp(1.65rem, 7vw, 2.45rem);
+            font-weight: 300;
             color: var(--accent);
-            line-height: 1;
-            margin-bottom: 1rem
+            line-height: .96;
+            letter-spacing: -.045em;
+            margin-bottom: .85rem
         }
 
         .modal-body {
-            font-size: .8rem;
+            position: relative;
+            z-index: 1;
+            font-size: .78rem;
             color: var(--text-sub);
-            line-height: 1.7
+            line-height: 1.68;
+            padding-right: .1rem
         }
 
         .modal-body p {
-            margin-bottom: .75rem
+            margin-bottom: .72rem
         }
 
         .modal-body p:last-child {
@@ -2702,9 +2730,11 @@
         }
 
         .modal-divider {
+            position: relative;
+            z-index: 1;
             height: 1px;
-            background: var(--border);
-            margin: 1rem 0
+            background: color-mix(in srgb, var(--border-sub) 70%, transparent);
+            margin: .85rem 0
         }
         /* ── Field Report section ─────────────────────────────────────────── */
         .field-report-card {
