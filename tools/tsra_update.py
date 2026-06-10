@@ -194,8 +194,12 @@ def build_outcome_row(outcome: Outcome, row: PendingRow | None) -> str:
     status_class = "observed-pill" if outcome.kind == "felt" else "elapsed-pill"
     status = "Felt-only" if outcome.kind == "felt" else "Elapsed"
     watch_label = WATCH_NAMES[outcome.watch]
-    return f"""                    <tr>
-                        <td><span class='badge badge-as'>{source}</span></td>
+    evidence_type = "local-felt" if outcome.kind == "felt" else "local-elapsed"
+    certainty = "observational-low" if outcome.kind == "felt" else "observational-local"
+    official_status = "not-confirmed" if outcome.kind == "felt" else "not-official"
+    evidence_note = "Local felt-only · low certainty · pattern context" if outcome.kind == "felt" else "Local outcome · no-shake note · not official"
+    return f"""                    <tr data-evidence-type='{evidence_type}' data-certainty='{certainty}' data-official-status='{official_status}'>
+                        <td><span class='badge badge-as'>{source}</span><span class='evidence-mini'>{evidence_note}</span></td>
                         <td class='mono'>{month_label(outcome.report_time, approximate=outcome.kind == 'felt')}</td>
                         <td class='mono'>{watch_label}</td>
                         <td>{relation_text(outcome, row)}</td>
@@ -266,12 +270,12 @@ def band_label_plain(center: datetime) -> str:
 def build_pending_rows(anchor: datetime) -> str:
     rows: list[str] = []
     for phase, _multiplier, duration, klass, arrival in build_windows(anchor):
-        rows.append(f"""                        <tr data-arrival='{iso_local(arrival)}'>
+        rows.append(f"""                        <tr data-arrival='{iso_local(arrival)}' data-evidence-type='model-window' data-certainty='generated-watch' data-official-status='not-official'>
                             <td><span class='mult-badge'>{phase}&times;</span></td>
                             <td>{duration}</td>
                             <td class='mono'>{month_label(arrival)}</td>
                             <td class='countdown' data-arrival='{iso_local(arrival)}'>&mdash;</td>
-                            <td>{klass}</td>
+                            <td>{klass}<span class='evidence-mini'>Model window · generated · not warning</span></td>
                             <td class='status-cell' data-arrival='{iso_local(arrival)}'>&mdash;</td>
                             <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
                         </tr>""")
@@ -381,12 +385,21 @@ def replace_anchor(report: str, outcome: Outcome, anchor: datetime) -> str:
     )
     status_class = "observed-pill" if outcome.kind == "felt" else "pending-pill"
     status_text = "Felt-only anchor · new observation cycle" if outcome.kind == "felt" else "New observation cycle · local anchor"
+    source_certainty = (
+        "Local felt-only observation · low certainty · not confirmed · used only as a pattern anchor"
+        if outcome.kind == "felt"
+        else "Local elapsed/no-shake outcome · observational certainty · not official · used only as a pattern anchor"
+    )
+    anchor_evidence_type = "local-felt-anchor" if outcome.kind == "felt" else "local-elapsed-anchor"
+    anchor_certainty = "observational-low" if outcome.kind == "felt" else "observational-local"
+    anchor_official = "not-confirmed" if outcome.kind == "felt" else "not-official"
     replacements = [
         (r"<div class='anchor-value strong'>.*?</div>", f"<div class='anchor-value strong'>{source}</div>"),
         (r"<div class='anchor-value mono'>[^<]*</div>", f"<div class='anchor-value mono'>{plain_month_label(anchor, approximate=outcome.kind == 'felt')}</div>"),
         (r"<div class='anchor-label'>Window relation</div>\s*<div class='anchor-value'>.*?</div>", f"<div class='anchor-label'>Window relation</div>\n                        <div class='anchor-value'>{relation}</div>"),
         (r"<div class='anchor-label'>Next watch (?:band|center)</div>\s*<div class='anchor-value mono strong'>.*?</div>", f"<div class='anchor-label'>Next watch center</div>\n                        <div class='anchor-value mono strong'>{time_label(first_arrival)} · band {band_label(first_arrival)}</div>"),
         (r"<div class='anchor-label'>Evidence status</div>\s*<div class='anchor-value'><span class='pill [^']+'>.*?</span></div>", f"<div class='anchor-label'>Evidence status</div>\n                        <div class='anchor-value'><span class='pill {status_class}'>{status_text}</span></div>"),
+        (r"<div class='anchor-field' data-evidence-type='[^']+' data-certainty='[^']+' data-official-status='[^']+'>\s*<div class='anchor-label'>Source (?:&|&amp;) certainty</div>\s*<div class='anchor-value'>.*?</div>\s*</div>", f"<div class='anchor-field' data-evidence-type='{anchor_evidence_type}' data-certainty='{anchor_certainty}' data-official-status='{anchor_official}'>\n                        <div class='anchor-label'>Source &amp; certainty</div>\n                        <div class='anchor-value'>{source_certainty}</div>\n                    </div>"),
     ]
     anchor_match = re.search(r"<div class='card-title'>Latest Observation Anchor</div>.*?</div>\s*</div>\s*</div>\s*</div>\s*<div class='tab-panel' id='tab-chart'>", report, re.S)
     if not anchor_match:
@@ -490,6 +503,9 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "id='pending-table'",
         "id='observation-log-body'",
         "id='felt-register-text'",
+        "source-certainty-register",
+        "data-evidence-type",
+        "evidence-mini",
         "id='field-memory-count'",
         "tsraFieldMemory.v1",
         "TSRA_UPDATE_CHECK_INTERVAL",

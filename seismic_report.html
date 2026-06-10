@@ -436,6 +436,73 @@
             color: var(--muted)
         }
 
+        .source-certainty-register {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr);
+            gap: .62rem .75rem;
+            align-items: center;
+            margin: -0.55rem 0 1rem;
+            padding: .5rem .68rem;
+            border: 1px solid var(--border-sub);
+            background: color-mix(in srgb, var(--surface2) 34%, transparent)
+        }
+
+        .source-certainty-kicker {
+            font-family: var(--mono);
+            font-size: .48rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--muted);
+            white-space: nowrap
+        }
+
+        .source-certainty-list {
+            display: flex;
+            align-items: center;
+            gap: .42rem;
+            flex-wrap: wrap;
+            min-width: 0
+        }
+
+        .evidence-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: .28rem;
+            border: 1px solid color-mix(in srgb, var(--border-sub) 74%, transparent);
+            background: color-mix(in srgb, var(--surface) 62%, transparent);
+            color: var(--text-sub);
+            padding: .2rem .42rem;
+            font-family: var(--mono);
+            font-size: .47rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            white-space: nowrap
+        }
+
+        .evidence-chip strong {
+            color: var(--accent2);
+            font-weight: 500
+        }
+
+        .evidence-mini {
+            display: block;
+            margin-top: .22rem;
+            font-family: var(--mono);
+            font-size: .43rem;
+            letter-spacing: .09em;
+            line-height: 1.35;
+            text-transform: uppercase;
+            color: var(--muted)
+        }
+
+        .evidence-meta {
+            display: flex;
+            align-items: center;
+            gap: .35rem;
+            flex-wrap: wrap;
+            margin-top: .38rem
+        }
+
         [data-theme='dark'] .felt-register {
             background: rgba(122, 170, 136, .045);
             border-color: rgba(122, 170, 136, .16)
@@ -2040,7 +2107,8 @@
                 justify-content: flex-start
             }
 
-            .felt-register {
+            .felt-register,
+            .source-certainty-register {
                 grid-template-columns: 1fr;
                 gap: .28rem;
                 margin-top: -.45rem
@@ -2048,6 +2116,15 @@
 
             .felt-register-text {
                 white-space: normal
+            }
+
+            .source-certainty-list {
+                align-items: flex-start
+            }
+
+            .evidence-chip {
+                white-space: normal;
+                line-height: 1.35
             }
 
             .cache-status,
@@ -3253,6 +3330,16 @@
         <div class='felt-register-status'>not confirmed</div>
     </section>
 
+    <section class='source-certainty-register' aria-label='Source and certainty legend'>
+        <div class='source-certainty-kicker'>Source & certainty</div>
+        <div class='source-certainty-list'>
+            <span class='evidence-chip'><strong>Confirmed</strong> official seismic record</span>
+            <span class='evidence-chip'><strong>Felt-only</strong> local observation · not confirmed</span>
+            <span class='evidence-chip'><strong>Elapsed</strong> local no-shake outcome</span>
+            <span class='evidence-chip'><strong>Model window</strong> generated watch · not warning</span>
+        </div>
+    </section>
+
     <div class='stats'>
         <div class='stat' onclick="openModal('pulse')">
             <div class='stat-hint'>inspect</div>
@@ -3430,56 +3517,56 @@
                     </tr>
                 </thead>
                 <tbody id='observation-log-body'>
-                    <tr>
-                        <td><span class='badge badge-as'>FELT</span></td>
+                    <tr data-evidence-type='local-felt' data-certainty='observational-low' data-official-status='pending-confirmation'>
+                        <td><span class='badge badge-as'>FELT</span><span class='evidence-mini'>Local felt · low certainty · pending official check</span></td>
                         <td class='mono'>Jun 10 &middot; by ~09:55 AM</td>
                         <td class='mono'>09:13 AM extended-phase watch</td>
                         <td>Earlier / uncertain</td>
                         <td>Significant felt activity</td>
                         <td><span class='pill observed-pill'>Pending PHIVOLCS</span></td>
                     </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>OBS</span></td>
+                    <tr data-evidence-type='local-elapsed' data-certainty='observational-local' data-official-status='not-official'>
+                        <td><span class='badge badge-as'>OBS</span><span class='evidence-mini'>Local outcome · no-shake note · not official</span></td>
                         <td class='mono'>Jun 10 &middot; 02:03 PM</td>
                         <td class='mono'>7.0&times; long-phase watch</td>
                         <td>Watch center elapsed</td>
                         <td>No local outcome observed</td>
                         <td><span class='pill elapsed-pill'>Elapsed</span></td>
                     </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>OBS</span></td>
+                    <tr data-evidence-type='local-elapsed' data-certainty='observational-local' data-official-status='not-official'>
+                        <td><span class='badge badge-as'>OBS</span><span class='evidence-mini'>Local outcome · no-shake note · not official</span></td>
                         <td class='mono'>Jun 10 &middot; 03:32 PM</td>
                         <td class='mono'>9.5&times; extended-phase watch</td>
                         <td>Watch center elapsed</td>
                         <td>No local outcome observed</td>
                         <td><span class='pill elapsed-pill'>Elapsed</span></td>
                     </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>FELT</span></td>
+                    <tr data-evidence-type='local-felt' data-certainty='observational-low' data-official-status='not-confirmed'>
+                        <td><span class='badge badge-as'>FELT</span><span class='evidence-mini'>Local felt-only · low certainty · pattern context</span></td>
                         <td class='mono'>Jun 10 &middot; ~05:14 PM</td>
                         <td class='mono'>05:37 PM phase-sensitive watch</td>
                         <td>Before the watch time; ~23 min before anchor</td>
                         <td>Brief local shake felt</td>
                         <td><span class='pill observed-pill'>Felt-only</span></td>
                     </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>FELT</span></td>
+                    <tr data-evidence-type='local-felt' data-certainty='observational-low' data-official-status='not-confirmed'>
+                        <td><span class='badge badge-as'>FELT</span><span class='evidence-mini'>Local felt-only · low certainty · pattern context</span></td>
                         <td class='mono'>Jun 10 &middot; ~07:36 PM</td>
                         <td class='mono'>07:41 PM 7.0&times; long-phase watch</td>
                         <td>Before the watch time; ~5 min before anchor</td>
                         <td>Subtle local movement felt for ~1 min</td>
                         <td><span class='pill observed-pill'>Felt-only</span></td>
                     </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>OBS</span></td>
+                    <tr data-evidence-type='local-elapsed' data-certainty='observational-local' data-official-status='not-official'>
+                        <td><span class='badge badge-as'>OBS</span><span class='evidence-mini'>Local outcome · no-shake note · not official</span></td>
                         <td class='mono'>Jun 10 &middot; 09:10 PM</td>
                         <td class='mono'>9.5&times; extended-phase watch</td>
                         <td>Nothing happened during the watch</td>
                         <td>No local shake observed</td>
                         <td><span class='pill elapsed-pill'>Elapsed</span></td>
                     </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>FELT</span></td>
+                    <tr data-evidence-type='local-felt' data-certainty='observational-low' data-official-status='not-confirmed'>
+                        <td><span class='badge badge-as'>FELT</span><span class='evidence-mini'>Local felt-only · low certainty · anchor candidate</span></td>
                         <td class='mono'>Jun 10 &middot; ~11:47 PM</td>
                         <td class='mono'>3.5× phase-sensitive watch</td>
                         <td>After the watch time; ~32 min after anchor</td>
@@ -3513,39 +3600,39 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-arrival='2026-06-11T00:22:33'>
+                        <tr data-arrival='2026-06-11T00:22:33' data-evidence-type='model-window' data-certainty='generated-watch' data-official-status='not-official'>
                             <td><span class='mult-badge'>1.0&times;</span></td>
                             <td>35.6 min</td>
                             <td class='mono'>Jun 11 &middot; 12:22 AM</td>
                             <td class='countdown' data-arrival='2026-06-11T00:22:33'>&mdash;</td>
-                            <td>First post-anchor observation watch</td>
+                            <td>First post-anchor observation watch<span class='evidence-mini'>Model window · generated · not warning</span></td>
                             <td class='status-cell' data-arrival='2026-06-11T00:22:33'>&mdash;</td>
                             <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
                         </tr>
-                        <tr data-arrival='2026-06-11T01:51:25'>
+                        <tr data-arrival='2026-06-11T01:51:25' data-evidence-type='model-window' data-certainty='generated-watch' data-official-status='not-official'>
                             <td><span class='mult-badge'>3.5&times;</span></td>
                             <td>124.4 min</td>
                             <td class='mono'>Jun 11 &middot; 01:51 AM</td>
                             <td class='countdown' data-arrival='2026-06-11T01:51:25'>&mdash;</td>
-                            <td>Phase-sensitive observation watch</td>
+                            <td>Phase-sensitive observation watch<span class='evidence-mini'>Model window · generated · not warning</span></td>
                             <td class='status-cell' data-arrival='2026-06-11T01:51:25'>&mdash;</td>
                             <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
                         </tr>
-                        <tr data-arrival='2026-06-11T03:55:51'>
+                        <tr data-arrival='2026-06-11T03:55:51' data-evidence-type='model-window' data-certainty='generated-watch' data-official-status='not-official'>
                             <td><span class='mult-badge'>7.0&times;</span></td>
                             <td>248.9 min</td>
                             <td class='mono'>Jun 11 &middot; 03:55 AM</td>
                             <td class='countdown' data-arrival='2026-06-11T03:55:51'>&mdash;</td>
-                            <td>Long-phase observation watch</td>
+                            <td>Long-phase observation watch<span class='evidence-mini'>Model window · generated · not warning</span></td>
                             <td class='status-cell' data-arrival='2026-06-11T03:55:51'>&mdash;</td>
                             <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
                         </tr>
-                        <tr data-arrival='2026-06-11T05:24:44'>
+                        <tr data-arrival='2026-06-11T05:24:44' data-evidence-type='model-window' data-certainty='generated-watch' data-official-status='not-official'>
                             <td><span class='mult-badge'>9.5&times;</span></td>
                             <td>337.7 min</td>
                             <td class='mono'>Jun 11 &middot; 05:24 AM</td>
                             <td class='countdown' data-arrival='2026-06-11T05:24:44'>&mdash;</td>
-                            <td>Extended-phase observation watch</td>
+                            <td>Extended-phase observation watch<span class='evidence-mini'>Model window · generated · not warning</span></td>
                             <td class='status-cell' data-arrival='2026-06-11T05:24:44'>&mdash;</td>
                             <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
                         </tr>
@@ -3574,6 +3661,10 @@
                     <div class='anchor-field'>
                         <div class='anchor-label'>Evidence status</div>
                         <div class='anchor-value'><span class='pill observed-pill'>Felt-only anchor · new observation cycle</span></div>
+                    </div>
+                    <div class='anchor-field' data-evidence-type='local-felt-anchor' data-certainty='observational-low' data-official-status='not-confirmed'>
+                        <div class='anchor-label'>Source & certainty</div>
+                        <div class='anchor-value'>Local felt-only observation · low certainty · not confirmed · used only as a pattern anchor</div>
                     </div>
                 </div>
             </div>
@@ -4794,11 +4885,17 @@
                 const row = document.createElement('tr');
                 row.className = 'ledger-local-row';
                 row.dataset.localLedgerRow = 'true';
+                row.dataset.evidenceType = 'local-private-record';
+                row.dataset.certainty = 'user-entered';
+                row.dataset.officialStatus = 'not-submitted';
                 const source = document.createElement('td');
                 const badge = document.createElement('span');
                 badge.className = 'badge badge-as';
                 badge.textContent = 'LOCAL';
-                source.append(badge);
+                const evidence = document.createElement('span');
+                evidence.className = 'evidence-mini';
+                evidence.textContent = 'Private device record · user-entered · not submitted';
+                source.append(badge, evidence);
                 row.append(source);
                 row.append(buildTextCell(formatLedgerDate(entry.reportTime), 'mono'));
                 row.append(buildTextCell(`${entry.phase} · ${entry.watchTime}`, 'mono'));
