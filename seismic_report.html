@@ -488,16 +488,74 @@
         .learning-media-grid {
             display: flex;
             justify-content: center;
-            margin-bottom: 1rem
+            margin: .25rem auto 1rem
         }
 
         .learning-video-card {
-            width: min(100%, 760px);
-            padding: 0
+            width: min(100%, 1080px);
+            padding: 0;
+            border-radius: 14px;
+            overflow: hidden;
+            background: linear-gradient(180deg, var(--surface), #121316)
+        }
+
+        .video-card-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1.25rem;
+            padding: 1.25rem 1.35rem 1rem
+        }
+
+        .video-copy {
+            min-width: 0
+        }
+
+        .video-kicker {
+            font-size: .52rem;
+            text-transform: uppercase;
+            letter-spacing: .14em;
+            color: var(--muted);
+            margin-bottom: .35rem
+        }
+
+        .video-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: .01em;
+            line-height: 1.2
+        }
+
+        .video-subtitle {
+            max-width: 640px;
+            margin-top: .45rem;
+            font-size: .78rem;
+            color: var(--text-sub);
+            line-height: 1.55
+        }
+
+        .video-status {
+            flex: 0 0 auto;
+            font-family: var(--mono);
+            font-size: .62rem;
+            color: var(--accent2);
+            border: 1px solid rgba(122, 170, 136, .24);
+            background: rgba(122, 170, 136, .08);
+            border-radius: 999px;
+            padding: .28rem .65rem;
+            white-space: nowrap
+        }
+
+        .learning-video-card .media-frame {
+            border-radius: 0;
+            border-top: 1px solid var(--border-sub)
         }
 
         .learning-video-card .media-frame video.chart {
-            min-height: 0
+            min-height: 0;
+            aspect-ratio: 16 / 9
         }
 
         .media-frame img.chart,
@@ -775,6 +833,22 @@
                 padding: 0
             }
 
+            .video-card-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: .75rem;
+                padding: 1.05rem 1rem .9rem
+            }
+
+            .video-title {
+                font-size: .98rem
+            }
+
+            .video-subtitle {
+                font-size: .74rem;
+                max-width: none
+            }
+
             .media-frame {
                 border-radius: 0 0 10px 10px
             }
@@ -907,6 +981,24 @@
                 padding-right: 1rem !important;
                 letter-spacing: .1em;
                 line-height: 1.45
+            }
+
+            .video-card-header {
+                padding: .95rem .9rem .85rem
+            }
+
+            .video-title {
+                font-size: .92rem
+            }
+
+            .video-subtitle {
+                font-size: .72rem;
+                line-height: 1.5
+            }
+
+            .video-status {
+                font-size: .58rem;
+                padding: .24rem .55rem
             }
 
             .anchor-summary {
@@ -1504,7 +1596,14 @@
     <div class='tab-panel' id='tab-learning'>
         <div class='learning-media-grid'>
             <div class='card learning-video-card'>
-                <div class='card-title' style='padding:1.2rem 1.25rem 0 1.25rem'>Subduction & Trench Mechanics</div>
+                <div class='video-card-header'>
+                    <div class='video-copy'>
+                        <div class='video-kicker'>Learning Guide</div>
+                        <div class='video-title'>Subduction & Trench Mechanics</div>
+                        <div class='video-subtitle'>A compact visual guide to trench rhythm, phase windows, and why felt observations are logged separately from confirmed seismic events.</div>
+                    </div>
+                    <div class='video-status'>16:9 field module</div>
+                </div>
                 <div class='media-frame'>
                     <video class='chart' controls preload='metadata' playsinline onerror='markMediaBroken(this)' src='/safety/Cotabato_Trench_Rhythm.mp4'>
                         Your browser cannot play this safety video.
