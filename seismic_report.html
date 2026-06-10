@@ -5,7 +5,7 @@
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>TSRA &mdash; Tectonic Strain Ratchet Analyzer</title>
-    <meta name='theme-color' content='#17171a'>
+    <meta name='theme-color' content='#11110F'>
     <meta name='description' content='TSRA is an observational timing report for confirmed events, felt observations, and phase-sensitive watch windows.'>
     <link rel='manifest' href='/manifest.webmanifest'>
     <link rel='apple-touch-icon' href='/seismic_pattern_analysis.svg'>
@@ -23,34 +23,34 @@
 
         :root,
         [data-theme='dark'] {
-            --bg: #17171a;
-            --surface: #202024;
-            --surface2: #28282d;
-            --border: #2e2e34;
-            --border-sub: #252529;
-            --accent: #c4a968;
-            --accent2: #7aaa88;
-            --warn: #d48a3a;
-            --ok: #5fa878;
-            --danger: #c45858;
-            --text: #eee8dc;
-            --text-sub: #b8afa2;
-            --muted: #8a8175;
-            --shadow: 0 1px 3px rgba(0, 0, 0, .5), 0 4px 14px rgba(0, 0, 0, .3);
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
+            --bg: #11110f;
+            --surface: rgba(247, 243, 234, .044);
+            --surface2: rgba(247, 243, 234, .064);
+            --border: rgba(247, 243, 234, .115);
+            --border-sub: rgba(247, 243, 234, .072);
+            --accent: #cdb47e;
+            --accent2: #d8cfb8;
+            --warn: #cda66a;
+            --ok: #8fb39a;
+            --danger: #c98275;
+            --text: #f7f3ea;
+            --text-sub: rgba(247, 243, 234, .68);
+            --muted: rgba(247, 243, 234, .42);
+            --shadow: 0 34px 120px rgba(0, 0, 0, .28);
+            --shadow-sm: 0 18px 72px rgba(0, 0, 0, .20);
             --mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
-            --pre-bg: #131316;
-            --hero-bg: linear-gradient(135deg, #1e1c17, #1a1d1a);
-            --hero-border: #3a3628;
-            --hero-time: #d4b878;
-            --hero-remain: #a89050;
-            --row-hover: rgba(196, 169, 104, .05);
-            --td-border: #26262b;
-            --toggle-bg: #28282d;
-            --toggle-border: #38383e;
-            --tab-active-bg: rgba(196, 169, 104, .1);
-            --modal-overlay: rgba(10, 10, 12, .75);
-            --modal-bg: #202024;
+            --pre-bg: #0f0f0d;
+            --hero-bg: linear-gradient(135deg, rgba(247, 243, 234, .052), rgba(247, 243, 234, .026));
+            --hero-border: rgba(247, 243, 234, .16);
+            --hero-time: #f7f3ea;
+            --hero-remain: rgba(247, 243, 234, .54);
+            --row-hover: rgba(247, 243, 234, .035);
+            --td-border: rgba(247, 243, 234, .075);
+            --toggle-bg: rgba(247, 243, 234, .052);
+            --toggle-border: rgba(247, 243, 234, .14);
+            --tab-active-bg: rgba(247, 243, 234, .074);
+            --modal-overlay: rgba(17, 17, 15, .82);
+            --modal-bg: #191918;
             --serif: 'Source Serif 4', Georgia, serif;
             --ease: cubic-bezier(.16, 1, .3, 1);
         }
@@ -89,7 +89,7 @@
         }
 
         body {
-            background: radial-gradient(circle at 12% -10%, rgba(196, 169, 104, .08), transparent 34%), var(--bg);
+            background: var(--bg);
             color: var(--text);
             font-family: 'Inter', sans-serif;
             font-size: 14px;
