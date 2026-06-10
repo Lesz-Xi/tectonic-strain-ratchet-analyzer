@@ -1174,6 +1174,139 @@
             display: block
         }
 
+        .now-card {
+            padding: clamp(1rem, 2.2vw, 1.35rem);
+            background: linear-gradient(135deg, color-mix(in srgb, var(--surface) 92%, var(--bg)), color-mix(in srgb, var(--surface2) 78%, var(--bg)))
+        }
+
+        .now-shell {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(260px, .72fr);
+            gap: clamp(1rem, 2vw, 1.6rem);
+            align-items: stretch
+        }
+
+        .now-primary {
+            display: grid;
+            align-content: center;
+            gap: .8rem;
+            min-height: 250px;
+            border: 1px solid var(--border-sub);
+            padding: clamp(1.1rem, 2vw, 1.55rem);
+            background: color-mix(in srgb, var(--surface2) 60%, var(--bg))
+        }
+
+        .now-kicker,
+        .now-mini-label {
+            font-family: var(--mono);
+            font-size: .5rem;
+            letter-spacing: .17em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 500
+        }
+
+        .now-time {
+            font-family: var(--serif);
+            font-size: clamp(3rem, 10vw, 6.8rem);
+            line-height: .86;
+            font-weight: 300;
+            color: var(--hero-time);
+            letter-spacing: -.07em
+        }
+
+        .now-phase {
+            font-family: var(--mono);
+            font-size: .72rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--text-sub)
+        }
+
+        .now-remain {
+            width: fit-content;
+            border-top: 1px solid var(--border-sub);
+            padding-top: .55rem;
+            font-family: var(--mono);
+            font-size: .62rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--accent)
+        }
+
+        .now-side {
+            display: grid;
+            gap: .75rem;
+            align-content: stretch
+        }
+
+        .now-note,
+        .now-action-panel {
+            border: 1px solid var(--border-sub);
+            background: color-mix(in srgb, var(--surface2) 56%, var(--bg));
+            padding: .95rem
+        }
+
+        .now-note-title {
+            font-family: var(--serif);
+            font-size: 1.05rem;
+            color: var(--text);
+            margin: .35rem 0 .45rem;
+            line-height: 1.2
+        }
+
+        .now-note-body {
+            color: var(--text-sub);
+            font-size: .78rem;
+            line-height: 1.55
+        }
+
+        .now-boundary {
+            margin-top: .65rem;
+            color: var(--muted);
+            font-family: var(--mono);
+            font-size: .48rem;
+            letter-spacing: .08em;
+            line-height: 1.45;
+            text-transform: uppercase
+        }
+
+        .now-record-btn {
+            width: 100%;
+            border: 1px solid color-mix(in srgb, var(--accent) 36%, var(--border-sub));
+            background: color-mix(in srgb, var(--accent) 7%, transparent);
+            color: var(--accent);
+            font-family: var(--mono);
+            font-size: .54rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            padding: .58rem .75rem;
+            cursor: pointer;
+            margin-top: .8rem
+        }
+
+        .now-record-btn:disabled {
+            cursor: not-allowed;
+            color: var(--muted);
+            border-color: var(--border-sub);
+            background: transparent;
+            opacity: .72
+        }
+
+        .now-link-row {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            flex-wrap: wrap;
+            margin-top: .68rem
+        }
+
+        .now-link-row .tab-btn {
+            min-height: 28px;
+            padding: .28rem .52rem;
+            font-size: .46rem
+        }
+
         .hero-window {
             position: relative;
             overflow: hidden;
@@ -1960,11 +2093,20 @@
                 font-size: .74rem
             }
 
-            #tab-pending .grid {
+            .now-shell {
+                grid-template-columns: 1fr;
+                gap: .8rem
+            }
+
+            .now-primary {
+                min-height: 210px
+            }
+
+            #tab-rhythm .grid {
                 grid-template-columns: 1fr !important
             }
 
-            #tab-pending .hero-window {
+            #tab-rhythm .hero-window {
                 margin-bottom: .75rem;
                 padding: 1rem 1.05rem .95rem
             }
@@ -2069,6 +2211,10 @@
 
             .hero-time {
                 font-size: clamp(1.65rem, 12vw, 2.2rem)
+            }
+
+            .now-time {
+                font-size: clamp(2.55rem, 18vw, 4.2rem)
             }
 
             .hero-window::after {
@@ -3011,13 +3157,45 @@
     </div>
 
     <div class='tabs'>
-        <button class='tab-btn' onclick="switchTab('events',event)">Event Log</button>
-        <button class='tab-btn active' onclick="switchTab('pending',event)">Pending Windows</button>
-        <button class='tab-btn' onclick="switchTab('chart',event)">Dashboard Chart</button>
-        <button class='tab-btn' onclick="switchTab('forecast',event)">Raw Forecast</button>
-        <button class='tab-btn' onclick="switchTab('origin',event)">Origin</button>
-        <button class='tab-btn' onclick="switchTab('learning',event)">Learning Guide</button>
+        <button class='tab-btn active' onclick="switchTab('now',event)">Now</button>
+        <button class='tab-btn' onclick="switchTab('events',event)">Ledger</button>
+        <button class='tab-btn' onclick="switchTab('rhythm',event)">Rhythm</button>
+        <button class='tab-btn' onclick="switchTab('chart',event)">Chart</button>
         <button class='tab-btn' onclick="switchTab('field-report',event)">Field Report</button>
+        <button class='tab-btn' onclick="switchTab('learning',event)">Learning</button>
+        <button class='tab-btn' onclick="switchTab('origin',event)">Origin</button>
+        <button class='tab-btn' onclick="switchTab('forecast',event)">Archive</button>
+    </div>
+
+    <div class='tab-panel active' id='tab-now'>
+        <div class='card now-card'>
+            <div class='now-shell'>
+                <section class='now-primary' aria-labelledby='now-title'>
+                    <div class='now-kicker' id='now-status'>Observation window open</div>
+                    <div class='now-time' id='now-time'>--:--</div>
+                    <div class='now-phase' id='now-title'>Next watch center · calculating</div>
+                    <div class='now-remain' id='now-remain'>Calculating...</div>
+                </section>
+                <aside class='now-side' aria-label='Latest observation note'>
+                    <div class='now-note'>
+                        <div class='now-mini-label'>Latest felt-only note</div>
+                        <div class='now-note-title'>~07:36 PM · subtle local movement</div>
+                        <div class='now-note-body'>Felt for about one minute and linked to the 07:41 PM long-phase watch. This remains a local felt observation, not a confirmed seismic event.</div>
+                        <div class='now-boundary'>Observation surface only · not a certified warning system</div>
+                    </div>
+                    <div class='now-action-panel'>
+                        <div class='now-mini-label'>Field action</div>
+                        <div class='now-note-body'>Record what happened on this device. Entries stay local and remain separate from confirmed seismic events.</div>
+                        <button class='now-record-btn' id='now-record-outcome' type='button' onclick='openNowOutcomeRecorder()'>Record outcome</button>
+                        <div class='now-link-row' aria-label='Related sections'>
+                            <button class='tab-btn' type='button' onclick="switchTab('events',event)">Ledger</button>
+                            <button class='tab-btn' type='button' onclick="switchTab('rhythm',event)">Rhythm</button>
+                            <button class='tab-btn' type='button' onclick="switchTab('field-report',event)">Report</button>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
     </div>
 
     <div class='tab-panel' id='tab-events'>
@@ -3169,7 +3347,7 @@
         </div>
     </div>
 
-    <div class='tab-panel active' id='tab-pending'>
+    <div class='tab-panel' id='tab-rhythm'>
         <div class='grid' style='grid-template-columns:1fr 2fr;align-items:start'>
             <div class='hero-window' id='next-window-hero'>
                 <div class='hero-label'>Next Observation Window</div>
@@ -4349,10 +4527,21 @@
             if (m > 0) return `In ${m}m ${sec}s`;
             return `In ${sec}s`;
         }
+        function openNowOutcomeRecorder() {
+            const recordButton = document.querySelector('#pending-table tbody tr[data-now-record="true"] .record-outcome-btn');
+            if (recordButton) openOutcomeRecorder(recordButton);
+        }
+        function setNowRecordState(enabled) {
+            const button = document.getElementById('now-record-outcome');
+            if (!button) return;
+            button.disabled = !enabled;
+            button.textContent = enabled ? 'Record outcome' : 'No active watch to record';
+        }
         function updateCountdowns() {
             const now = Date.now();
-            let nextArrival = null, nextTime = null;
+            let nextArrival = null, nextTime = null, nextRow = null;
             document.querySelectorAll('#pending-table tbody tr').forEach(row => {
+                delete row.dataset.nowRecord;
                 const arrival = new Date(row.dataset.arrival);
                 const diff = arrival.getTime() - now;
                 const countdown = row.querySelector('.countdown');
@@ -4368,17 +4557,32 @@
                     stCell.innerHTML = "<span class='pill elapsed-pill'>Elapsed</span>";
                     row.style.opacity = '.4';
                 } else if (diff < 20 * 60 * 1000) {
-                    stCell.innerHTML = "<span class='pill active-pill'>&#9679; Imminent</span>";
-                    if (!nextArrival || arrival < nextArrival) { nextArrival = arrival; nextTime = diff; }
+                    stCell.innerHTML = "<span class='pill active-pill'>&#9679; Observation window open</span>";
+                    if (!nextArrival || arrival < nextArrival) { nextArrival = arrival; nextTime = diff; nextRow = row; }
                 } else {
                     stCell.innerHTML = "<span class='pill pending-pill'>Pending</span>";
-                    if (!nextArrival || arrival < nextArrival) { nextArrival = arrival; nextTime = diff; }
+                    if (!nextArrival || arrival < nextArrival) { nextArrival = arrival; nextTime = diff; nextRow = row; }
                 }
             });
-            if (nextArrival) {
-                document.getElementById('hero-time').textContent =
-                    nextArrival.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
-                document.getElementById('hero-remain').textContent = fmtDiff(nextTime);
+            if (nextArrival && nextRow) {
+                const timeLabel = nextArrival.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
+                const remainLabel = fmtDiff(nextTime);
+                const cells = nextRow.querySelectorAll('td');
+                const phaseLabel = cells[0] && cells[4] ? `${cells[0].textContent.trim()} · ${cells[4].textContent.trim()}` : 'Next watch center';
+                nextRow.dataset.nowRecord = 'true';
+                document.getElementById('hero-time').textContent = timeLabel;
+                document.getElementById('hero-remain').textContent = remainLabel;
+                document.getElementById('now-time').textContent = timeLabel;
+                document.getElementById('now-remain').textContent = remainLabel;
+                document.getElementById('now-title').textContent = phaseLabel;
+                document.getElementById('now-status').textContent = nextTime < 20 * 60 * 1000 ? 'Observation window open' : 'Next observation window';
+                setNowRecordState(true);
+            } else {
+                document.getElementById('now-status').textContent = 'No active observation window';
+                document.getElementById('now-time').textContent = '—';
+                document.getElementById('now-remain').textContent = 'All listed windows elapsed';
+                document.getElementById('now-title').textContent = 'Ledger remains available for local notes';
+                setNowRecordState(false);
             }
         }
         setInterval(updateCountdowns, 1000); updateCountdowns();
