@@ -2196,25 +2196,38 @@
         }
 
         .field-report-hero {
-            position: relative;
-            border-bottom: 1px solid var(--border)
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: stretch;
+            border-bottom: 1px solid var(--border);
+            min-height: 0
+        }
+
+        .field-report-hero-img-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: color-mix(in srgb, var(--surface2) 60%, var(--bg));
+            border-right: 1px solid var(--border-sub);
+            padding: .75rem 1rem;
+            width: min(38vw, 340px)
         }
 
         .field-report-hero-img {
             display: block;
             width: 100%;
             max-width: 100%;
+            max-height: 148px;
             height: auto;
-            object-fit: cover
+            object-fit: contain
         }
 
         .field-report-hero-caption {
             display: flex;
-            align-items: baseline;
-            gap: 1rem;
-            padding: .62rem .95rem;
-            border-top: 1px solid var(--border-sub);
-            background: color-mix(in srgb, var(--surface2) 72%, var(--bg))
+            flex-direction: column;
+            justify-content: center;
+            gap: .38rem;
+            padding: .85rem 1.1rem
         }
 
         .field-report-hero-caption .mono {
@@ -2223,16 +2236,16 @@
             letter-spacing: .14em;
             text-transform: uppercase;
             color: var(--accent);
-            font-weight: 500;
-            flex-shrink: 0
+            font-weight: 500
         }
 
         .field-report-hero-meta {
             font-family: var(--mono);
-            font-size: .5rem;
+            font-size: .48rem;
             letter-spacing: .09em;
             color: var(--muted);
-            text-transform: uppercase
+            text-transform: uppercase;
+            line-height: 1.55
         }
 
         .field-report-body {
@@ -2400,6 +2413,19 @@
         }
 
         @media (max-width: 720px) {
+            .field-report-hero {
+                grid-template-columns: 1fr
+            }
+            .field-report-hero-img-wrap {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-sub);
+                max-height: 160px;
+                padding: .6rem .9rem
+            }
+            .field-report-hero-img {
+                max-height: 120px
+            }
             .field-report-body {
                 padding: 1rem .9rem .85rem
             }
@@ -3014,12 +3040,14 @@
         <div class='card field-report-card'>
 
             <div class='field-report-hero'>
-                <img src='safety/80124894-56EA-42FF-BDF0-2F6C37B6453B.png'
-                     class='field-report-hero-img'
-                     alt='Seismic Pulse infographic: 2026 Mw 7.8 Mindanao earthquake event profile, Cotabato Trench subduction origin, mathematical rhythm of aftershocks, and structural impact summary' />
+                <div class='field-report-hero-img-wrap'>
+                    <img src='safety/80124894-56EA-42FF-BDF0-2F6C37B6453B.png'
+                         class='field-report-hero-img'
+                         alt='Seismic Pulse infographic: 2026 Mw 7.8 Mindanao earthquake event profile, Cotabato Trench subduction origin, mathematical rhythm of aftershocks, and structural impact summary' />
+                </div>
                 <div class='field-report-hero-caption'>
                     <span class='mono'>Seismic Pulse</span>
-                    <span class='field-report-hero-meta'>Jun 8, 2026 &nbsp;&middot;&nbsp; Mw 7.8 &nbsp;&middot;&nbsp; Cotabato Trench &nbsp;&middot;&nbsp; 26 km WSW of Kablalan, Sarangani</span>
+                    <span class='field-report-hero-meta'>Jun 8, 2026 &nbsp;&middot;&nbsp; Mw 7.8 &nbsp;&middot;&nbsp; Cotabato Trench<br>26 km WSW of Kablalan, Sarangani &nbsp;&middot;&nbsp; Epicentral Intensity VIII</span>
                 </div>
             </div>
 
