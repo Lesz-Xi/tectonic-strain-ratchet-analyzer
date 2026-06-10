@@ -16,6 +16,7 @@ const MIME = {
   '.jpeg': 'image/jpeg',
   '.mp4': 'video/mp4',
   '.webm': 'video/webm',
+  '.vtt': 'text/vtt; charset=utf-8',
   '.js': 'application/javascript',
   '.css': 'text/css',
 };
