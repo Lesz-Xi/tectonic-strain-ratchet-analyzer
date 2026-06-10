@@ -406,6 +406,12 @@
             border: 1px solid rgba(90, 86, 80, .2)
         }
 
+        .observed-pill {
+            background: rgba(196, 169, 104, .14);
+            color: #d4b878;
+            border: 1px solid rgba(196, 169, 104, .34)
+        }
+
         .active-pill {
             background: rgba(196, 169, 104, .12);
             color: #c4a968;
@@ -477,6 +483,21 @@
             overflow: hidden;
             background: #030406;
             border-radius: 0 0 12px 12px
+        }
+
+        .learning-media-grid {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem
+        }
+
+        .learning-video-card {
+            width: min(100%, 760px);
+            padding: 0
+        }
+
+        .learning-video-card .media-frame video.chart {
+            min-height: 0
         }
 
         .media-frame img.chart,
@@ -703,12 +724,13 @@
                 overflow: hidden
             }
 
-            #tab-learning .card.full {
-                padding: 0
+            #tab-learning .learning-media-grid {
+                margin-bottom: .85rem
             }
 
-            #tab-learning .grid {
-                gap: .85rem
+            #tab-learning .learning-video-card {
+                width: 100%;
+                padding: 0
             }
 
             .media-frame {
@@ -1067,9 +1089,9 @@
         </div>
         <div class='stat' onclick="openModal('events')">
             <div class='stat-hint'>tap to expand</div>
-            <div class='stat-label'>Total Events</div>
-            <div class='stat-value'>11</div>
-            <div class='stat-sub'>Mainshock + 10 aftershocks</div>
+            <div class='stat-label'>Total Observations</div>
+            <div class='stat-value'>12</div>
+            <div class='stat-sub'>11 confirmed + 1 felt pending</div>
         </div>
         <div class='stat' onclick="openModal('anchor')">
             <div class='stat-hint'>tap to expand</div>
@@ -1081,7 +1103,7 @@
             <div class='stat-hint'>tap to expand</div>
             <div class='stat-label'>Model Fit</div>
             <div class='stat-value'>87.7 <span class='stat-unit'>%</span></div>
-            <div class='stat-sub'>Predictive alignment</div>
+            <div class='stat-sub'>Timing alignment</div>
         </div>
     </div>
 
@@ -1096,7 +1118,7 @@
 
     <div class='tab-panel' id='tab-events'>
         <div class='card'>
-            <div class='card-title'>Confirmed Event Log</div>
+            <div class='card-title'>Event & Observation Log</div>
             <table>
                 <thead>
                     <tr>
@@ -1177,6 +1199,12 @@
                         </td>
                         <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
                     </tr>
+                    <tr>
+                        <td><span class='badge badge-as'>OBS</span></td>
+                        <td>Jun 10 &middot; ~09:55 AM</td>
+                        <td class='mono'>+42 min from 09:13 watch <span style='color:var(--accent);font-size:.63rem'>delayed significant felt</span></td>
+                        <td><span class='pill observed-pill'>Felt · pending official</span></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -1185,21 +1213,21 @@
     <div class='tab-panel active' id='tab-pending'>
         <div class='grid' style='grid-template-columns:1fr 2fr;align-items:start'>
             <div class='hero-window' id='next-window-hero'>
-                <div class='hero-label'>Next Expected Window</div>
+                <div class='hero-label'>Next Observation Window</div>
                 <div class='hero-time' id='hero-time'>--:--</div>
                 <div class='hero-remain' id='hero-remain'>Calculating...</div>
             </div>
             <div class='card'>
-                <div class='card-title'>Pending Aftershock Windows &mdash; anchored <span class='mono'
+                <div class='card-title'>Phase-Sensitive Observation Windows &mdash; anchored <span class='mono'
                         style='color:var(--accent2)'>A10 &middot; 03:36 AM</span></div>
                 <table id='pending-table'>
                     <thead>
                         <tr>
-                            <th>Multiplier</th>
+                            <th>Phase</th>
                             <th>Window</th>
-                            <th>Expected Arrival</th>
+                            <th>Watch Time</th>
                             <th>Remaining</th>
-                            <th>Interpretation</th>
+                            <th>Observation Class</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -1209,7 +1237,7 @@
                             <td>35.6 min</td>
                             <td class='mono'>Jun 10 &middot; 04:11 AM</td>
                             <td class='countdown' data-arrival='2026-06-10T04:11:33'>&mdash;</td>
-                            <td>Micro-pulse check</td>
+                            <td>Micro-pulse watch</td>
                             <td class='status-cell' data-arrival='2026-06-10T04:11:33'>&mdash;</td>
                         </tr>
                         <tr data-arrival='2026-06-10T05:40:24'>
@@ -1217,7 +1245,7 @@
                             <td>124.4 min</td>
                             <td class='mono'>Jun 10 &middot; 05:40 AM</td>
                             <td class='countdown' data-arrival='2026-06-10T05:40:24'>&mdash;</td>
-                            <td>Significant window</td>
+                            <td>Activity-cluster watch</td>
                             <td class='status-cell' data-arrival='2026-06-10T05:40:24'>&mdash;</td>
                         </tr>
                         <tr data-arrival='2026-06-10T07:44:51'>
@@ -1225,16 +1253,16 @@
                             <td>248.9 min</td>
                             <td class='mono'>Jun 10 &middot; 07:44 AM</td>
                             <td class='countdown' data-arrival='2026-06-10T07:44:51'>&mdash;</td>
-                            <td>High-capacity window</td>
+                            <td>Long-phase watch</td>
                             <td class='status-cell' data-arrival='2026-06-10T07:44:51'>&mdash;</td>
                         </tr>
-                        <tr data-arrival='2026-06-10T09:13:42'>
+                        <tr data-arrival='2026-06-10T09:13:42' data-observed='true' data-observed-label='Observed +42m'>
                             <td><span class='mult-badge'>9.5&times;</span></td>
                             <td>337.7 min</td>
                             <td class='mono'>Jun 10 &middot; 09:13 AM</td>
-                            <td class='countdown' data-arrival='2026-06-10T09:13:42'>&mdash;</td>
-                            <td>Max strain release</td>
-                            <td class='status-cell' data-arrival='2026-06-10T09:13:42'>&mdash;</td>
+                            <td class='countdown' data-arrival='2026-06-10T09:13:42'>+42 min</td>
+                            <td>Delayed significant felt shake</td>
+                            <td class='status-cell' data-arrival='2026-06-10T09:13:42'><span class='pill observed-pill'>Observed +42m</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -1260,17 +1288,11 @@
                     </div>
                     <div class='explainer-block'>
                         <h4>Why do some peaks reach higher than others?</h4>
-                        <p>A higher peak means the fault held on longer before releasing &mdash; it accumulated more
-                            stress before finally slipping. A small 1&times; pulse (like A3 or A4) is the fault
-                            releasing at its minimum threshold. A large 9.5&times; event (like A1) means the fault
-                            skipped several smaller release opportunities and unleashed much more energy at once.</p>
+                        <p>A higher peak means the modeled phase interval lasted longer before an observed release or watch outcome. It does <strong>not</strong> guarantee stronger shaking by itself. Strength is logged separately after observation as micro-pulse, small shake, significant felt shake, clustered activity, delayed release, or no confirmed local release.</p>
                     </div>
                     <div class='explainer-block'>
                         <h4>What are the multipliers (1&times;, 3.5&times;, 7&times;, 9.5&times;)?</h4>
-                        <p>The fault has a natural &ldquo;heartbeat&rdquo; of about 35.5 minutes. Sometimes it releases
-                            every heartbeat (1&times;). Sometimes it holds through 3.5 or 7 or 9.5 cycles before
-                            releasing. These are the multipliers. They tell you how many heartbeats the fault skipped
-                            before it finally let go.</p>
+                        <p>The model uses a natural &ldquo;heartbeat&rdquo; of about 35.5 minutes to mark watch centers. The 1&times;, 3.5&times;, 7&times;, and 9.5&times; values are phase markers. They help organize timing, while observed amplitude and official confirmation remain separate fields.</p>
                     </div>
                     <div class='explainer-block'>
                         <h4>What is the &ldquo;Observer vs Instrument&rdquo; line at the bottom?</h4>
@@ -1289,73 +1311,74 @@
         <div class='card'>
             <div class='card-title'>Raw Model Forecast Output</div>
             <div class='pre-wrap'>================================================================================
-                TECTONIC AFTERSHOCK PREDICTIVE MODEL (HISTORICAL REFERENCE)
+                TECTONIC PHASE-OBSERVATION MODEL (HISTORICAL REFERENCE)
                 Slip Threshold Forecasts (Reference Time: 2026-06-09 00:49:15)
                 ================================================================================
                 - Fitted Baseline Pulse Period: 35.552 minutes
 
-                Multiplier | Accumulation Window | Expected Arrival Time | Status
+                Phase | Observation Window | Watch Time | Post-Window Class
                 --------------------------------------------------------------------------------
-                1.0x capacity | 35.6 minutes | 2026-06-09 01:24:48 | ELAPSED (1542.6m ago) -> Stress held / bypassed
-                3.5x capacity | 124.4 minutes | 2026-06-09 02:53:40 | ELAPSED (1453.7m ago) -> Stress held / bypassed
-                7.0x capacity | 248.9 minutes | 2026-06-09 04:58:06 | ELAPSED (1329.3m ago) -> Stress held / bypassed
-                9.5x capacity | 337.7 minutes | 2026-06-09 06:26:59 | ELAPSED (1240.4m ago) -> Stress held / bypassed
+                1.0x phase | 35.6 minutes | 2026-06-09 01:24:48 | ELAPSED -> no confirmed local release
+                3.5x phase | 124.4 minutes | 2026-06-09 02:53:40 | ELAPSED -> no confirmed local release
+                7.0x phase | 248.9 minutes | 2026-06-09 04:58:06 | ELAPSED -> no confirmed local release
+                9.5x phase | 337.7 minutes | 2026-06-09 06:26:59 | ELAPSED -> no confirmed local release
                 ================================================================================
 
                 ================================================================================
-                TECTONIC AFTERSHOCK PREDICTIVE MODEL (A7 ANCHOR)
+                TECTONIC PHASE-OBSERVATION MODEL (A7 ANCHOR)
                 Slip Threshold Forecasts (Reference Time: 2026-06-10 02:12:00)
                 ================================================================================
                 - Fitted Baseline Pulse Period: 35.552 minutes
 
-                Multiplier | Accumulation Window | Expected Arrival Time | Status
+                Phase | Observation Window | Watch Time | Post-Window Class
                 --------------------------------------------------------------------------------
-                1.0x capacity | 35.6 minutes | 2026-06-10 02:47:33 | ELAPSED -> Stress held / bypassed
-                3.5x capacity | 124.4 minutes | 2026-06-10 04:16:25 | PENDING
-                7.0x capacity | 248.9 minutes | 2026-06-10 06:20:51 | PENDING
-                9.5x capacity | 337.7 minutes | 2026-06-10 07:49:44 | PENDING
+                1.0x phase | 35.6 minutes | 2026-06-10 02:47:33 | ELAPSED -> micro-pulse / timing check
+                3.5x phase | 124.4 minutes | 2026-06-10 04:16:25 | WATCH
+                7.0x phase | 248.9 minutes | 2026-06-10 06:20:51 | WATCH
+                9.5x phase | 337.7 minutes | 2026-06-10 07:49:44 | WATCH
                 ================================================================================
 
                 ================================================================================
-                TECTONIC AFTERSHOCK PREDICTIVE MODEL (A8 ANCHOR - LIVE)
+                TECTONIC PHASE-OBSERVATION MODEL (A8 ANCHOR - LIVE)
                 Slip Threshold Forecasts (Reference Time: 2026-06-10 02:55:00)
                 ================================================================================
                 - Fitted Baseline Pulse Period: 35.552 minutes
 
-                Multiplier | Accumulation Window | Expected Arrival Time | Status
+                Phase | Observation Window | Watch Time | Post-Window Class
                 --------------------------------------------------------------------------------
-                1.0x capacity | 35.6 minutes | 2026-06-10 03:30:33 | PENDING
-                3.5x capacity | 124.4 minutes | 2026-06-10 04:59:25 | PENDING
-                7.0x capacity | 248.9 minutes | 2026-06-10 07:03:51 | PENDING
-                9.5x capacity | 337.7 minutes | 2026-06-10 08:32:44 | PENDING
+                1.0x phase | 35.6 minutes | 2026-06-10 03:30:33 | WATCH
+                3.5x phase | 124.4 minutes | 2026-06-10 04:59:25 | WATCH
+                7.0x phase | 248.9 minutes | 2026-06-10 07:03:51 | WATCH
+                9.5x phase | 337.7 minutes | 2026-06-10 08:32:44 | WATCH
+                ================================================================================
+
+                ================================================================================
+                TECTONIC PHASE-OBSERVATION MODEL (A10 ANCHOR - UPDATED OUTCOME)
+                Watch Center / Observed Offset Record (Reference Time: 2026-06-10 03:36:00)
+                ================================================================================
+                - Fitted Baseline Pulse Period: 35.552 minutes
+                - Architecture Rule: timing window and amplitude class are separate fields
+
+                Phase | Observation Window | Watch Center | Observed Outcome
+                --------------------------------------------------------------------------------
+                1.0x phase | 35.6 minutes | 2026-06-10 04:11:33 | elapsed / no local outcome recorded
+                3.5x phase | 124.4 minutes | 2026-06-10 05:40:24 | elapsed / no local outcome recorded
+                7.0x phase | 248.9 minutes | 2026-06-10 07:44:51 | elapsed / no local outcome recorded
+                9.5x phase | 337.7 minutes | 2026-06-10 09:13:42 | observed ~09:55 AM -> +42m delayed significant felt shake; pending official confirmation
                 ================================================================================
             </div>
         </div>
     </div>
 
     <div class='tab-panel' id='tab-learning'>
-        <div class='grid full'>
-            <div class='card full' style='padding:0'>
-                <div class='card-title' style='padding:1.5rem 1.5rem 0 1.5rem'>Subduction & Trench Mechanics</div>
+        <div class='learning-media-grid'>
+            <div class='card learning-video-card'>
+                <div class='card-title' style='padding:1.2rem 1.25rem 0 1.25rem'>Subduction & Trench Mechanics</div>
                 <div class='media-frame'>
                     <video class='chart' controls preload='metadata' playsinline onerror='markMediaBroken(this)' src='/safety/Cotabato_Trench_Rhythm.mp4'>
                         Your browser cannot play this safety video.
                     </video>
                     <div class='media-fallback'><strong>Video unavailable</strong>The local safety video did not load. Confirm <span class='mono'>/safety/Cotabato_Trench_Rhythm.mp4</span> is included in the deployed project.</div>
-                </div>
-            </div>
-            <div class='card'>
-                <div class='card-title'>Infographic A: Tectonic Overview</div>
-                <div class='media-frame'>
-                    <img class='chart' src='/safety/80124894-56EA-42FF-BDF0-2F6C37B6453B.png' alt='Tectonic Infographic 1' onerror='markMediaBroken(this)'>
-                    <div class='media-fallback'><strong>Infographic unavailable</strong>The tectonic overview image did not load. Confirm <span class='mono'>/safety/80124894-56EA-42FF-BDF0-2F6C37B6453B.png</span> is included in the deployed project.</div>
-                </div>
-            </div>
-            <div class='card'>
-                <div class='card-title'>Infographic B: Family Safety Guide</div>
-                <div class='media-frame'>
-                    <img class='chart' src='/safety/8021552D-B0A4-4F9B-9EFE-1B6822EDBEAF.png' alt='Tectonic Infographic 2' onerror='markMediaBroken(this)'>
-                    <div class='media-fallback'><strong>Infographic unavailable</strong>The family safety guide image did not load. Confirm <span class='mono'>/safety/8021552D-B0A4-4F9B-9EFE-1B6822EDBEAF.png</span> is included in the deployed project.</div>
                 </div>
             </div>
         </div>
@@ -1369,7 +1392,7 @@
                     fitted mathematical model. It is <em>not</em> a certified scientific instrument and should not
                     replace official PHIVOLCS advisories, civil defense protocols, or professional seismological
                     guidance. The pattern observed here is consistent with known tectonic physics, but earthquake
-                    behavior is never fully deterministic. Use this as context, not as prediction with certainty.
+                    behavior is never fully deterministic. Use this as timing context, not as magnitude prediction or safety certainty.
                 </div>
             </div>
         </div>
@@ -1535,19 +1558,19 @@
                 body: `<p>The fault&rsquo;s natural <strong>recharge interval</strong>. Every ~35.5 minutes, the Sarangani Segment accumulates enough tectonic stress to potentially trigger a slip event.</p><p>Think of it like a clock. The tectonic plates are constantly pushing against each other. Friction holds the fault locked. Stress builds. When it crosses the threshold, the fault slips &mdash; releasing energy as an earthquake &mdash; and the clock resets.</p><p>This value was <strong>fitted from the observed event intervals</strong>, not assumed from prior literature. It is specific to this fault segment under current post-mainshock loading conditions.</p>`
             },
             events: {
-                label: 'Total Confirmed Events',
-                value: '11',
-                body: `<p>One <strong>mainshock</strong> (Jun 8 &middot; 07:37 AM) followed by <strong>8 confirmed aftershocks</strong> spanning approximately 19 hours.</p><p>Each aftershock represents a fault slip at a different accumulation threshold &mdash; some at 1&times; the baseline pulse (quick, small releases), others at 7&times; or 9.5&times; (longer holdouts, larger releases).</p><p>The sequence shows a <strong>rhythm, not randomness</strong>. The fault is not releasing chaotically &mdash; it is cycling through its natural stress-release pattern at knowable intervals.</p>`
+                label: 'Total Observations',
+                value: '12',
+                body: `<p>The working log contains <strong>11 confirmed events</strong> plus <strong>1 personal felt observation pending official confirmation</strong>.</p><p>The new architecture records each outcome as timing evidence plus an amplitude class. The 09:13 AM extended-phase watch is logged with a felt shake around 09:55 AM, giving an observed offset of about <strong>+42 minutes</strong>.</p><p>The sequence is represented as a <strong>phase-observation pattern</strong>: useful for watching rhythm and classifying outcomes, not for deterministic magnitude prediction.</p>`
             },
             anchor: {
                 label: 'Last Confirmed Event',
                 value: 'A10 &middot; 03:36 AM',
-                body: `<p><strong>A9</strong> struck at 03:26 AM &mdash; 31 minutes after A8. Model predicted 03:30 AM. Arrived 4 minutes early, firing the 1&times; window. Very tight fit.</p><p><strong>A10</strong> followed at 03:36 AM &mdash; only 10 minutes after A9. This is a sub-pulse (~0.28&times;), likely a triggered secondary slip on the same fault patch immediately after A9&rsquo;s release. Not a standard multiplier window.</p><p>A10 is now the <strong>active anchor</strong>. All four pending windows (1&times;, 3.5&times;, 7&times;, 9.5&times;) are calculated from 03:36 AM.</p>`
+                body: `<p><strong>A9</strong> struck at 03:26 AM &mdash; 31 minutes after A8. The 1&times; watch center was 03:30 AM, so the observed event arrived about 4 minutes early.</p><p><strong>A10</strong> followed at 03:36 AM &mdash; only 10 minutes after A9. This is a sub-pulse (~0.28&times;), likely a triggered secondary slip on the same fault patch immediately after A9&rsquo;s release. Not a standard phase window.</p><p>A10 is the anchor for the 09:13 AM extended-phase watch. A later felt shake around 09:55 AM is logged as a delayed significant felt outcome, about <strong>+42 minutes</strong> after the watch center, pending official confirmation.</p>`
             },
             fit: {
-                label: 'Model Fit',
+                label: 'Timing Fit',
                 value: '87.7%',
-                body: `<p><strong>87.7% predictive alignment</strong> means the model&rsquo;s expected arrival times matched the actual observed event times within acceptable tolerance across the confirmed event set.</p><p>This is not perfect &mdash; and it should not be. Earthquake behavior is governed by physical processes with natural variability. A7 arrived 28 minutes early (possibly indicating a higher local friction state or accelerated loading). A8 arrived 8 minutes late (well within tolerance).</p><p>An 87.7% fit on a manually-observed sequence of 9 events, using a single-parameter physics model, is a strong result. It validates that the <strong>stick-slip pattern is real and measurable</strong>, not an artifact of selection bias or wishful pattern-matching.</p>`
+                body: `<p><strong>87.7% timing alignment</strong> means the model&rsquo;s watch times matched observed event timing within acceptable tolerance across the confirmed event set.</p><p>This does <strong>not</strong> mean the system can predict magnitude, damage, or felt strength. Earthquake behavior varies by depth, rupture area, coupling, attenuation, and whether strain releases as one event, multiple micro-pulses, slow slip, or delayed transfer.</p><p>The useful result is narrower and safer: the model may be tracking a <strong>rhythm / phase pattern</strong>. Amplitude remains unknown until checked against official seismic observations.</p>`
             }
         };
 
@@ -1586,8 +1609,15 @@
             document.querySelectorAll('#pending-table tbody tr').forEach(row => {
                 const arrival = new Date(row.dataset.arrival);
                 const diff = arrival.getTime() - now;
-                row.querySelector('.countdown').textContent = fmtDiff(diff);
+                const countdown = row.querySelector('.countdown');
                 const stCell = row.querySelector('.status-cell');
+                if (row.dataset.observed === 'true') {
+                    countdown.textContent = '+42 min';
+                    stCell.innerHTML = `<span class='pill observed-pill'>${row.dataset.observedLabel || 'Observed'}</span>`;
+                    row.style.opacity = '1';
+                    return;
+                }
+                countdown.textContent = fmtDiff(diff);
                 if (diff <= 0) {
                     stCell.innerHTML = "<span class='pill elapsed-pill'>Elapsed</span>";
                     row.style.opacity = '.4';
