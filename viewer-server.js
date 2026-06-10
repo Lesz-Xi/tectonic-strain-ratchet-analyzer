@@ -13,6 +13,9 @@ const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
   '.js': 'application/javascript',
   '.css': 'text/css',
 };

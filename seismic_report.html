@@ -213,7 +213,8 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
-            margin-bottom: 1rem
+            margin-bottom: 1rem;
+            min-width: 0
         }
 
         .full {
@@ -226,7 +227,8 @@
             border-radius: 8px;
             padding: 0.8rem;
             box-shadow: var(--shadow-sm);
-            transition: background .2s, border-color .2s
+            transition: background .2s, border-color .2s;
+            min-width: 0
         }
 
         .card-title {
@@ -461,11 +463,65 @@
             overflow-y: auto
         }
 
-        img.chart {
+        img.chart,
+        video.chart {
             display: block;
             width: 100%;
             border-radius: 10px;
-            border: 1px solid var(--border)
+            border: 1px solid var(--border);
+            background: #030406
+        }
+
+        .media-frame {
+            position: relative;
+            overflow: hidden;
+            background: #030406;
+            border-radius: 0 0 12px 12px
+        }
+
+        .media-frame img.chart,
+        .media-frame video.chart {
+            border: 0;
+            border-radius: 0;
+            object-fit: contain
+        }
+
+        .media-frame video.chart {
+            aspect-ratio: 16 / 9;
+            min-height: 220px
+        }
+
+        .media-frame img.chart {
+            height: auto;
+            max-height: min(78vh, 860px)
+        }
+
+        .media-fallback {
+            display: none;
+            padding: 2rem;
+            color: var(--text-sub);
+            border-top: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(122,170,136,.09), rgba(196,169,104,.05));
+            font-size: .78rem;
+            line-height: 1.65
+        }
+
+        .media-fallback strong {
+            display: block;
+            color: var(--accent);
+            font-size: .62rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: .35rem
+        }
+
+        .media-frame.is-broken .media-fallback {
+            display: block
+        }
+
+        .media-frame.is-broken img.chart,
+        .media-frame.is-broken video.chart {
+            display: none
         }
 
         .tabs {
@@ -622,16 +678,55 @@
             }
 
             .tabs {
-                gap: .25rem
+                gap: .35rem;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: .25rem;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none
+            }
+
+            .tabs::-webkit-scrollbar {
+                display: none
             }
 
             .tab-btn {
                 padding: .38rem .75rem;
-                font-size: .7rem
+                font-size: .7rem;
+                flex: 0 0 auto;
+                white-space: nowrap
             }
 
             .card {
-                padding: 1.1rem
+                padding: 1rem;
+                width: 100%;
+                overflow: hidden
+            }
+
+            #tab-learning .card.full {
+                padding: 0
+            }
+
+            #tab-learning .grid {
+                gap: .85rem
+            }
+
+            .media-frame {
+                border-radius: 0 0 10px 10px
+            }
+
+            .media-frame video.chart {
+                min-height: 0;
+                aspect-ratio: 16 / 9
+            }
+
+            .media-frame img.chart {
+                max-height: none
+            }
+
+            .media-fallback {
+                padding: 1.25rem;
+                font-size: .74rem
             }
 
             #tab-pending .grid {
@@ -686,8 +781,22 @@
         }
 
         @media (max-width:480px) {
+            body {
+                padding: .75rem
+            }
+
+            header {
+                align-items: flex-start
+            }
+
+            .header-left,
+            .header-right {
+                width: 100%
+            }
+
             header h1 {
-                font-size: .9rem
+                font-size: .9rem;
+                line-height: 1.25
             }
 
             .zone-tag {
@@ -695,7 +804,7 @@
             }
 
             .stats {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: 1fr;
                 gap: .6rem
             }
 
@@ -714,6 +823,13 @@
             .tab-btn {
                 padding: .35rem .65rem;
                 font-size: .68rem
+            }
+
+            #tab-learning .card-title {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                letter-spacing: .1em;
+                line-height: 1.45
             }
 
             .explainer-block h4 {
@@ -1221,15 +1337,26 @@
         <div class='grid full'>
             <div class='card full' style='padding:0'>
                 <div class='card-title' style='padding:1.5rem 1.5rem 0 1.5rem'>Subduction & Trench Mechanics</div>
-                <video class='chart' controls style='width:100%;border-radius:0 0 12px 12px' src='safety/Cotabato_Trench_Rhythm.mp4'></video>
+                <div class='media-frame'>
+                    <video class='chart' controls preload='metadata' playsinline onerror='markMediaBroken(this)' src='/safety/Cotabato_Trench_Rhythm.mp4'>
+                        Your browser cannot play this safety video.
+                    </video>
+                    <div class='media-fallback'><strong>Video unavailable</strong>The local safety video did not load. Confirm <span class='mono'>/safety/Cotabato_Trench_Rhythm.mp4</span> is included in the deployed project.</div>
+                </div>
             </div>
             <div class='card'>
                 <div class='card-title'>Infographic A: Tectonic Overview</div>
-                <img class='chart' src='./safety/80124894-56EA-42FF-BDF0-2F6C37B6453B.png' alt='Tectonic Infographic 1'>
+                <div class='media-frame'>
+                    <img class='chart' src='/safety/80124894-56EA-42FF-BDF0-2F6C37B6453B.png' alt='Tectonic Infographic 1' onerror='markMediaBroken(this)'>
+                    <div class='media-fallback'><strong>Infographic unavailable</strong>The tectonic overview image did not load. Confirm <span class='mono'>/safety/80124894-56EA-42FF-BDF0-2F6C37B6453B.png</span> is included in the deployed project.</div>
+                </div>
             </div>
             <div class='card'>
                 <div class='card-title'>Infographic B: Family Safety Guide</div>
-                <img class='chart' src='./safety/8021552D-B0A4-4F9B-9EFE-1B6822EDBEAF.png' alt='Tectonic Infographic 2'>
+                <div class='media-frame'>
+                    <img class='chart' src='/safety/8021552D-B0A4-4F9B-9EFE-1B6822EDBEAF.png' alt='Tectonic Infographic 2' onerror='markMediaBroken(this)'>
+                    <div class='media-fallback'><strong>Infographic unavailable</strong>The family safety guide image did not load. Confirm <span class='mono'>/safety/8021552D-B0A4-4F9B-9EFE-1B6822EDBEAF.png</span> is included in the deployed project.</div>
+                </div>
             </div>
         </div>
     </div>
@@ -1249,6 +1376,11 @@
     </div>
 
     <script>
+        function markMediaBroken(el) {
+            const frame = el && el.closest ? el.closest('.media-frame') : null;
+            if (frame) frame.classList.add('is-broken');
+        }
+
         // ── Theme ─────────────────────────────────────────────────────────────────
         (function () {
             const saved = localStorage.getItem('tsra-theme') || 'dark';
