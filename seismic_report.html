@@ -617,6 +617,48 @@
             font-weight: 500
         }
 
+        .anchor-card {
+            padding: 1.15rem 1.2rem
+        }
+
+        .anchor-card .card-title {
+            margin-bottom: .9rem
+        }
+
+        .anchor-summary {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: .75rem
+        }
+
+        .anchor-field {
+            background: var(--surface2);
+            border: 1px solid var(--border-sub);
+            border-radius: 9px;
+            padding: .8rem .85rem;
+            min-width: 0
+        }
+
+        .anchor-label {
+            font-size: .52rem;
+            text-transform: uppercase;
+            letter-spacing: .11em;
+            color: var(--muted);
+            margin-bottom: .35rem;
+            line-height: 1.35
+        }
+
+        .anchor-value {
+            font-size: .76rem;
+            color: var(--text-sub);
+            line-height: 1.45
+        }
+
+        .anchor-value.strong {
+            color: var(--text);
+            font-weight: 500
+        }
+
         .explainer {
             margin-top: 1.5rem;
             border-top: 1px solid var(--border);
@@ -759,6 +801,19 @@
                 margin-bottom: .75rem
             }
 
+            .anchor-card {
+                padding: 1rem
+            }
+
+            .anchor-summary {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: .65rem
+            }
+
+            .anchor-field:last-child {
+                grid-column: 1 / -1
+            }
+
             .explainer-grid {
                 grid-template-columns: 1fr
             }
@@ -852,6 +907,22 @@
                 padding-right: 1rem !important;
                 letter-spacing: .1em;
                 line-height: 1.45
+            }
+
+            .anchor-summary {
+                grid-template-columns: 1fr
+            }
+
+            .anchor-field:last-child {
+                grid-column: auto
+            }
+
+            .anchor-label {
+                font-size: .5rem
+            }
+
+            .anchor-value {
+                font-size: .73rem
             }
 
             .explainer-block h4 {
@@ -1089,9 +1160,9 @@
         </div>
         <div class='stat' onclick="openModal('events')">
             <div class='stat-hint'>tap to expand</div>
-            <div class='stat-label'>Total Observations</div>
-            <div class='stat-value'>12</div>
-            <div class='stat-sub'>11 confirmed + 1 felt pending</div>
+            <div class='stat-label'>Confirmed Events</div>
+            <div class='stat-value'>11</div>
+            <div class='stat-sub'>Observation notes separate</div>
         </div>
         <div class='stat' onclick="openModal('anchor')">
             <div class='stat-hint'>tap to expand</div>
@@ -1118,7 +1189,7 @@
 
     <div class='tab-panel' id='tab-events'>
         <div class='card'>
-            <div class='card-title'>Event & Observation Log</div>
+            <div class='card-title'>Confirmed Event Log</div>
             <table>
                 <thead>
                     <tr>
@@ -1199,11 +1270,30 @@
                         </td>
                         <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
                     </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class='card' style='margin-top:1rem'>
+            <div class='card-title'>Observation Outcome Log</div>
+            <table>
+                <thead>
                     <tr>
-                        <td><span class='badge badge-as'>OBS</span></td>
-                        <td>Jun 10 &middot; ~09:55 AM</td>
-                        <td class='mono'>+42 min from 09:13 watch <span style='color:var(--accent);font-size:.63rem'>delayed significant felt</span></td>
-                        <td><span class='pill observed-pill'>Felt · pending official</span></td>
+                        <th>Source</th>
+                        <th>Report Time</th>
+                        <th>Linked Watch</th>
+                        <th>Onset</th>
+                        <th>Outcome</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class='badge badge-as'>FELT</span></td>
+                        <td class='mono'>Jun 10 &middot; by ~09:55 AM</td>
+                        <td class='mono'>09:13 AM extended-phase watch</td>
+                        <td>Earlier / uncertain</td>
+                        <td>Significant felt activity</td>
+                        <td><span class='pill observed-pill'>Pending PHIVOLCS</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -1218,8 +1308,8 @@
                 <div class='hero-remain' id='hero-remain'>Calculating...</div>
             </div>
             <div class='card'>
-                <div class='card-title'>Phase-Sensitive Observation Windows &mdash; anchored <span class='mono'
-                        style='color:var(--accent2)'>A10 &middot; 03:36 AM</span></div>
+                <div class='card-title'>Provisional Observation Windows &mdash; anchored by felt report <span class='mono'
+                        style='color:var(--accent2)'>~09:55 AM &middot; onset uncertain</span></div>
                 <table id='pending-table'>
                     <thead>
                         <tr>
@@ -1232,40 +1322,65 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-arrival='2026-06-10T04:11:33'>
+                        <tr data-arrival='2026-06-10T10:30:33'>
                             <td><span class='mult-badge'>1.0&times;</span></td>
                             <td>35.6 min</td>
-                            <td class='mono'>Jun 10 &middot; 04:11 AM</td>
-                            <td class='countdown' data-arrival='2026-06-10T04:11:33'>&mdash;</td>
-                            <td>Micro-pulse watch</td>
-                            <td class='status-cell' data-arrival='2026-06-10T04:11:33'>&mdash;</td>
+                            <td class='mono'>Jun 10 &middot; 10:30 AM</td>
+                            <td class='countdown' data-arrival='2026-06-10T10:30:33'>&mdash;</td>
+                            <td>Early post-report check</td>
+                            <td class='status-cell' data-arrival='2026-06-10T10:30:33'>&mdash;</td>
                         </tr>
-                        <tr data-arrival='2026-06-10T05:40:24'>
+                        <tr data-arrival='2026-06-10T11:59:25'>
                             <td><span class='mult-badge'>3.5&times;</span></td>
                             <td>124.4 min</td>
-                            <td class='mono'>Jun 10 &middot; 05:40 AM</td>
-                            <td class='countdown' data-arrival='2026-06-10T05:40:24'>&mdash;</td>
-                            <td>Activity-cluster watch</td>
-                            <td class='status-cell' data-arrival='2026-06-10T05:40:24'>&mdash;</td>
+                            <td class='mono'>Jun 10 &middot; 11:59 AM</td>
+                            <td class='countdown' data-arrival='2026-06-10T11:59:25'>&mdash;</td>
+                            <td>Activity-cluster check</td>
+                            <td class='status-cell' data-arrival='2026-06-10T11:59:25'>&mdash;</td>
                         </tr>
-                        <tr data-arrival='2026-06-10T07:44:51'>
+                        <tr data-arrival='2026-06-10T14:03:51'>
                             <td><span class='mult-badge'>7.0&times;</span></td>
                             <td>248.9 min</td>
-                            <td class='mono'>Jun 10 &middot; 07:44 AM</td>
-                            <td class='countdown' data-arrival='2026-06-10T07:44:51'>&mdash;</td>
-                            <td>Long-phase watch</td>
-                            <td class='status-cell' data-arrival='2026-06-10T07:44:51'>&mdash;</td>
+                            <td class='mono'>Jun 10 &middot; 02:03 PM</td>
+                            <td class='countdown' data-arrival='2026-06-10T14:03:51'>&mdash;</td>
+                            <td>Next long-phase watch</td>
+                            <td class='status-cell' data-arrival='2026-06-10T14:03:51'>&mdash;</td>
                         </tr>
-                        <tr data-arrival='2026-06-10T09:13:42' data-observed='true' data-observed-label='Observed +42m'>
+                        <tr data-arrival='2026-06-10T15:32:44'>
                             <td><span class='mult-badge'>9.5&times;</span></td>
                             <td>337.7 min</td>
-                            <td class='mono'>Jun 10 &middot; 09:13 AM</td>
-                            <td class='countdown' data-arrival='2026-06-10T09:13:42'>+42 min</td>
-                            <td>Delayed significant felt shake</td>
-                            <td class='status-cell' data-arrival='2026-06-10T09:13:42'><span class='pill observed-pill'>Observed +42m</span></td>
+                            <td class='mono'>Jun 10 &middot; 03:32 PM</td>
+                            <td class='countdown' data-arrival='2026-06-10T15:32:44'>&mdash;</td>
+                            <td>Extended-phase watch</td>
+                            <td class='status-cell' data-arrival='2026-06-10T15:32:44'>&mdash;</td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class='card full anchor-card'>
+                <div class='card-title'>Provisional Felt-Report Anchor</div>
+                <div class='anchor-summary'>
+                    <div class='anchor-field'>
+                        <div class='anchor-label'>Anchor source</div>
+                        <div class='anchor-value strong'>Felt activity after 09:13 watch</div>
+                    </div>
+                    <div class='anchor-field'>
+                        <div class='anchor-label'>Report time</div>
+                        <div class='anchor-value mono'>By ~09:55 AM</div>
+                    </div>
+                    <div class='anchor-field'>
+                        <div class='anchor-label'>Onset</div>
+                        <div class='anchor-value'>Earlier / uncertain</div>
+                    </div>
+                    <div class='anchor-field'>
+                        <div class='anchor-label'>Next watch band</div>
+                        <div class='anchor-value mono strong'>~01:40&ndash;02:10 PM</div>
+                    </div>
+                    <div class='anchor-field'>
+                        <div class='anchor-label'>Evidence status</div>
+                        <div class='anchor-value'><span class='pill observed-pill'>Provisional · pending PHIVOLCS</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1354,17 +1469,33 @@
 
                 ================================================================================
                 TECTONIC PHASE-OBSERVATION MODEL (A10 ANCHOR - UPDATED OUTCOME)
-                Watch Center / Observed Offset Record (Reference Time: 2026-06-10 03:36:00)
+                Watch Center / Observation Outcome Record (Reference Time: 2026-06-10 03:36:00)
                 ================================================================================
                 - Fitted Baseline Pulse Period: 35.552 minutes
-                - Architecture Rule: timing window and amplitude class are separate fields
+                - Architecture Rule: confirmed events, felt observations, and model watch windows are separate fields
 
-                Phase | Observation Window | Watch Center | Observed Outcome
+                Phase | Observation Window | Watch Center | Observation Outcome
                 --------------------------------------------------------------------------------
                 1.0x phase | 35.6 minutes | 2026-06-10 04:11:33 | elapsed / no local outcome recorded
                 3.5x phase | 124.4 minutes | 2026-06-10 05:40:24 | elapsed / no local outcome recorded
                 7.0x phase | 248.9 minutes | 2026-06-10 07:44:51 | elapsed / no local outcome recorded
-                9.5x phase | 337.7 minutes | 2026-06-10 09:13:42 | observed ~09:55 AM -> +42m delayed significant felt shake; pending official confirmation
+                9.5x phase | 337.7 minutes | 2026-06-10 09:13:42 | significant felt activity reported by ~09:55 AM; exact onset earlier/uncertain; pending official confirmation
+                ================================================================================
+
+                ================================================================================
+                TECTONIC PHASE-OBSERVATION MODEL (PROVISIONAL FELT-OBSERVATION ANCHOR)
+                Watch Schedule From Report Time (Reference Time: 2026-06-10 09:55:00)
+                ================================================================================
+                - Fitted Baseline Pulse Period: 35.552 minutes
+                - Architecture Rule: this anchor is provisional because exact onset is uncertain
+                - Operational Watch Band: treat the 7.0x phase as ~01:40 PM to ~02:10 PM
+
+                Phase | Observation Window | Watch Center | Operational Status
+                --------------------------------------------------------------------------------
+                1.0x phase | 35.6 minutes | 2026-06-10 10:30:33 | elapsed post-report check
+                3.5x phase | 124.4 minutes | 2026-06-10 11:59:25 | elapsed activity-cluster check
+                7.0x phase | 248.9 minutes | 2026-06-10 14:03:51 | NEXT WATCH -> observe ~01:40-02:10 PM
+                9.5x phase | 337.7 minutes | 2026-06-10 15:32:44 | later extended-phase watch
                 ================================================================================
             </div>
         </div>
@@ -1558,14 +1689,14 @@
                 body: `<p>The fault&rsquo;s natural <strong>recharge interval</strong>. Every ~35.5 minutes, the Sarangani Segment accumulates enough tectonic stress to potentially trigger a slip event.</p><p>Think of it like a clock. The tectonic plates are constantly pushing against each other. Friction holds the fault locked. Stress builds. When it crosses the threshold, the fault slips &mdash; releasing energy as an earthquake &mdash; and the clock resets.</p><p>This value was <strong>fitted from the observed event intervals</strong>, not assumed from prior literature. It is specific to this fault segment under current post-mainshock loading conditions.</p>`
             },
             events: {
-                label: 'Total Observations',
-                value: '12',
-                body: `<p>The working log contains <strong>11 confirmed events</strong> plus <strong>1 personal felt observation pending official confirmation</strong>.</p><p>The new architecture records each outcome as timing evidence plus an amplitude class. The 09:13 AM extended-phase watch is logged with a felt shake around 09:55 AM, giving an observed offset of about <strong>+42 minutes</strong>.</p><p>The sequence is represented as a <strong>phase-observation pattern</strong>: useful for watching rhythm and classifying outcomes, not for deterministic magnitude prediction.</p>`
+                label: 'Confirmed Events',
+                value: '11',
+                body: `<p>The Event Log contains only <strong>confirmed seismic events</strong> in the working sequence.</p><p>Personal felt reports are no longer merged into this log. They are stored as <strong>Observation Outcome Records</strong> with report time, onset uncertainty, amplitude class, and official-confirmation status.</p><p>This keeps the architecture honest: confirmed catalog events, human observations, and model watch windows remain separate but comparable.</p>`
             },
             anchor: {
                 label: 'Last Confirmed Event',
                 value: 'A10 &middot; 03:36 AM',
-                body: `<p><strong>A9</strong> struck at 03:26 AM &mdash; 31 minutes after A8. The 1&times; watch center was 03:30 AM, so the observed event arrived about 4 minutes early.</p><p><strong>A10</strong> followed at 03:36 AM &mdash; only 10 minutes after A9. This is a sub-pulse (~0.28&times;), likely a triggered secondary slip on the same fault patch immediately after A9&rsquo;s release. Not a standard phase window.</p><p>A10 is the anchor for the 09:13 AM extended-phase watch. A later felt shake around 09:55 AM is logged as a delayed significant felt outcome, about <strong>+42 minutes</strong> after the watch center, pending official confirmation.</p>`
+                body: `<p><strong>A9</strong> struck at 03:26 AM &mdash; 31 minutes after A8. The 1&times; watch center was 03:30 AM, so the observed event arrived about 4 minutes early.</p><p><strong>A10</strong> followed at 03:36 AM &mdash; only 10 minutes after A9. This is a sub-pulse (~0.28&times;), likely a triggered secondary slip on the same fault patch immediately after A9&rsquo;s release. Not a standard phase window.</p><p>A10 remains the <strong>last confirmed event anchor</strong>. The operational pending schedule now uses a separate <strong>provisional felt-observation anchor</strong>: significant activity reported by ~09:55 AM, exact onset unresolved, pending PHIVOLCS confirmation. From that provisional anchor, the next watch center is ~02:03 PM, with a practical watch band around 01:40&ndash;02:10 PM.</p>`
             },
             fit: {
                 label: 'Timing Fit',
@@ -1612,7 +1743,7 @@
                 const countdown = row.querySelector('.countdown');
                 const stCell = row.querySelector('.status-cell');
                 if (row.dataset.observed === 'true') {
-                    countdown.textContent = '+42 min';
+                    countdown.textContent = row.dataset.observedReport || 'observed';
                     stCell.innerHTML = `<span class='pill observed-pill'>${row.dataset.observedLabel || 'Observed'}</span>`;
                     row.style.opacity = '1';
                     return;
