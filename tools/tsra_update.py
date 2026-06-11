@@ -491,6 +491,8 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "syncModelFitSurface",
         "renderCalibrationLedger",
         "source-certainty-register",
+        "phase-curve",
+        "updatePhaseCurveState",
         "What this means",
         "--kuro-field-ground: #0d0c0a",
         "--old-brass: #b89455",

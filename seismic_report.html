@@ -1242,7 +1242,93 @@
             min-height: 250px;
             border: 1px solid var(--border-sub);
             padding: clamp(1.1rem, 2vw, 1.55rem);
-            background: color-mix(in srgb, var(--surface-soft) 78%, var(--paper-warm))
+            padding-right: clamp(1.1rem, 13vw, 9rem);
+            background: color-mix(in srgb, var(--surface-soft) 78%, var(--paper-warm));
+            position: relative;
+            overflow: hidden
+        }
+
+        .now-primary > :not(.phase-curve) {
+            position: relative;
+            z-index: 1
+        }
+
+        .phase-curve {
+            position: absolute;
+            right: clamp(.65rem, 2.1vw, 1.25rem);
+            top: 50%;
+            width: min(32%, 188px);
+            min-width: 130px;
+            height: auto;
+            transform: translateY(-50%);
+            pointer-events: none;
+            opacity: .68;
+            z-index: 0
+        }
+
+        .phase-curve-line,
+        .phase-axis {
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .phase-axis {
+            stroke: var(--border-sub);
+            stroke-width: 1
+        }
+
+        .phase-curve-line {
+            stroke: color-mix(in srgb, var(--old-brass) 74%, var(--bone-ink));
+            stroke-width: 1.35;
+            stroke-dasharray: 5 8;
+            animation: phaseTrace 9s linear infinite
+        }
+
+        .phase-curve-line-soft {
+            stroke: var(--moss);
+            stroke-width: .8;
+            stroke-opacity: .36;
+            stroke-dasharray: 1 7;
+            animation-duration: 14s
+        }
+
+        .phase-point circle {
+            fill: color-mix(in srgb, var(--bg) 78%, transparent);
+            stroke: var(--quiet-stone);
+            stroke-width: 1;
+            transition: fill .2s, stroke .2s, r .2s
+        }
+
+        .phase-point text {
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: .08em;
+            fill: var(--muted);
+            transition: fill .2s, opacity .2s;
+            dominant-baseline: middle
+        }
+
+        .phase-point.is-active circle {
+            r: 4.2;
+            fill: color-mix(in srgb, var(--old-brass) 28%, var(--bg));
+            stroke: var(--old-brass)
+        }
+
+        .phase-point.is-active text {
+            fill: var(--bone-ink);
+            opacity: .92
+        }
+
+        @keyframes phaseTrace {
+            from { stroke-dashoffset: 0 }
+            to { stroke-dashoffset: -26 }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .phase-curve-line {
+                animation: none
+            }
         }
 
         .now-kicker,
@@ -2231,7 +2317,14 @@
             }
 
             .now-primary {
-                min-height: 210px
+                min-height: 210px;
+                padding-right: clamp(1rem, 22vw, 6.5rem)
+            }
+
+            .phase-curve {
+                width: min(30%, 142px);
+                min-width: 96px;
+                opacity: .48
             }
 
             #tab-rhythm .grid {
@@ -3328,6 +3421,23 @@
         <div class='card now-card'>
             <div class='now-shell'>
                 <section class='now-primary' aria-labelledby='now-title'>
+                    <svg class='phase-curve' viewBox='0 0 184 160' aria-hidden='true' focusable='false'>
+                        <path class='phase-axis' d='M22 132 C 58 104, 82 116, 103 82 S 143 30, 166 26'/>
+                        <path class='phase-curve-line phase-curve-line-soft' d='M20 138 C 56 116, 75 120, 92 95 C 115 62, 133 54, 162 44'/>
+                        <path class='phase-curve-line' d='M24 126 C 58 96, 78 109, 101 78 C 121 51, 139 35, 166 24'/>
+                        <g class='phase-point is-active' data-phase='1.0' transform='translate(36 118)'>
+                            <circle r='3.2'/><text x='12'>1.0×</text>
+                        </g>
+                        <g class='phase-point' data-phase='3.5' transform='translate(78 101)'>
+                            <circle r='3.2'/><text x='12'>3.5×</text>
+                        </g>
+                        <g class='phase-point' data-phase='7.0' transform='translate(119 58)'>
+                            <circle r='3.2'/><text x='12'>7.0×</text>
+                        </g>
+                        <g class='phase-point' data-phase='9.5' transform='translate(158 31)'>
+                            <circle r='3.2'/><text x='-34'>9.5×</text>
+                        </g>
+                    </svg>
                     <div class='now-kicker' id='now-status'>Next Observation Window</div>
                     <div class='now-time' id='now-time'>01:29 PM</div>
                     <div class='now-phase' id='now-title'>1.0&times; · post-12:54 PM observation cycle</div>
@@ -5234,6 +5344,13 @@
             button.disabled = !enabled;
             button.textContent = enabled ? 'Record outcome' : 'No active watch to record';
         }
+        function updatePhaseCurveState(phaseText) {
+            const normalized = String(phaseText || '').replace('×', '').trim();
+            document.querySelectorAll('.phase-point').forEach(point => {
+                const phase = point.dataset.phase || '';
+                point.classList.toggle('is-active', Boolean(phase && normalized.startsWith(phase)));
+            });
+        }
         function updateCountdowns() {
             const now = Date.now();
             let nextArrival = null, nextTime = null, nextRow = null;
@@ -5283,6 +5400,7 @@
                 document.getElementById('now-remain').textContent = remainLabel;
                 document.getElementById('now-title').textContent = phaseLabel;
                 document.getElementById('now-status').textContent = nextTime < 20 * 60 * 1000 ? 'Active Observation Window' : 'Next Observation Window';
+                updatePhaseCurveState(cells[0] ? cells[0].textContent : '');
                 setNowRecordState(true);
             } else if (latestObservedRow) {
                 const cells = latestObservedRow.querySelectorAll('td');
@@ -5296,6 +5414,7 @@
                 document.getElementById('now-time').textContent = watchLabel;
                 document.getElementById('now-remain').textContent = outcomeLabel;
                 document.getElementById('now-title').textContent = phaseLabel;
+                updatePhaseCurveState(cells[0] ? cells[0].textContent : '');
                 setNowRecordState(false);
             } else {
                 document.getElementById('hero-label').textContent = 'Latest Observation Outcome';
@@ -5305,6 +5424,7 @@
                 document.getElementById('now-time').textContent = '—';
                 document.getElementById('now-remain').textContent = 'No listed outcomes';
                 document.getElementById('now-title').textContent = 'Ledger remains available for local notes';
+                updatePhaseCurveState('');
                 setNowRecordState(false);
             }
         }
