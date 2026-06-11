@@ -266,6 +266,14 @@
             color: var(--moss)
         }
 
+        .version-pill {
+            color: var(--muted);
+            font-size: .54rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            box-shadow: none
+        }
+
         #date-pill {
             font-family: 'Inter', sans-serif;
             font-size: .7rem;
@@ -417,6 +425,48 @@
         .evidence-chip strong {
             color: var(--accent2);
             font-weight: 500
+        }
+
+        .app-update-notice {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: .8rem;
+            margin: -.35rem 0 1rem;
+            padding: .55rem .68rem;
+            border: 1px solid color-mix(in srgb, var(--old-brass) 34%, var(--line));
+            background: color-mix(in srgb, var(--old-brass) 8%, var(--surface));
+            color: var(--text-sub);
+            font-family: var(--mono);
+            font-size: .56rem;
+            letter-spacing: .1em;
+            text-transform: uppercase
+        }
+
+        .app-update-notice.is-visible {
+            display: flex
+        }
+
+        .app-update-copy {
+            min-width: 0
+        }
+
+        .app-update-action {
+            flex: 0 0 auto;
+            border: 1px solid color-mix(in srgb, var(--old-brass) 44%, var(--border-sub));
+            background: color-mix(in srgb, var(--old-brass) 12%, transparent);
+            color: var(--text);
+            padding: .32rem .58rem;
+            font-family: var(--mono);
+            font-size: .52rem;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            cursor: pointer
+        }
+
+        .app-update-action:hover,
+        .app-update-action:focus-visible {
+            border-color: var(--old-brass)
         }
 
         .evidence-mini {
@@ -2240,6 +2290,22 @@
                 letter-spacing: .13em
             }
 
+            .version-pill {
+                font-size: .48rem
+            }
+
+            .app-update-notice {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: .5rem;
+                font-size: .5rem
+            }
+
+            .app-update-action {
+                width: 100%;
+                min-height: 30px
+            }
+
             .source-certainty-register {
                 grid-template-columns: 1fr;
                 gap: .28rem;
@@ -2574,6 +2640,16 @@
             .field-toggle {
                 min-height: 26px;
                 grid-column: span 2
+            }
+
+            .version-pill {
+                grid-column: span 2;
+                font-size: .48rem
+            }
+
+            .app-update-notice {
+                margin-top: -.1rem;
+                font-size: .48rem
             }
 
             .field-toggle-label span {
@@ -3413,6 +3489,9 @@
                 </svg>
                 <span id='clock-text'>--:--:--</span>
             </div>
+            <div id='app-version-pill' class='header-pill version-pill' title='Loaded app and service worker version'>
+                <span id='app-version-text'>app v32 · sw —</span>
+            </div>
             <button id='low-data-toggle' class='theme-toggle field-toggle' type='button' onclick='toggleLowDataMode()' title='Reduce video preloading and prefer cached shell' aria-pressed='false'>
                 <span class='field-toggle-icon' aria-hidden='true'>
                     <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round'>
@@ -3442,6 +3521,11 @@
             </button>
         </div>
     </header>
+
+    <section id='app-update-notice' class='app-update-notice' aria-live='polite' aria-hidden='true'>
+        <span id='app-update-copy' class='app-update-copy'>New TSRA field version available.</span>
+        <button class='app-update-action' type='button' onclick='refreshInstalledApp()'>Refresh app</button>
+    </section>
 
     <section class='source-certainty-register' aria-label='Source and certainty legend'>
         <div class='source-certainty-kicker'>What this means</div>
@@ -4778,31 +4862,123 @@
             applyLowDataMode(enabled);
         }
 
+        const TSRA_APP_VERSION = 'tsra-field-cache-v32';
+        const TSRA_VERSION_URL = '/tsra-version.json';
         const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
         let tsraReloadingForUpdate = false;
+        let tsraKnownWorkerVersion = '';
+        let tsraPendingRemoteVersion = '';
+        let tsraVersionCheckInFlight = false;
+
+        function shortTsraVersion(value) {
+            return (value || '—').replace('tsra-field-cache-', '');
+        }
+
+        function updateVersionPill() {
+            const el = document.getElementById('app-version-text');
+            if (!el) return;
+            el.textContent = `app ${shortTsraVersion(TSRA_APP_VERSION)} · sw ${shortTsraVersion(tsraKnownWorkerVersion)}`;
+        }
+
+        function setAppUpdateNotice(visible, remoteVersion = '', reason = '') {
+            const notice = document.getElementById('app-update-notice');
+            const copy = document.getElementById('app-update-copy');
+            if (!notice || !copy) return;
+            notice.classList.toggle('is-visible', visible);
+            notice.setAttribute('aria-hidden', visible ? 'false' : 'true');
+            if (visible) {
+                copy.textContent = `New TSRA field version available · loaded ${shortTsraVersion(TSRA_APP_VERSION)} · remote ${shortTsraVersion(remoteVersion || tsraPendingRemoteVersion)}${reason ? ` · ${reason}` : ''}`;
+            }
+        }
 
         async function checkForServiceWorkerUpdate(registration, reason) {
             if (!registration || !navigator.onLine || document.hidden) return;
             try {
                 await registration.update();
-                recordFieldMemory('service-worker-update-check', { reason });
+                if (reason !== 'heartbeat') recordFieldMemory('service-worker-update-check', { reason });
             } catch (_) { }
         }
 
+        async function checkForRemoteAppVersion(reason, registration) {
+            if (!navigator.onLine || document.hidden || tsraVersionCheckInFlight) return;
+            tsraVersionCheckInFlight = true;
+            try {
+                const response = await fetch(`${TSRA_VERSION_URL}?check=${Date.now()}`, {
+                    cache: 'no-store',
+                    credentials: 'same-origin',
+                    headers: { 'Cache-Control': 'no-cache' }
+                });
+                if (!response.ok) return;
+                const payload = await response.json();
+                const remoteVersion = payload && typeof payload.version === 'string' ? payload.version : '';
+                if (remoteVersion && remoteVersion !== TSRA_APP_VERSION) {
+                    tsraPendingRemoteVersion = remoteVersion;
+                    setAppUpdateNotice(true, remoteVersion, reason);
+                    updateCacheStatus('update available');
+                    recordFieldMemory('app-version-mismatch', { reason, loadedVersion: TSRA_APP_VERSION, remoteVersion }, true);
+                    if (registration) await checkForServiceWorkerUpdate(registration, `version-${reason}`);
+                } else if (remoteVersion === TSRA_APP_VERSION) {
+                    tsraPendingRemoteVersion = '';
+                    setAppUpdateNotice(false);
+                    updateVersionPill();
+                }
+            } catch (_) { }
+            finally {
+                tsraVersionCheckInFlight = false;
+            }
+        }
+
+        function requestServiceWorkerVersion() {
+            if (!(navigator.serviceWorker && navigator.serviceWorker.controller)) {
+                updateVersionPill();
+                return;
+            }
+            navigator.serviceWorker.controller.postMessage({ type: 'TSRA_VERSION_REQUEST', appVersion: TSRA_APP_VERSION });
+        }
+
+        async function refreshInstalledApp() {
+            updateCacheStatus('refreshing update');
+            recordFieldMemory('app-update-refresh-requested', { loadedVersion: TSRA_APP_VERSION, remoteVersion: tsraPendingRemoteVersion }, true);
+            try {
+                const registration = await navigator.serviceWorker.ready;
+                await checkForRemoteAppVersion('manual-refresh', registration);
+                await registration.update();
+                if (registration.waiting) {
+                    registration.waiting.postMessage({ type: 'TSRA_SKIP_WAITING' });
+                    return;
+                }
+                if (registration.installing) {
+                    registration.installing.addEventListener('statechange', () => {
+                        if (registration.waiting) registration.waiting.postMessage({ type: 'TSRA_SKIP_WAITING' });
+                    });
+                    return;
+                }
+            } catch (_) { }
+            window.location.reload();
+        }
+
         function installServiceWorkerUpdateHeartbeat(registration) {
-            const check = reason => checkForServiceWorkerUpdate(registration, reason);
+            const check = reason => {
+                checkForServiceWorkerUpdate(registration, reason);
+                checkForRemoteAppVersion(reason, registration);
+                requestServiceWorkerVersion();
+            };
             registration.addEventListener('updatefound', () => {
                 updateCacheStatus('update found');
                 const worker = registration.installing;
                 if (!worker) return;
                 worker.addEventListener('statechange', () => {
-                    if (worker.state === 'installed' && navigator.serviceWorker.controller) updateCacheStatus('update installing');
+                    if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+                        updateCacheStatus('update ready');
+                        setAppUpdateNotice(true, tsraPendingRemoteVersion || TSRA_APP_VERSION, 'worker ready');
+                    }
                 });
             });
             check('load');
             const updateTimer = window.setInterval(() => check('heartbeat'), TSRA_UPDATE_CHECK_INTERVAL);
             window.addEventListener('beforeunload', () => window.clearInterval(updateTimer), { once: true });
             document.addEventListener('visibilitychange', () => { if (!document.hidden) check('visible'); });
+            window.addEventListener('pageshow', event => check(event.persisted ? 'pageshow-bfcache' : 'pageshow'));
             window.addEventListener('focus', () => check('focus'));
             window.addEventListener('online', () => check('online'));
         }
@@ -4814,6 +4990,7 @@
         }
         installFieldMemoryAutoSave();
 
+        updateVersionPill();
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', async () => {
                 try {
@@ -4821,8 +4998,11 @@
                     updateCacheStatus(navigator.onLine ? 'auto-save ready' : 'offline ready');
                     installServiceWorkerUpdateHeartbeat(registration);
                     autoCacheFieldMemory('service-worker-ready', true);
+                    requestServiceWorkerVersion();
+                    await checkForRemoteAppVersion('load', registration);
                     if (registration.waiting) {
                         updateCacheStatus('update ready');
+                        setAppUpdateNotice(true, tsraPendingRemoteVersion || TSRA_APP_VERSION, 'waiting worker');
                         registration.waiting.postMessage({ type: 'TSRA_SKIP_WAITING' });
                     }
                 } catch (_) {
@@ -4837,7 +5017,12 @@
                 window.location.reload();
             });
             navigator.serviceWorker.addEventListener('message', event => {
-                if (event.data && event.data.type === 'TSRA_CACHE_STATUS') updateCacheStatus(event.data.status);
+                if (!event.data) return;
+                if (event.data.type === 'TSRA_CACHE_STATUS') updateCacheStatus(event.data.status);
+                if (event.data.type === 'TSRA_VERSION_RESPONSE') {
+                    tsraKnownWorkerVersion = typeof event.data.cacheVersion === 'string' ? event.data.cacheVersion : '';
+                    updateVersionPill();
+                }
             });
         } else {
             updateCacheStatus('cache unavailable');

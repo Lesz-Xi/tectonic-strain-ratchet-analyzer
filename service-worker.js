@@ -1,8 +1,9 @@
-const TSRA_CACHE_VERSION = 'tsra-field-cache-v31';
+const TSRA_CACHE_VERSION = 'tsra-field-cache-v32';
 const CORE_ASSETS = [
   '/',
   '/seismic_report.html',
   '/manifest.webmanifest',
+  '/tsra-version.json',
   '/rhythm-logo.png',
   '/rhythm-icon-64.png',
   '/rhythm-icon-192.png',
@@ -43,6 +44,10 @@ self.addEventListener('message', event => {
   const data = event.data || {};
   if (data.type === 'TSRA_LOW_DATA') {
     lowDataMode = Boolean(data.enabled);
+    return;
+  }
+  if (data.type === 'TSRA_VERSION_REQUEST') {
+    if (event.source) event.source.postMessage({ type: 'TSRA_VERSION_RESPONSE', cacheVersion: TSRA_CACHE_VERSION });
     return;
   }
   if (data.type === 'TSRA_SKIP_WAITING') {
@@ -86,6 +91,10 @@ self.addEventListener('fetch', event => {
   }
 
   const pathname = url.pathname;
+  if (pathname === '/tsra-version.json') {
+    event.respondWith(networkFirst(request, '/tsra-version.json'));
+    return;
+  }
   if (MEDIA_EXTENSIONS.some(ext => pathname.endsWith(ext))) {
     event.respondWith(mediaCacheStrategy(request));
     return;

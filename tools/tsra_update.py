@@ -11,11 +11,12 @@ from __future__ import annotations
 
 import argparse
 import html
+import json
 import re
 import subprocess
 import sys
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Literal
 
@@ -446,6 +447,13 @@ def replace_modal_copy(report: str, outcome: Outcome, anchor: datetime) -> str:
     return new_report
 
 
+def extract_service_worker_version(service_worker: str) -> str:
+    match = re.search(r"const TSRA_CACHE_VERSION = '(tsra-field-cache-v\d+)';", service_worker)
+    if not match:
+        die("could not find service worker cache version")
+    return match.group(1)
+
+
 def bump_service_worker(service_worker: str) -> str:
     pattern = r"const TSRA_CACHE_VERSION = 'tsra-field-cache-v(?P<num>\d+)';"
     match = re.search(pattern, service_worker)
@@ -453,6 +461,26 @@ def bump_service_worker(service_worker: str) -> str:
         die("could not find service worker cache version")
     version = int(match.group("num")) + 1
     return re.sub(pattern, f"const TSRA_CACHE_VERSION = 'tsra-field-cache-v{version}';", service_worker, count=1)
+
+
+def build_version_file(service_worker: str) -> str:
+    payload = {
+        "version": extract_service_worker_version(service_worker),
+        "updatedAt": datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "app": "TSRA",
+    }
+    return json.dumps(payload, indent=2) + "\n"
+
+
+def replace_app_version(report: str, version: str) -> str:
+    pattern = r"const TSRA_APP_VERSION = 'tsra-field-cache-v\d+';"
+    new_report, count = re.subn(pattern, f"const TSRA_APP_VERSION = '{version}';", report, count=1)
+    if count != 1:
+        die("could not replace TSRA_APP_VERSION")
+    new_report, count = re.subn(r"app v\d+ · sw —", f"app {version.replace('tsra-field-cache-', '')} · sw —", new_report, count=1)
+    if count != 1:
+        die("could not replace visible app version")
+    return new_report
 
 
 def apply_outcome(report: str, service_worker: str, outcome: Outcome) -> tuple[str, str]:
@@ -468,6 +496,7 @@ def apply_outcome(report: str, service_worker: str, outcome: Outcome) -> tuple[s
         report = replace_raw_model(report, outcome, outcome.report_time)
         report = replace_modal_copy(report, outcome, outcome.report_time)
     service_worker = bump_service_worker(service_worker)
+    report = replace_app_version(report, extract_service_worker_version(service_worker))
     return report, service_worker
 
 
@@ -509,6 +538,12 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "data-evidence-type",
         "evidence-mini",
         "tsraFieldMemory.v1",
+        "TSRA_APP_VERSION",
+        "TSRA_VERSION_URL",
+        "checkForRemoteAppVersion",
+        "refreshInstalledApp",
+        "app-update-notice",
+        "pageshow",
         "TSRA_UPDATE_CHECK_INTERVAL",
         "TSRA_AUTO_FIELD_MEMORY_INTERVAL",
         "autoCacheFieldMemory",
@@ -547,6 +582,9 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "TSRA_CACHE_FIELD_MEMORY",
         "TSRA_SKIP_WAITING",
         "client.navigate(client.url)",
+        "'/tsra-version.json'",
+        "TSRA_VERSION_REQUEST",
+        "TSRA_VERSION_RESPONSE",
         "'/rhythm-logo.png'",
         "'/rhythm-icon-512.png'",
     ]
@@ -574,10 +612,21 @@ def run_command(command: list[str], cwd: Path) -> None:
         die(f"command failed: {' '.join(command)}")
 
 
-def run_verification(report_path: Path, service_worker_path: Path, repo_root: Path) -> None:
+def run_verification(report_path: Path, service_worker_path: Path, version_path: Path, repo_root: Path) -> None:
     report = read_text(report_path)
     service_worker = read_text(service_worker_path)
+    version_file = read_text(version_path)
     errors = verify_report(report, service_worker)
+    try:
+        version_payload = json.loads(version_file)
+    except json.JSONDecodeError:
+        version_payload = {}
+        errors.append("version file is not valid JSON")
+    expected_version = extract_service_worker_version(service_worker)
+    if version_payload.get("version") != expected_version:
+        errors.append(f"version file mismatch: {version_payload.get('version')!r} != {expected_version!r}")
+    if f"const TSRA_APP_VERSION = '{expected_version}';" not in report:
+        errors.append("report app version does not match service worker version")
     if errors:
         for error in errors:
             print(f"verify: {error}", file=sys.stderr)
@@ -590,7 +639,7 @@ def run_verification(report_path: Path, service_worker_path: Path, repo_root: Pa
     if viewer.exists():
         run_command(["node", "--check", str(viewer)], repo_root)
     if (repo_root / ".git").exists():
-        run_command(["git", "diff", "--check", "--", str(report_path), str(service_worker_path)], repo_root)
+        run_command(["git", "diff", "--check", "--", str(report_path), str(service_worker_path), str(version_path)], repo_root)
     else:
         print("verify: skipped git diff --check outside a git worktree")
     print("verify: ok")
@@ -608,6 +657,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Update TSRA local observation surfaces safely.")
     parser.add_argument("--report", type=Path, default=Path("seismic_report.html"))
     parser.add_argument("--service-worker", type=Path, default=Path("service-worker.js"))
+    parser.add_argument("--version-file", type=Path, default=Path("tsra-version.json"))
     parser.add_argument("--repo-root", type=Path, default=Path.cwd())
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("verify")
@@ -630,8 +680,9 @@ def main() -> None:
     repo_root = args.repo_root.resolve()
     report_path = args.report if args.report.is_absolute() else repo_root / args.report
     service_worker_path = args.service_worker if args.service_worker.is_absolute() else repo_root / args.service_worker
+    version_path = args.version_file if args.version_file.is_absolute() else repo_root / args.version_file
     if args.command == "verify":
-        run_verification(report_path, service_worker_path, repo_root)
+        run_verification(report_path, service_worker_path, version_path, repo_root)
         return
     kind: OutcomeKind = "felt" if args.command == "felt" else "elapsed"
     outcome = Outcome(
@@ -645,6 +696,7 @@ def main() -> None:
     original_report = read_text(report_path)
     original_sw = read_text(service_worker_path)
     updated_report, updated_sw = apply_outcome(original_report, original_sw, outcome)
+    updated_version = build_version_file(updated_sw)
     errors = verify_report(updated_report, updated_sw)
     if errors:
         for error in errors:
@@ -652,14 +704,15 @@ def main() -> None:
         die("refusing to write invalid report")
     write_text(report_path, updated_report, args.dry_run)
     write_text(service_worker_path, updated_sw, args.dry_run)
+    write_text(version_path, updated_version, args.dry_run)
     if args.dry_run:
         print("dry-run: update would succeed")
         return
-    run_verification(report_path, service_worker_path, repo_root)
-    print("updated: seismic_report.html, service-worker.js")
+    run_verification(report_path, service_worker_path, version_path, repo_root)
+    print("updated: seismic_report.html, service-worker.js, tsra-version.json")
     if args.commit or args.push:
         commit_message = f"fix: log {time_label(outcome.report_time).lower()} {kind} observation"
-        commit_and_push(repo_root, [report_path, service_worker_path], commit_message, push=args.push)
+        commit_and_push(repo_root, [report_path, service_worker_path, version_path], commit_message, push=args.push)
 
 
 if __name__ == "__main__":
