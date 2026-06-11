@@ -477,9 +477,6 @@ def replace_app_version(report: str, version: str) -> str:
     new_report, count = re.subn(pattern, f"const TSRA_APP_VERSION = '{version}';", report, count=1)
     if count != 1:
         die("could not replace TSRA_APP_VERSION")
-    new_report, count = re.subn(r"app v\d+ · sw —", f"app {version.replace('tsra-field-cache-', '')} · sw —", new_report, count=1)
-    if count != 1:
-        die("could not replace visible app version")
     return new_report
 
 
@@ -542,6 +539,7 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "TSRA_VERSION_URL",
         "checkForRemoteAppVersion",
         "refreshInstalledApp",
+        "refresh-page-button",
         "app-update-notice",
         "pageshow",
         "TSRA_UPDATE_CHECK_INTERVAL",

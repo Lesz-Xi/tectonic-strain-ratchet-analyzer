@@ -266,12 +266,21 @@
             color: var(--moss)
         }
 
-        .version-pill {
-            color: var(--muted);
-            font-size: .54rem;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            box-shadow: none
+        .refresh-page-button {
+            min-width: 30px;
+            justify-content: center;
+            padding-inline: .5rem
+        }
+
+        .refresh-page-button svg {
+            width: 13px;
+            height: 13px;
+            transition: transform .25s var(--ease)
+        }
+
+        .refresh-page-button:hover svg,
+        .refresh-page-button:focus-visible svg {
+            transform: rotate(38deg)
         }
 
         #date-pill {
@@ -2290,8 +2299,9 @@
                 letter-spacing: .13em
             }
 
-            .version-pill {
-                font-size: .48rem
+            .refresh-page-button {
+                min-width: 28px;
+                padding-inline: .42rem
             }
 
             .app-update-notice {
@@ -2642,9 +2652,8 @@
                 grid-column: span 2
             }
 
-            .version-pill {
-                grid-column: span 2;
-                font-size: .48rem
+            .refresh-page-button {
+                min-width: 28px
             }
 
             .app-update-notice {
@@ -3489,9 +3498,14 @@
                 </svg>
                 <span id='clock-text'>--:--:--</span>
             </div>
-            <div id='app-version-pill' class='header-pill version-pill' title='Loaded app and service worker version'>
-                <span id='app-version-text'>app v33 · sw —</span>
-            </div>
+            <button id='refresh-page-button' class='theme-toggle refresh-page-button' type='button' onclick='refreshInstalledApp()' title='Refresh TSRA' aria-label='Refresh TSRA'>
+                <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'>
+                    <path d='M20 11a8.1 8.1 0 0 0-14.2-4.8L4 8' />
+                    <path d='M4 3v5h5' />
+                    <path d='M4 13a8.1 8.1 0 0 0 14.2 4.8L20 16' />
+                    <path d='M20 21v-5h-5' />
+                </svg>
+            </button>
             <button id='low-data-toggle' class='theme-toggle field-toggle' type='button' onclick='toggleLowDataMode()' title='Reduce video preloading and prefer cached shell' aria-pressed='false'>
                 <span class='field-toggle-icon' aria-hidden='true'>
                     <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round'>
@@ -4862,22 +4876,15 @@
             applyLowDataMode(enabled);
         }
 
-        const TSRA_APP_VERSION = 'tsra-field-cache-v33';
+        const TSRA_APP_VERSION = 'tsra-field-cache-v34';
         const TSRA_VERSION_URL = '/tsra-version.json';
         const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
         let tsraReloadingForUpdate = false;
-        let tsraKnownWorkerVersion = '';
         let tsraPendingRemoteVersion = '';
         let tsraVersionCheckInFlight = false;
 
         function shortTsraVersion(value) {
             return (value || '—').replace('tsra-field-cache-', '');
-        }
-
-        function updateVersionPill() {
-            const el = document.getElementById('app-version-text');
-            if (!el) return;
-            el.textContent = `app ${shortTsraVersion(TSRA_APP_VERSION)} · sw ${shortTsraVersion(tsraKnownWorkerVersion)}`;
         }
 
         function setAppUpdateNotice(visible, remoteVersion = '', reason = '') {
@@ -4915,25 +4922,16 @@
                     tsraPendingRemoteVersion = remoteVersion;
                     setAppUpdateNotice(true, remoteVersion, reason);
                     updateCacheStatus('update available');
-                    recordFieldMemory('app-version-mismatch', { reason, loadedVersion: TSRA_APP_VERSION, remoteVersion }, true);
+                    recordFieldMemory('update-version-mismatch', { reason, loadedVersion: TSRA_APP_VERSION, remoteVersion }, true);
                     if (registration) await checkForServiceWorkerUpdate(registration, `version-${reason}`);
                 } else if (remoteVersion === TSRA_APP_VERSION) {
                     tsraPendingRemoteVersion = '';
                     setAppUpdateNotice(false);
-                    updateVersionPill();
                 }
             } catch (_) { }
             finally {
                 tsraVersionCheckInFlight = false;
             }
-        }
-
-        function requestServiceWorkerVersion() {
-            if (!(navigator.serviceWorker && navigator.serviceWorker.controller)) {
-                updateVersionPill();
-                return;
-            }
-            navigator.serviceWorker.controller.postMessage({ type: 'TSRA_VERSION_REQUEST', appVersion: TSRA_APP_VERSION });
         }
 
         async function refreshInstalledApp() {
@@ -4961,7 +4959,6 @@
             const check = reason => {
                 checkForServiceWorkerUpdate(registration, reason);
                 checkForRemoteAppVersion(reason, registration);
-                requestServiceWorkerVersion();
             };
             registration.addEventListener('updatefound', () => {
                 updateCacheStatus('update found');
@@ -4990,7 +4987,6 @@
         }
         installFieldMemoryAutoSave();
 
-        updateVersionPill();
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', async () => {
                 try {
@@ -4998,7 +4994,6 @@
                     updateCacheStatus(navigator.onLine ? 'auto-save ready' : 'offline ready');
                     installServiceWorkerUpdateHeartbeat(registration);
                     autoCacheFieldMemory('service-worker-ready', true);
-                    requestServiceWorkerVersion();
                     await checkForRemoteAppVersion('load', registration);
                     if (registration.waiting) {
                         updateCacheStatus('update ready');
@@ -5019,10 +5014,6 @@
             navigator.serviceWorker.addEventListener('message', event => {
                 if (!event.data) return;
                 if (event.data.type === 'TSRA_CACHE_STATUS') updateCacheStatus(event.data.status);
-                if (event.data.type === 'TSRA_VERSION_RESPONSE') {
-                    tsraKnownWorkerVersion = typeof event.data.cacheVersion === 'string' ? event.data.cacheVersion : '';
-                    updateVersionPill();
-                }
             });
         } else {
             updateCacheStatus('cache unavailable');
