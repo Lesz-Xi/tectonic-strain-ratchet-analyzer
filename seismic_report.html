@@ -1254,13 +1254,12 @@
 
         .phase-curve {
             position: absolute;
-            left: 50%;
-            top: clamp(.5rem, 1.4vw, .86rem);
-            width: clamp(148px, 28vw, 242px);
+            right: clamp(.72rem, 2.8vw, 1.85rem);
+            top: clamp(.55rem, 1.4vw, .9rem);
+            width: clamp(156px, 25vw, 238px);
             height: auto;
-            transform: translateX(-50%);
             pointer-events: none;
-            opacity: .56;
+            opacity: .64;
             z-index: 0
         }
 
@@ -1272,50 +1271,106 @@
         }
 
         .phase-axis {
-            stroke: var(--border-sub);
+            stroke: color-mix(in srgb, var(--quiet-stone) 48%, transparent);
             stroke-width: 1
         }
 
         .phase-curve-line {
-            stroke: color-mix(in srgb, var(--old-brass) 74%, var(--bone-ink));
-            stroke-width: 1.35;
+            stroke: color-mix(in srgb, var(--old-brass) 76%, var(--bone-ink));
+            stroke-width: 1.25;
             stroke-dasharray: 5 8;
+            stroke-opacity: .82;
             animation: phaseTrace 9s linear infinite
         }
 
         .phase-curve-line-soft {
             stroke: var(--moss);
             stroke-width: .8;
-            stroke-opacity: .36;
+            stroke-opacity: .32;
             stroke-dasharray: 1 7;
             animation-duration: 14s
         }
 
-        .phase-point circle {
-            fill: color-mix(in srgb, var(--bg) 78%, transparent);
-            stroke: var(--quiet-stone);
-            stroke-width: 1;
-            transition: fill .2s, stroke .2s, r .2s
+        .phase-point {
+            --phase-color: var(--quiet-stone);
+            --phase-fill: color-mix(in srgb, var(--phase-color) 16%, var(--bg));
+            color: var(--phase-color)
         }
+
+        .phase-point[data-phase='1.0'] {
+            --phase-color: var(--moss)
+        }
+
+        .phase-point[data-phase='3.5'] {
+            --phase-color: var(--old-brass)
+        }
+
+        .phase-point[data-phase='7.0'] {
+            --phase-color: var(--rust)
+        }
+
+        .phase-point[data-phase='9.5'] {
+            --phase-color: var(--bone-ink)
+        }
+
+        .phase-point circle {
+            fill: var(--phase-fill);
+            stroke: color-mix(in srgb, var(--phase-color) 72%, var(--quiet-stone));
+            stroke-width: 1;
+            animation: phaseBlink 3.8s var(--ease) infinite;
+            transition: fill .2s, stroke .2s, r .2s, opacity .2s
+        }
+
+        .phase-point[data-phase='3.5'] circle { animation-delay: .35s }
+        .phase-point[data-phase='7.0'] circle { animation-delay: .7s }
+        .phase-point[data-phase='9.5'] circle { animation-delay: 1.05s }
 
         .phase-point text {
             font-family: var(--mono);
             font-size: 8px;
             letter-spacing: .08em;
-            fill: var(--muted);
+            fill: color-mix(in srgb, var(--phase-color) 70%, var(--muted));
             transition: fill .2s, opacity .2s;
             dominant-baseline: middle
         }
 
         .phase-point.is-active circle {
-            r: 4.2;
-            fill: color-mix(in srgb, var(--old-brass) 28%, var(--bg));
-            stroke: var(--old-brass)
+            r: 4.6;
+            fill: color-mix(in srgb, var(--phase-color) 28%, var(--bg));
+            stroke: var(--phase-color);
+            stroke-width: 1.35;
+            animation-duration: 2.3s
         }
 
         .phase-point.is-active text {
-            fill: var(--bone-ink);
-            opacity: .92
+            fill: color-mix(in srgb, var(--phase-color) 82%, var(--bone-ink));
+            opacity: .96
+        }
+
+        [data-theme='light'] .phase-curve {
+            opacity: .84
+        }
+
+        [data-theme='light'] .phase-axis {
+            stroke: rgba(30, 28, 24, .22)
+        }
+
+        [data-theme='light'] .phase-curve-line {
+            stroke: color-mix(in srgb, var(--accent) 84%, #1e1c18);
+            stroke-opacity: .82
+        }
+
+        [data-theme='light'] .phase-curve-line-soft {
+            stroke: var(--accent2);
+            stroke-opacity: .42
+        }
+
+        [data-theme='light'] .phase-point[data-phase='9.5'] {
+            --phase-color: #5a5448
+        }
+
+        [data-theme='light'] .phase-point text {
+            fill: color-mix(in srgb, var(--phase-color) 74%, #1e1c18)
         }
 
         @keyframes phaseTrace {
@@ -1323,8 +1378,20 @@
             to { stroke-dashoffset: -26 }
         }
 
+        @keyframes phaseBlink {
+            0%, 100% {
+                opacity: .58;
+                stroke-width: 1
+            }
+            48% {
+                opacity: 1;
+                stroke-width: 1.7
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
-            .phase-curve-line {
+            .phase-curve-line,
+            .phase-point circle {
                 animation: none
             }
         }
@@ -2320,8 +2387,10 @@
             }
 
             .phase-curve {
-                width: clamp(118px, 36vw, 172px);
-                opacity: .42
+                right: clamp(.42rem, 3vw, .8rem);
+                top: .55rem;
+                width: clamp(122px, 40vw, 176px);
+                opacity: .72
             }
 
             #tab-rhythm .grid {
@@ -2440,7 +2509,20 @@
             }
 
             .now-time {
-                font-size: clamp(2.55rem, 18vw, 4.2rem)
+                font-size: clamp(2.55rem, 18vw, 4.2rem);
+                margin-top: .38rem
+            }
+
+            .phase-curve {
+                right: .36rem;
+                top: .42rem;
+                width: min(148px, 46vw);
+                opacity: .78
+            }
+
+            .phase-point text {
+                font-size: 7.2px;
+                letter-spacing: .05em
             }
 
             .hero-window::after {
@@ -3419,20 +3501,20 @@
             <div class='now-shell'>
                 <section class='now-primary' aria-labelledby='now-title'>
                     <svg class='phase-curve' viewBox='0 0 220 86' aria-hidden='true' focusable='false'>
-                        <path class='phase-axis' d='M20 54 C 54 35, 80 35, 110 48 C 140 61, 166 60, 200 36'/>
-                        <path class='phase-curve-line phase-curve-line-soft' d='M18 61 C 54 46, 82 42, 110 51 C 140 61, 166 57, 202 43'/>
-                        <path class='phase-curve-line' d='M20 50 C 55 30, 82 29, 110 44 C 139 59, 166 55, 200 30'/>
-                        <g class='phase-point is-active' data-phase='1.0' transform='translate(34 47)'>
-                            <circle r='3.2'/><text x='-14' y='18'>1.0×</text>
+                        <path class='phase-axis' d='M22 70 C 58 67, 78 58, 104 49 C 132 39, 158 25, 198 14'/>
+                        <path class='phase-curve-line phase-curve-line-soft' d='M20 75 C 60 71, 82 62, 108 53 C 137 43, 160 33, 202 21'/>
+                        <path class='phase-curve-line' d='M24 68 C 61 63, 83 55, 108 45 C 139 33, 164 21, 200 12'/>
+                        <g class='phase-point is-active' data-phase='1.0' transform='translate(34 68)'>
+                            <circle r='3.2'/><text x='-15' y='13'>1.0×</text>
                         </g>
-                        <g class='phase-point' data-phase='3.5' transform='translate(83 34)'>
-                            <circle r='3.2'/><text x='-16' y='-13'>3.5×</text>
+                        <g class='phase-point' data-phase='3.5' transform='translate(82 55)'>
+                            <circle r='3.2'/><text x='-16' y='15'>3.5×</text>
                         </g>
-                        <g class='phase-point' data-phase='7.0' transform='translate(138 55)'>
-                            <circle r='3.2'/><text x='-14' y='18'>7.0×</text>
+                        <g class='phase-point' data-phase='7.0' transform='translate(136 34)'>
+                            <circle r='3.2'/><text x='-14' y='-13'>7.0×</text>
                         </g>
-                        <g class='phase-point' data-phase='9.5' transform='translate(190 34)'>
-                            <circle r='3.2'/><text x='-17' y='-13'>9.5×</text>
+                        <g class='phase-point' data-phase='9.5' transform='translate(190 15)'>
+                            <circle r='3.2'/><text x='-17' y='-12'>9.5×</text>
                         </g>
                     </svg>
                     <div class='now-kicker' id='now-status'>Next Observation Window</div>
