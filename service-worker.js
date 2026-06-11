@@ -1,10 +1,11 @@
-const TSRA_CACHE_VERSION = 'tsra-field-cache-v40';
+const TSRA_CACHE_VERSION = 'tsra-field-cache-v41';
 const CORE_ASSETS = [
   '/',
   '/seismic_report.html',
   '/manifest.webmanifest',
   '/tsra-version.json',
   '/duality-logo.png',
+  '/duality-logo-light.png',
   '/duality-icon-64.png',
   '/duality-icon-192.png',
   '/duality-icon-512.png',

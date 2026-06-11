@@ -159,7 +159,8 @@
             gap: .75rem
         }
 
-        .brand-mark {
+        .brand-mark,
+        .brand-mark-light {
             width: auto;
             height: clamp(54px, 5.1vw, 64px);
             display: block;
@@ -169,6 +170,19 @@
             animation: brandFloat 12s var(--ease) infinite;
             filter: drop-shadow(0 8px 14px rgba(0, 0, 0, .22)) saturate(1.02);
             will-change: transform
+        }
+
+        .brand-mark-light {
+            display: none
+        }
+
+        [data-theme='light'] .brand-mark {
+            display: none
+        }
+
+        [data-theme='light'] .brand-mark-light {
+            display: block;
+            filter: drop-shadow(0 8px 17px rgba(95, 72, 32, .16)) saturate(1.04) contrast(1.03)
         }
 
         @keyframes brandFloat {
@@ -182,7 +196,8 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .brand-mark {
+            .brand-mark,
+            .brand-mark-light {
                 animation: none
             }
         }
@@ -3471,6 +3486,7 @@
     <header>
         <div class='header-left'>
             <img class='brand-mark' src='/duality-logo.png' alt='TSRA' width='1024' height='1024'>
+            <img class='brand-mark-light' src='/duality-logo-light.png' alt='' aria-hidden='true' width='1024' height='1024'>
             <h1 class='brand-text'><span class='brand-title'>TSRA</span><span class='brand-sub'>Tectonic Strain Ratchet Analyzer</span></h1>
             <span class='zone-tag'>Cotabato · Sarangani</span>
         </div>
@@ -4870,7 +4886,7 @@
             applyLowDataMode(enabled);
         }
 
-        const TSRA_APP_VERSION = 'tsra-field-cache-v40';
+        const TSRA_APP_VERSION = 'tsra-field-cache-v41';
         const TSRA_VERSION_URL = '/tsra-version.json';
         const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
         let tsraReloadingForUpdate = false;
