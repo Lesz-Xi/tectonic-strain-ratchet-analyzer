@@ -3268,8 +3268,8 @@
             <div class='stat-hint'>inspect</div>
             <div class='stat-icon' aria-hidden='true'><svg viewBox='0 0 24 24'><path d='M5 17.5 19 6.5'/><circle cx='7.2' cy='7.4' r='2.2'/><circle cx='16.8' cy='16.6' r='2.2'/></svg></div>
             <div class='stat-label'>Model Fit</div>
-            <div class='stat-value'>87.7 <span class='stat-unit'>%</span></div>
-            <div class='stat-sub'>Timing alignment</div>
+            <div class='stat-value'><span id='model-fit-stat'>88.9</span> <span class='stat-unit'>%</span></div>
+            <div class='stat-sub' id='model-fit-stat-sub'>Calibration-derived timing alignment</div>
         </div>
     </div>
 
@@ -3991,8 +3991,8 @@
                             </div>
                             <div class='fr-score-item'>
                                 <span class='fr-score-label'>Model fit</span>
-                                <span class='fr-score-value'>87.7%</span>
-                                <span class='fr-score-note'>timing alignment</span>
+                                <span class='fr-score-value' id='field-report-fit-stat'>88.9%</span>
+                                <span class='fr-score-note' id='field-report-fit-note'>calibration-derived</span>
                             </div>
                         </div>
 
@@ -4019,7 +4019,7 @@
                     <li>[cond-mat/0012058] Model for complex aftershock sequences &mdash; Omori law governs rate decay; the multiplier spacing observed here is a distinct structural phenomenon, not contradicted by Omori but not predicted by it either. <a href='https://arxiv.org/abs/cond-mat/0012058' target='_blank' rel='noopener'>arxiv.org/abs/cond-mat/0012058</a></li>
                     <li>[1909.06787] Silent energy buildup precedes slow slip failure, Cascadia &mdash; structured strain accumulation patterns before failure in locked subduction zones. <a href='https://arxiv.org/abs/1909.06787' target='_blank' rel='noopener'>arxiv.org/abs/1909.06787</a></li>
                 </ul>
-                <div class='fr-audit-note'>Audit note &mdash; The geological framework (DDS, Cotabato Trench asperity model, stick-slip mechanism) is academically grounded. The specific 1&times;/3.5&times;/7&times;/9.5&times; multiplier framework is an empirical observation from this sequence and is not derived from or validated by a published theoretical model. The 87.7% timing fit is computed from 11 events &mdash; a real dataset, not a large one. Treat forward windows as observational structure, not certified forecasts.</div>
+                <div class='fr-audit-note'>Audit note &mdash; The geological framework (DDS, Cotabato Trench asperity model, stick-slip mechanism) is academically grounded. The specific 1&times;/3.5&times;/7&times;/9.5&times; multiplier framework is an empirical observation from this sequence and is not derived from or validated by a published theoretical model. The calibration-derived 88.9% timing fit is computed from 9 standard confirmed intervals; A10 remains visible but excluded as a sub-pulse. Treat forward windows as observational structure, not certified forecasts.</div>
             </div>
 
         </div>
@@ -4754,9 +4754,9 @@
                 body: `<p><strong>A9</strong> struck at 03:26 AM &mdash; 31 minutes after A8. The 1&times; watch center was 03:30 AM, so the observed event arrived about 4 minutes early.</p><p><strong>A10</strong> followed at 03:36 AM &mdash; only 10 minutes after A9. This is a sub-pulse (~0.28&times;), likely a triggered secondary slip on the same fault patch immediately after A9&rsquo;s release. Not a standard phase window.</p><p>A10 remains the <strong>last confirmed event anchor</strong>. The operational observation surface now separates confirmed events from later local outcomes: elapsed watches and felt-only observations are logged outside the confirmed event log. After the 12:54 PM no-shake outcome, TSRA opens a new post-12:54 PM observation cycle beginning around 01:29 PM.</p>`
             },
             fit: {
-                label: 'Timing Fit',
-                value: '87.7%',
-                body: `<p><strong>87.7% timing alignment</strong> means the model&rsquo;s watch times matched observed event timing within acceptable tolerance across the confirmed event set.</p><p>This does <strong>not</strong> mean the system can predict magnitude, damage, or felt strength. Earthquake behavior varies by depth, rupture area, coupling, attenuation, and whether strain releases as one event, multiple micro-pulses, slow slip, or delayed transfer.</p><p>The useful result is narrower and safer: the model may be tracking a <strong>rhythm / phase pattern</strong>. Amplitude remains unknown until checked against official seismic observations.</p>`
+                label: 'Calibration-Derived Fit',
+                value: '88.9%',
+                body: `<p><strong>88.9% calibration-derived timing alignment</strong> means 8 of 9 standard confirmed intervals fall inside the current &plusmn;12 minute phase band.</p><p>This value is computed from the page&rsquo;s confirmed-event log using the fitted 35.552 minute baseline and the standard 1.0&times;, 3.5&times;, 7.0&times;, and 9.5&times; phase classes. A10 remains visible but excluded because it is a sub-pulse, not a standard phase interval.</p><p>This does <strong>not</strong> mean the system can predict magnitude, damage, or felt strength. The useful result is narrower and safer: the model may be tracking a rhythm / phase pattern, while safety decisions still require official sources.</p>`
             }
         };
 
@@ -5055,6 +5055,20 @@
                 };
             }).filter(Boolean);
         }
+        function syncModelFitSurface(hitRate, hits, standardCount, medianOffset) {
+            const percent = standardCount ? (hitRate * 100).toFixed(1) : '—';
+            const offsetText = medianOffset === null ? 'unknown' : `${medianOffset.toFixed(1)} min`;
+            setText('model-fit-stat', percent);
+            setText('field-report-fit-stat', standardCount ? `${percent}%` : '—');
+            setText('model-fit-stat-sub', standardCount ? `${hits}/${standardCount} inside ±${TSRA_WINDOW_BAND_MINUTES} min · median ${offsetText}` : 'Calibration unavailable');
+            setText('field-report-fit-note', standardCount ? `${hits}/${standardCount} inside band` : 'calibration unavailable');
+            MODAL_DATA.fit.label = 'Calibration-Derived Fit';
+            MODAL_DATA.fit.value = standardCount ? `${percent}%` : '—';
+            MODAL_DATA.fit.body = standardCount
+                ? `<p><strong>${percent}% calibration-derived timing alignment</strong> means ${hits} of ${standardCount} standard confirmed intervals fall inside the current &plusmn;${TSRA_WINDOW_BAND_MINUTES} minute phase band.</p><p>This value is computed from the page&rsquo;s confirmed-event log using the fitted ${TSRA_BASELINE_MINUTES.toFixed(3)} minute baseline and the standard 1.0&times;, 3.5&times;, 7.0&times;, and 9.5&times; phase classes. A10 remains visible but excluded because it is a sub-pulse, not a standard phase interval.</p><p>This does <strong>not</strong> mean the system can predict magnitude, damage, or felt strength. The useful result is narrower and safer: the model may be tracking a rhythm / phase pattern, while safety decisions still require official sources.</p>`
+                : `<p>The calibration-derived fit is unavailable because there are no standard confirmed intervals to score.</p><p>This remains an observational surface only, not a certified warning system.</p>`;
+        }
+
         function readOutcomeBalance() {
             const rows = Array.from(document.querySelectorAll('#observation-log-body tr'));
             const counts = { felt: 0, elapsed: 0, private: 0, pending: 0, other: 0 };
@@ -5113,6 +5127,7 @@
             const meter = document.getElementById('calibration-hit-meter');
             if (meter) meter.style.width = `${Math.round(hitRate * 100)}%`;
             setText('calibration-median-offset', medianOffset === null ? '—' : `${medianOffset.toFixed(1)} min`);
+            syncModelFitSurface(hitRate, hits, standardIntervals.length, medianOffset);
             setText('calibration-local-count', String(localTotal));
             setText('calibration-local-detail', `${outcomes.felt} felt-only · ${outcomes.elapsed} elapsed · ${outcomes.private} private`);
             const pendingCount = document.querySelectorAll('#pending-table tbody tr[data-evidence-type="model-window"]').length;

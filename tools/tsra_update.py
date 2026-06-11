@@ -486,6 +486,9 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "id='pending-table'",
         "id='observation-log-body'",
         "calibration-hit-rate",
+        "model-fit-stat",
+        "field-report-fit-stat",
+        "syncModelFitSurface",
         "renderCalibrationLedger",
         "source-certainty-register",
         "What this means",
@@ -516,6 +519,8 @@ def verify_report(report: str, service_worker: str) -> list[str]:
             errors.append(f"missing report marker: {marker}")
     if "capacity" in report.lower():
         errors.append("public capacity text found in report")
+    if "87.7%" in report or "87.7% timing fit" in report:
+        errors.append("stale static model-fit value found in report")
     if "background: radial-gradient(circle at 12% -10%" in report:
         errors.append("dark backdrop glow found in report")
     if "--bg: #11110f" in report:
