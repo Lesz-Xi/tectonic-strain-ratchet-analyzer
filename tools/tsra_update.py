@@ -492,6 +492,7 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "renderCalibrationLedger",
         "source-certainty-register",
         "phase-curve",
+        "viewBox='0 0 220 86'",
         "updatePhaseCurveState",
         "What this means",
         "--kuro-field-ground: #0d0c0a",

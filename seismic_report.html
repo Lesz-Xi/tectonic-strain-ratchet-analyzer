@@ -1241,8 +1241,7 @@
             gap: .8rem;
             min-height: 250px;
             border: 1px solid var(--border-sub);
-            padding: clamp(1.1rem, 2vw, 1.55rem);
-            padding-right: clamp(1.1rem, 13vw, 9rem);
+            padding: clamp(1.45rem, 2.4vw, 1.85rem) clamp(1.1rem, 2vw, 1.55rem) clamp(1.1rem, 2vw, 1.55rem);
             background: color-mix(in srgb, var(--surface-soft) 78%, var(--paper-warm));
             position: relative;
             overflow: hidden
@@ -1255,14 +1254,13 @@
 
         .phase-curve {
             position: absolute;
-            right: clamp(.65rem, 2.1vw, 1.25rem);
-            top: 50%;
-            width: min(32%, 188px);
-            min-width: 130px;
+            left: 50%;
+            top: clamp(.5rem, 1.4vw, .86rem);
+            width: clamp(148px, 28vw, 242px);
             height: auto;
-            transform: translateY(-50%);
+            transform: translateX(-50%);
             pointer-events: none;
-            opacity: .68;
+            opacity: .56;
             z-index: 0
         }
 
@@ -2318,13 +2316,12 @@
 
             .now-primary {
                 min-height: 210px;
-                padding-right: clamp(1rem, 22vw, 6.5rem)
+                padding-top: 1.6rem
             }
 
             .phase-curve {
-                width: min(30%, 142px);
-                min-width: 96px;
-                opacity: .48
+                width: clamp(118px, 36vw, 172px);
+                opacity: .42
             }
 
             #tab-rhythm .grid {
@@ -3421,21 +3418,21 @@
         <div class='card now-card'>
             <div class='now-shell'>
                 <section class='now-primary' aria-labelledby='now-title'>
-                    <svg class='phase-curve' viewBox='0 0 184 160' aria-hidden='true' focusable='false'>
-                        <path class='phase-axis' d='M22 132 C 58 104, 82 116, 103 82 S 143 30, 166 26'/>
-                        <path class='phase-curve-line phase-curve-line-soft' d='M20 138 C 56 116, 75 120, 92 95 C 115 62, 133 54, 162 44'/>
-                        <path class='phase-curve-line' d='M24 126 C 58 96, 78 109, 101 78 C 121 51, 139 35, 166 24'/>
-                        <g class='phase-point is-active' data-phase='1.0' transform='translate(36 118)'>
-                            <circle r='3.2'/><text x='12'>1.0×</text>
+                    <svg class='phase-curve' viewBox='0 0 220 86' aria-hidden='true' focusable='false'>
+                        <path class='phase-axis' d='M20 54 C 54 35, 80 35, 110 48 C 140 61, 166 60, 200 36'/>
+                        <path class='phase-curve-line phase-curve-line-soft' d='M18 61 C 54 46, 82 42, 110 51 C 140 61, 166 57, 202 43'/>
+                        <path class='phase-curve-line' d='M20 50 C 55 30, 82 29, 110 44 C 139 59, 166 55, 200 30'/>
+                        <g class='phase-point is-active' data-phase='1.0' transform='translate(34 47)'>
+                            <circle r='3.2'/><text x='-14' y='18'>1.0×</text>
                         </g>
-                        <g class='phase-point' data-phase='3.5' transform='translate(78 101)'>
-                            <circle r='3.2'/><text x='12'>3.5×</text>
+                        <g class='phase-point' data-phase='3.5' transform='translate(83 34)'>
+                            <circle r='3.2'/><text x='-16' y='-13'>3.5×</text>
                         </g>
-                        <g class='phase-point' data-phase='7.0' transform='translate(119 58)'>
-                            <circle r='3.2'/><text x='12'>7.0×</text>
+                        <g class='phase-point' data-phase='7.0' transform='translate(138 55)'>
+                            <circle r='3.2'/><text x='-14' y='18'>7.0×</text>
                         </g>
-                        <g class='phase-point' data-phase='9.5' transform='translate(158 31)'>
-                            <circle r='3.2'/><text x='-34'>9.5×</text>
+                        <g class='phase-point' data-phase='9.5' transform='translate(190 34)'>
+                            <circle r='3.2'/><text x='-17' y='-13'>9.5×</text>
                         </g>
                     </svg>
                     <div class='now-kicker' id='now-status'>Next Observation Window</div>
