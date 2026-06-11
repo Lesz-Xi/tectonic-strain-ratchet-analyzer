@@ -1305,7 +1305,7 @@
         .phase-curve {
             position: absolute;
             right: clamp(.72rem, 2.8vw, 1.85rem);
-            top: clamp(.92rem, 1.8vw, 1.28rem);
+            top: clamp(1.14rem, 2vw, 1.5rem);
             width: clamp(156px, 25vw, 238px);
             height: auto;
             pointer-events: none;
@@ -3490,7 +3490,7 @@
                 <span id='clock-text'>--:--:--</span>
             </div>
             <div id='app-version-pill' class='header-pill version-pill' title='Loaded app and service worker version'>
-                <span id='app-version-text'>app v32 · sw —</span>
+                <span id='app-version-text'>app v33 · sw —</span>
             </div>
             <button id='low-data-toggle' class='theme-toggle field-toggle' type='button' onclick='toggleLowDataMode()' title='Reduce video preloading and prefer cached shell' aria-pressed='false'>
                 <span class='field-toggle-icon' aria-hidden='true'>
@@ -4862,7 +4862,7 @@
             applyLowDataMode(enabled);
         }
 
-        const TSRA_APP_VERSION = 'tsra-field-cache-v32';
+        const TSRA_APP_VERSION = 'tsra-field-cache-v33';
         const TSRA_VERSION_URL = '/tsra-version.json';
         const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
         let tsraReloadingForUpdate = false;
