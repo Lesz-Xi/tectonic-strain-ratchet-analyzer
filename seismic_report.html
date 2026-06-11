@@ -1429,6 +1429,99 @@
             box-shadow: inset 0 1px 0 color-mix(in srgb, var(--moss) 22%, transparent)
         }
 
+        .calibration-shell {
+            grid-template-columns: minmax(0, 1.08fr) minmax(320px, .92fr);
+            align-items: start
+        }
+
+        .calibration-hero {
+            display: grid;
+            gap: 1rem
+        }
+
+        .calibration-lede {
+            max-width: 780px;
+            color: var(--text-sub);
+            font-size: .82rem;
+            line-height: 1.7
+        }
+
+        .calibration-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: .75rem
+        }
+
+        .calibration-metric {
+            border: 1px solid var(--border-sub);
+            background: color-mix(in srgb, var(--surface-soft) 76%, var(--paper-warm));
+            padding: .82rem .86rem;
+            min-width: 0
+        }
+
+        .calibration-label {
+            font-family: var(--mono);
+            font-size: .48rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: .45rem
+        }
+
+        .calibration-value {
+            font-family: var(--serif);
+            font-size: clamp(1.45rem, 3vw, 2.2rem);
+            line-height: .95;
+            letter-spacing: -.05em;
+            color: var(--text)
+        }
+
+        .calibration-note {
+            margin-top: .42rem;
+            color: var(--text-sub);
+            font-size: .66rem;
+            line-height: 1.45
+        }
+
+        .calibration-meter {
+            height: 3px;
+            margin-top: .65rem;
+            background: color-mix(in srgb, var(--quiet-stone) 22%, transparent);
+            overflow: hidden
+        }
+
+        .calibration-meter span {
+            display: block;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--moss), var(--old-brass));
+            transition: width .28s var(--ease)
+        }
+
+        .calibration-audit-list {
+            display: grid;
+            gap: .65rem;
+            list-style: none;
+            color: var(--text-sub);
+            font-size: .76rem;
+            line-height: 1.55
+        }
+
+        .calibration-audit-list li {
+            border-left: 1px solid var(--border-sub);
+            padding-left: .75rem
+        }
+
+        .calibration-audit-list strong {
+            display: block;
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: .52rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: .2rem
+        }
+
         .record-outcome-btn,
         .ledger-delete-btn {
             border: 1px solid var(--border-sub);
@@ -3184,6 +3277,7 @@
         <button class='tab-btn active' onclick="switchTab('now',event)">Now</button>
         <button class='tab-btn' onclick="switchTab('events',event)">Ledger</button>
         <button class='tab-btn' onclick="switchTab('rhythm',event)">Rhythm</button>
+        <button class='tab-btn' onclick="switchTab('calibration',event)">Calibration</button>
         <button class='tab-btn' onclick="switchTab('chart',event)">Chart</button>
         <button class='tab-btn' onclick="switchTab('field-report',event)">Field Report</button>
         <button class='tab-btn' onclick="switchTab('learning',event)">Learning</button>
@@ -3234,7 +3328,7 @@
                         <th>Status</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id='confirmed-event-body'>
                     <tr>
                         <td><span class='badge badge-ms'>MS</span></td>
                         <td>Jun 08 &middot; 07:37 AM</td>
@@ -3532,6 +3626,77 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class='tab-panel' id='tab-calibration'>
+        <div class='grid calibration-shell'>
+            <section class='card full calibration-hero' data-evidence-type='calibration-derived' data-certainty='computed-from-page-log' data-official-status='not-official'>
+                <div class='card-title'><span>Calibration Ledger</span><span class='pending-card-note'>Computed from existing logs · not warning</span></div>
+                <p class='calibration-lede'>This tab measures the distance between TSRA's fitted phase clock and the records already on this page. It does not add confirmed events, does not read private notes off-device, and does not certify a safety decision. It only asks: when the pattern named a phase window, how close did the observed record land?</p>
+                <div class='calibration-metrics' aria-label='Calibration metrics'>
+                    <div class='calibration-metric'>
+                        <div class='calibration-label'>Confirmed hit rate</div>
+                        <div class='calibration-value' id='calibration-hit-rate'>—</div>
+                        <div class='calibration-note' id='calibration-hit-detail'>Waiting for log scan</div>
+                        <div class='calibration-meter' aria-hidden='true'><span id='calibration-hit-meter'></span></div>
+                    </div>
+                    <div class='calibration-metric'>
+                        <div class='calibration-label'>Median offset</div>
+                        <div class='calibration-value' id='calibration-median-offset'>—</div>
+                        <div class='calibration-note'>Absolute center-to-record offset across standard confirmed intervals.</div>
+                    </div>
+                    <div class='calibration-metric'>
+                        <div class='calibration-label'>Local outcomes</div>
+                        <div class='calibration-value' id='calibration-local-count'>—</div>
+                        <div class='calibration-note' id='calibration-local-detail'>Felt-only and elapsed records stay separate.</div>
+                    </div>
+                    <div class='calibration-metric'>
+                        <div class='calibration-label'>Current clock</div>
+                        <div class='calibration-value' id='calibration-clock-state'>—</div>
+                        <div class='calibration-note' id='calibration-clock-detail'>Baseline and pending windows checked from DOM.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class='card'>
+                <div class='card-title'>Confirmed Phase Fit</div>
+                <table aria-label='Confirmed event phase calibration'>
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Observed Interval</th>
+                            <th>Nearest Phase</th>
+                            <th>Offset</th>
+                            <th>Band</th>
+                        </tr>
+                    </thead>
+                    <tbody id='calibration-confirmed-body'></tbody>
+                </table>
+            </section>
+
+            <section class='card'>
+                <div class='card-title'>Outcome Balance</div>
+                <table aria-label='Observation outcome calibration'>
+                    <thead>
+                        <tr>
+                            <th>Record Type</th>
+                            <th>Count</th>
+                            <th>Calibration Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody id='calibration-outcome-body'></tbody>
+                </table>
+            </section>
+
+            <section class='card full' data-evidence-type='calibration-boundary' data-certainty='method-note' data-official-status='not-official'>
+                <div class='card-title'>What this means</div>
+                <ul class='calibration-audit-list'>
+                    <li><strong>Useful signal</strong><span id='calibration-verdict'>The ledger has not run yet.</span></li>
+                    <li><strong>Excluded from fit</strong>Sub-pulses are displayed but excluded from the standard-phase score because they do not represent the 1.0×, 3.5×, 7.0×, or 9.5× phase classes.</li>
+                    <li><strong>Safety boundary</strong>This calibration is observational analysis only: not a certified warning system and never enough for safety decisions by itself.</li>
+                </ul>
+            </section>
         </div>
     </div>
 
@@ -4567,6 +4732,7 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('tab-' + name).classList.add('active');
             e.currentTarget.classList.add('active');
+            if (name === 'calibration') renderCalibrationLedger();
             recordFieldMemory('tab-opened', { name });
         }
 
@@ -4799,6 +4965,7 @@
                 row.append(statusCell);
                 body.append(row);
             });
+            if (typeof renderCalibrationLedger === 'function') renderCalibrationLedger();
         }
         function saveObservationOutcomeRecord(event) {
             event.preventDefault();
@@ -4838,7 +5005,127 @@
         }
         const outcomeRecorderForm = document.getElementById('outcome-recorder-form');
         if (outcomeRecorderForm) outcomeRecorderForm.addEventListener('submit', saveObservationOutcomeRecord);
+        const TSRA_BASELINE_MINUTES = 35.552;
+        const TSRA_PHASE_WINDOWS = [
+            { label: '1.0×', multiplier: 1.0 },
+            { label: '3.5×', multiplier: 3.5 },
+            { label: '7.0×', multiplier: 7.0 },
+            { label: '9.5×', multiplier: 9.5 }
+        ];
+        const TSRA_WINDOW_BAND_MINUTES = 12;
+
+        function clearNode(el) {
+            if (!el) return;
+            while (el.firstChild) el.removeChild(el.firstChild);
+        }
+        function appendCalibrationCell(row, text, className) {
+            const cell = document.createElement('td');
+            if (className) cell.className = className;
+            cell.textContent = text;
+            row.append(cell);
+            return cell;
+        }
+        function nearestPhaseForInterval(intervalMinutes) {
+            return TSRA_PHASE_WINDOWS
+                .map(phase => ({ ...phase, center: TSRA_BASELINE_MINUTES * phase.multiplier, offset: intervalMinutes - TSRA_BASELINE_MINUTES * phase.multiplier }))
+                .sort((a, b) => Math.abs(a.offset) - Math.abs(b.offset))[0];
+        }
+        function median(values) {
+            if (!values.length) return null;
+            const sorted = [...values].sort((a, b) => a - b);
+            const middle = Math.floor(sorted.length / 2);
+            return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+        }
+        function readConfirmedIntervals() {
+            return Array.from(document.querySelectorAll('#confirmed-event-body tr')).map(row => {
+                const cells = row.querySelectorAll('td');
+                const label = cells[0] ? cells[0].textContent.trim() : '—';
+                const intervalText = cells[2] ? cells[2].textContent.trim() : '';
+                const interval = Number.parseFloat(intervalText);
+                if (!Number.isFinite(interval)) return null;
+                const phase = nearestPhaseForInterval(interval);
+                const absoluteOffset = Math.abs(phase.offset);
+                return {
+                    label,
+                    interval,
+                    nearestPhase: phase,
+                    absoluteOffset,
+                    inBand: absoluteOffset <= TSRA_WINDOW_BAND_MINUTES,
+                    subPulse: /sub-pulse/i.test(intervalText)
+                };
+            }).filter(Boolean);
+        }
+        function readOutcomeBalance() {
+            const rows = Array.from(document.querySelectorAll('#observation-log-body tr'));
+            const counts = { felt: 0, elapsed: 0, private: 0, pending: 0, other: 0 };
+            rows.forEach(row => {
+                const evidenceType = row.dataset.evidenceType || row.getAttribute('data-evidence-type') || '';
+                const text = row.textContent || '';
+                if (evidenceType === 'local-private-record') counts.private += 1;
+                else if (/local-felt/.test(evidenceType)) counts.felt += 1;
+                else if (/local-elapsed/.test(evidenceType)) counts.elapsed += 1;
+                else if (/pending/i.test(text)) counts.pending += 1;
+                else counts.other += 1;
+            });
+            return counts;
+        }
+        function renderCalibrationLedger() {
+            const confirmedBody = document.getElementById('calibration-confirmed-body');
+            const outcomeBody = document.getElementById('calibration-outcome-body');
+            if (!confirmedBody || !outcomeBody) return;
+            const intervals = readConfirmedIntervals();
+            const standardIntervals = intervals.filter(item => !item.subPulse);
+            const hits = standardIntervals.filter(item => item.inBand).length;
+            const hitRate = standardIntervals.length ? hits / standardIntervals.length : 0;
+            const medianOffset = median(standardIntervals.map(item => item.absoluteOffset));
+            clearNode(confirmedBody);
+            intervals.forEach(item => {
+                const row = document.createElement('tr');
+                appendCalibrationCell(row, item.label, 'mono');
+                appendCalibrationCell(row, `${item.interval.toFixed(1)} min`, 'mono');
+                appendCalibrationCell(row, `${item.nearestPhase.label} · ${item.nearestPhase.center.toFixed(1)} min`, 'mono');
+                appendCalibrationCell(row, `${item.nearestPhase.offset >= 0 ? '+' : '−'}${Math.abs(item.nearestPhase.offset).toFixed(1)} min`, 'mono');
+                const bandCell = appendCalibrationCell(row, item.subPulse ? 'Excluded sub-pulse' : item.inBand ? 'Inside ±12 min' : 'Outside band');
+                const pill = document.createElement('span');
+                pill.className = item.subPulse ? 'pill elapsed-pill' : item.inBand ? 'pill confirmed' : 'pill pending-pill';
+                pill.textContent = bandCell.textContent;
+                bandCell.textContent = '';
+                bandCell.append(pill);
+                confirmedBody.append(row);
+            });
+            const outcomes = readOutcomeBalance();
+            const localTotal = outcomes.felt + outcomes.elapsed + outcomes.private + outcomes.pending + outcomes.other;
+            clearNode(outcomeBody);
+            [
+                ['Felt-only', outcomes.felt, 'Human observation; useful for comparison, not confirmed by itself.'],
+                ['Elapsed / no-shake', outcomes.elapsed, 'Negative local outcomes; useful because quiet windows count too.'],
+                ['Private device records', outcomes.private, 'Local-only notes rendered from browser storage; not submitted.'],
+                ['Pending / other', outcomes.pending + outcomes.other, 'Records that need human review before calibration use.']
+            ].forEach(([label, count, meaning]) => {
+                const row = document.createElement('tr');
+                appendCalibrationCell(row, label);
+                appendCalibrationCell(row, String(count), 'mono');
+                appendCalibrationCell(row, meaning);
+                outcomeBody.append(row);
+            });
+            setText('calibration-hit-rate', standardIntervals.length ? `${(hitRate * 100).toFixed(1)}%` : '—');
+            setText('calibration-hit-detail', `${hits} of ${standardIntervals.length} standard confirmed intervals inside ±${TSRA_WINDOW_BAND_MINUTES} min band`);
+            const meter = document.getElementById('calibration-hit-meter');
+            if (meter) meter.style.width = `${Math.round(hitRate * 100)}%`;
+            setText('calibration-median-offset', medianOffset === null ? '—' : `${medianOffset.toFixed(1)} min`);
+            setText('calibration-local-count', String(localTotal));
+            setText('calibration-local-detail', `${outcomes.felt} felt-only · ${outcomes.elapsed} elapsed · ${outcomes.private} private`);
+            const pendingCount = document.querySelectorAll('#pending-table tbody tr[data-evidence-type="model-window"]').length;
+            setText('calibration-clock-state', `${TSRA_BASELINE_MINUTES.toFixed(3)} min`);
+            setText('calibration-clock-detail', `${pendingCount} generated watch windows checked against current baseline`);
+            const verdict = hitRate >= 0.8
+                ? `The standard-phase record is coherent enough to keep observing: ${hits}/${standardIntervals.length} confirmed intervals fall inside the ±${TSRA_WINDOW_BAND_MINUTES} minute band, with median offset ${medianOffset === null ? 'unknown' : medianOffset.toFixed(1) + ' min'}.`
+                : `The standard-phase record is weak right now: ${hits}/${standardIntervals.length} confirmed intervals fall inside the ±${TSRA_WINDOW_BAND_MINUTES} minute band. Treat the clock as low-confidence until more records accumulate.`;
+            setText('calibration-verdict', verdict);
+        }
+
         renderObservationLedgerEntries();
+        renderCalibrationLedger();
 
         let imagePreviewLastFocus = null;
         function openImagePreview() {

@@ -482,8 +482,11 @@ def verify_report(report: str, service_worker: str) -> list[str]:
             errors.append(f"confirmed labels changed: {labels}")
     required_report_markers = [
         "id='tab-now'",
+        "id='tab-calibration'",
         "id='pending-table'",
         "id='observation-log-body'",
+        "calibration-hit-rate",
+        "renderCalibrationLedger",
         "source-certainty-register",
         "What this means",
         "--kuro-field-ground: #0d0c0a",
