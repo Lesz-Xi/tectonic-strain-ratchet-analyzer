@@ -495,9 +495,11 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "--kuro-field-ground: #0d0c0a",
         "--old-brass: #b89455",
         "--moss: #7f9878",
-        "rel='icon' href='/tsra-field-ring-icon.svg'",
-        "class='brand-mark' src='/tsra-field-ring-icon.svg'",
-        "width='46' height='46'",
+        "rel='icon' type='image/png' sizes='64x64' href='/rhythm-icon-64.png'",
+        "rel='apple-touch-icon' href='/rhythm-icon-192.png'",
+        "class='brand-mark' src='/rhythm-logo.png'",
+        "brandFloat",
+        "brand-title",
         "data-evidence-type",
         "evidence-mini",
         "tsraFieldMemory.v1",
@@ -539,7 +541,8 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "TSRA_CACHE_FIELD_MEMORY",
         "TSRA_SKIP_WAITING",
         "client.navigate(client.url)",
-        "'/tsra-field-ring-icon.svg'",
+        "'/rhythm-logo.png'",
+        "'/rhythm-icon-512.png'",
     ]
     for marker in required_sw_markers:
         if marker not in service_worker:

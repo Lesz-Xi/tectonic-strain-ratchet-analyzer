@@ -8,8 +8,9 @@
     <meta name='theme-color' content='#0d0c0a'>
     <meta name='description' content='TSRA is an observational timing report for confirmed events, felt observations, and phase-sensitive watch windows.'>
     <link rel='manifest' href='/manifest.webmanifest'>
-    <link rel='icon' href='/tsra-field-ring-icon.svg' type='image/svg+xml'>
-    <link rel='apple-touch-icon' href='/tsra-field-ring-icon.svg'>
+    <link rel='icon' type='image/png' sizes='64x64' href='/rhythm-icon-64.png'>
+    <link rel='icon' type='image/png' sizes='192x192' href='/rhythm-icon-192.png'>
+    <link rel='apple-touch-icon' href='/rhythm-icon-192.png'>
     <link
         href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400&family=IBM+Plex+Mono:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap'
         rel='stylesheet'>
@@ -159,24 +160,62 @@
         }
 
         .brand-mark {
-            width: 46px;
-            height: 46px;
+            width: auto;
+            height: clamp(58px, 5.5vw, 68px);
             display: block;
             object-fit: contain;
-            flex: 0 0 auto
+            flex: 0 0 auto;
+            transform-origin: 50% 50%;
+            animation: brandFloat 7.5s var(--ease) infinite;
+            filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .24)) saturate(1.03);
+            will-change: transform, filter
         }
 
-        header h1 {
+        @keyframes brandFloat {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .24)) saturate(1.03)
+            }
+            50% {
+                transform: translateY(-3px) rotate(-1.2deg) scale(1.018);
+                filter: drop-shadow(0 14px 20px rgba(0, 0, 0, .30)) saturate(1.08)
+            }
+            100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .24)) saturate(1.03)
+            }
+        }
+
+        .brand-text {
+            display: grid;
+            gap: .12rem;
+            line-height: 1
+        }
+
+        .brand-title {
             font-family: var(--serif);
-            font-size: 1.15rem;
-            font-weight: 300;
-            letter-spacing: -.025em;
-            color: var(--text)
+            font-size: 1.32rem;
+            font-weight: 400;
+            letter-spacing: .42em;
+            text-indent: .42em;
+            color: var(--text);
+            line-height: 1
         }
 
-        header h1 span {
-            color: var(--muted);
-            font-weight: 400
+        .brand-sub {
+            font-family: var(--mono);
+            font-size: .5rem;
+            font-weight: 500;
+            letter-spacing: .26em;
+            text-transform: uppercase;
+            color: var(--muted)
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .brand-mark {
+                animation: none;
+                filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .24)) saturate(1.03)
+            }
         }
 
         .zone-tag {
@@ -3180,8 +3219,8 @@
 
     <header>
         <div class='header-left'>
-            <img class='brand-mark' src='/tsra-field-ring-icon.svg' alt='' width='46' height='46' aria-hidden='true'>
-            <h1>TSRA &nbsp;<span>/ Tectonic Strain Ratchet Analyzer</span></h1>
+            <img class='brand-mark' src='/rhythm-logo.png' alt='TSRA' width='110' height='288'>
+            <h1 class='brand-text'><span class='brand-title'>TSRA</span><span class='brand-sub'>Tectonic Strain Ratchet Analyzer</span></h1>
             <span class='zone-tag'>Cotabato · Sarangani</span>
         </div>
         <div class='header-right'>
