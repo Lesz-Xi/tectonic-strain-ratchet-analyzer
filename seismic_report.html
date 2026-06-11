@@ -161,28 +161,29 @@
 
         .brand-mark {
             width: auto;
-            height: clamp(58px, 5.5vw, 68px);
+            height: clamp(54px, 5.1vw, 64px);
             display: block;
             object-fit: contain;
             flex: 0 0 auto;
             transform-origin: 50% 50%;
-            animation: brandFloat 7.5s var(--ease) infinite;
-            filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .24)) saturate(1.03);
-            will-change: transform, filter
+            animation: brandFloat 12s var(--ease) infinite;
+            filter: drop-shadow(0 8px 14px rgba(0, 0, 0, .22)) saturate(1.02);
+            will-change: transform
         }
 
         @keyframes brandFloat {
-            0% {
-                transform: translateY(0) rotate(0deg) scale(1);
-                filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .24)) saturate(1.03)
+            0%,
+            100% {
+                transform: translateY(0)
             }
             50% {
-                transform: translateY(-3px) rotate(-1.2deg) scale(1.018);
-                filter: drop-shadow(0 14px 20px rgba(0, 0, 0, .30)) saturate(1.08)
+                transform: translateY(-1px)
             }
-            100% {
-                transform: translateY(0) rotate(0deg) scale(1);
-                filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .24)) saturate(1.03)
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .brand-mark {
+                animation: none
             }
         }
 
@@ -209,13 +210,6 @@
             letter-spacing: .26em;
             text-transform: uppercase;
             color: var(--muted)
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .brand-mark {
-                animation: none;
-                filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .24)) saturate(1.03)
-            }
         }
 
         .zone-tag {
@@ -4876,7 +4870,7 @@
             applyLowDataMode(enabled);
         }
 
-        const TSRA_APP_VERSION = 'tsra-field-cache-v39';
+        const TSRA_APP_VERSION = 'tsra-field-cache-v40';
         const TSRA_VERSION_URL = '/tsra-version.json';
         const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
         let tsraReloadingForUpdate = false;
