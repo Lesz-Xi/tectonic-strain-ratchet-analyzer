@@ -494,6 +494,7 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "phase-curve",
         "viewBox='0 0 220 86'",
         "phaseBlink",
+        "top: clamp(.92rem, 1.8vw, 1.28rem)",
         "M24 68 C 61 63",
         "updatePhaseCurveState",
         "What this means",
