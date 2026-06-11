@@ -11,13 +11,13 @@
   "categories": ["education", "utilities", "science"],
   "icons": [
     {
-      "src": "/rhythm-icon-192.png",
+      "src": "/duality-icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/rhythm-icon-512.png",
+      "src": "/duality-icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
