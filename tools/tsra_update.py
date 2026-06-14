@@ -198,7 +198,7 @@ def build_outcome_row(outcome: Outcome, row: PendingRow | None) -> str:
     evidence_type = "local-felt" if outcome.kind == "felt" else "local-elapsed"
     certainty = "observational-low" if outcome.kind == "felt" else "observational-local"
     official_status = "not-confirmed" if outcome.kind == "felt" else "not-official"
-    evidence_note = "Local felt-only · low certainty · pattern context" if outcome.kind == "felt" else "Local outcome · no-shake note · not official"
+    evidence_note = "Local felt-only · low certainty · pattern context" if outcome.kind == "felt" else "Local outcome · no-shake · not&nbsp;official"
     return f"""                    <tr data-evidence-type='{evidence_type}' data-certainty='{certainty}' data-official-status='{official_status}'>
                         <td><span class='badge badge-as'>{source}</span><span class='evidence-mini'>{evidence_note}</span></td>
                         <td class='mono'>{month_label(outcome.report_time, approximate=outcome.kind == 'felt')}</td>
