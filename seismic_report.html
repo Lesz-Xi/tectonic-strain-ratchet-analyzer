@@ -6162,7 +6162,7 @@
             applyLowDataMode(enabled);
         }
 
-        const TSRA_APP_VERSION = 'tsra-field-cache-v52';
+        const TSRA_APP_VERSION = 'tsra-field-cache-v53';
         const TSRA_VERSION_URL = '/tsra-version.json';
         const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
         let tsraReloadingForUpdate = false;
@@ -6591,13 +6591,18 @@
             }
             function colorForParticle(particle) {
                 if (activeLens === 'depth') {
-                    if (particle.depthClass === 'above') return palette.mossSolid;
-                    if (particle.depthClass === 'near') return palette.brass;
-                    return palette.violet;
+                    if (particle.depthClass === 'above') return 'rgba(143, 174, 148, 0.62)';
+                    if (particle.depthClass === 'near') return 'rgba(181, 149, 96, 0.70)';
+                    return 'rgba(155, 140, 192, 0.62)';
                 }
-                if (activeLens === 'slab' && particle.depthClass === 'near') return palette.water;
-                if (activeLens === 'residual' && particle.depthClass !== 'near') return 'rgba(233, 226, 211, 0.38)';
-                return particle.time > 0.56 ? 'rgba(181, 149, 96, 0.72)' : palette.moss;
+                if (activeLens === 'slab' && particle.depthClass === 'near') return 'rgba(122, 167, 181, 0.68)';
+                if (activeLens === 'residual' && particle.depthClass !== 'near') return 'rgba(233, 226, 211, 0.34)';
+                return particle.time > 0.56 ? 'rgba(181, 149, 96, 0.66)' : 'rgba(143, 174, 148, 0.62)';
+            }
+
+            function particleRadius(particle) {
+                const scale = activeLens === 'residual' ? 0.38 : 0.46;
+                return Math.min(4.2, 1.05 + particle.magnitude * scale);
             }
             function updateParticle(particle) {
                 const target = particleTarget(particle);
@@ -6631,19 +6636,19 @@
             }
             function drawParticles() {
                 let nearest = null;
-                let nearestDistance = 18;
+                let nearestDistance = 14;
                 for (const particle of particles) {
                     if (!paused) updateParticle(particle);
                     const x = particle.x * width;
                     const y = particle.y * height;
-                    const radius = 1.6 + particle.magnitude * 0.68;
+                    const radius = particleRadius(particle);
                     context.beginPath();
                     context.arc(x, y, radius, 0, Math.PI * 2);
                     context.fillStyle = colorForParticle(particle);
                     context.fill();
                     if (particle.depthClass === 'near') {
-                        context.strokeStyle = 'rgba(233, 226, 211, 0.5)';
-                        context.lineWidth = 0.8;
+                        context.strokeStyle = 'rgba(233, 226, 211, 0.34)';
+                        context.lineWidth = 0.65;
                         context.stroke();
                     }
                     if (pointer.active) {
@@ -6659,8 +6664,8 @@
                 if (nearest) {
                     context.save();
                     context.beginPath();
-                    context.arc(nearest.x, nearest.y, nearest.radius + 7, 0, Math.PI * 2);
-                    context.strokeStyle = 'rgba(233, 226, 211, 0.7)';
+                    context.arc(nearest.x, nearest.y, nearest.radius + 5, 0, Math.PI * 2);
+                    context.strokeStyle = 'rgba(233, 226, 211, 0.58)';
                     context.lineWidth = 1;
                     context.stroke();
                     context.restore();
