@@ -957,6 +957,7 @@
     const context = canvas.getContext("2d");
     const lensButtons = Array.from(document.querySelectorAll(".lens-button"));
     const lensCopy = document.getElementById("lens-copy");
+    const stage = document.querySelector(".stage");
     const stageHeading = document.getElementById("stage-heading");
     const stageDescription = document.getElementById("stage-description");
     const coupling = document.getElementById("coupling");
@@ -1147,6 +1148,18 @@
       for (const button of lensButtons) {
         button.setAttribute("aria-pressed", String(button.dataset.lens === nextLens));
       }
+    }
+
+    function shouldReturnToField(nextLens) {
+      return nextLens !== "geometry" && window.matchMedia("(max-width: 1020px)").matches;
+    }
+
+    function returnToField() {
+      if (!stage) return;
+      const behavior = prefersReducedMotion ? "auto" : "smooth";
+      window.requestAnimationFrame(() => {
+        stage.scrollIntoView({ behavior, block: "start", inline: "nearest" });
+      });
     }
 
     function drawTectonicEnvelope() {
@@ -1455,7 +1468,9 @@
     for (const button of lensButtons) {
       button.addEventListener("click", () => {
         const nextLens = button.dataset.lens;
-        if (nextLens) setLens(nextLens);
+        if (!nextLens) return;
+        setLens(nextLens);
+        if (shouldReturnToField(nextLens)) returnToField();
       });
     }
 
