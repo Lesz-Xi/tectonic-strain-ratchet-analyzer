@@ -46,6 +46,9 @@
       --canvas-line: rgba(233, 226, 211, 0.14);
       --canvas-label: rgba(233, 226, 211, 0.34);
       --canvas-soft-line: rgba(233, 226, 211, 0.1);
+      --depth-label: rgba(122, 167, 181, 0.62);
+      --trench-label: rgba(233, 226, 211, 0.38);
+      --trench-line: rgba(233, 226, 211, 0.1);
       --mainshock-stroke: rgba(233, 226, 211, 0.85);
       color-scheme: dark;
     }
@@ -73,6 +76,9 @@
       --canvas-line: rgba(33, 30, 25, 0.16);
       --canvas-label: rgba(33, 30, 25, 0.38);
       --canvas-soft-line: rgba(33, 30, 25, 0.1);
+      --depth-label: rgba(82, 127, 141, 0.82);
+      --trench-label: rgba(33, 30, 25, 0.44);
+      --trench-line: rgba(33, 30, 25, 0.11);
       --mainshock-stroke: rgba(244, 239, 228, 0.9);
       color-scheme: light;
     }
@@ -934,6 +940,9 @@
         canvasLine: cssVar("--canvas-line"),
         canvasLabel: cssVar("--canvas-label"),
         canvasSoftLine: cssVar("--canvas-soft-line"),
+        depthLabel: cssVar("--depth-label"),
+        trenchLabel: cssVar("--trench-label"),
+        trenchLine: cssVar("--trench-line"),
         mainshockStroke: cssVar("--mainshock-stroke")
       };
     }
@@ -1078,20 +1087,22 @@
 
     function drawTrenchTrace() {
       context.save();
-      context.strokeStyle = palette.canvasLine;
-      context.lineWidth = 1;
+      context.strokeStyle = palette.trenchLine;
+      context.lineWidth = 0.85;
+      context.setLineDash([18, 14]);
       context.beginPath();
       for (let step = 0; step <= 90; step += 1) {
         const ratio = step / 90;
-        const x = width * (0.08 + ratio * 0.84);
-        const y = height * (0.18 + Math.sin(ratio * Math.PI * 1.3 + 0.8) * 0.07 + ratio * 0.08);
+        const x = width * (0.18 + ratio * 0.72);
+        const y = height * (0.135 + Math.sin(ratio * Math.PI * 1.2 + 0.8) * 0.04 + ratio * 0.045);
         if (step === 0) context.moveTo(x, y);
         else context.lineTo(x, y);
       }
       context.stroke();
-      context.fillStyle = palette.canvasLabel;
-      context.font = "9px JetBrains Mono, ui-monospace, monospace";
-      context.fillText("conceptual trench / offshore structure trace", width * 0.56, height * 0.21);
+      context.setLineDash([]);
+      context.fillStyle = palette.trenchLabel;
+      context.font = "9.5px JetBrains Mono, ui-monospace, monospace";
+      context.fillText("conceptual offshore structure trace", width * 0.64, height * 0.155);
       context.restore();
     }
 
@@ -1110,9 +1121,9 @@
           else context.lineTo(x, y);
         }
         context.stroke();
-        context.fillStyle = "rgba(122, 167, 181, " + Math.min(0.5, alpha + 0.18) + ")";
-        context.font = "9px JetBrains Mono, ui-monospace, monospace";
-        context.fillText("-" + (20 + contour * 20) + " km", 16, yBase - 6);
+        context.fillStyle = palette.depthLabel;
+        context.font = "10.5px JetBrains Mono, ui-monospace, monospace";
+        context.fillText("-" + (20 + contour * 20) + " km", 22, yBase - 6);
       }
       context.restore();
     }
