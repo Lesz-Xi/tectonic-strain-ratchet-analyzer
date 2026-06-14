@@ -3977,6 +3977,677 @@
             border-color: rgba(33, 30, 25, .16) !important;
         }
 
+
+
+        /* TMCH convergence gate archive — native TSRA instrument surface. */
+        .convergence-gate {
+            --cg-bone: var(--text);
+            --cg-soft: var(--text-sub);
+            --cg-stone: var(--muted);
+            --cg-dim: color-mix(in srgb, var(--muted) 66%, transparent);
+            --cg-rule: var(--line);
+            --cg-rule-strong: var(--line-strong);
+            --cg-moss: var(--moss);
+            --cg-brass: var(--accent);
+            --cg-rust: var(--rust);
+            --cg-water: var(--water);
+            --cg-violet: var(--violet);
+            display: grid;
+            gap: clamp(2.15rem, 5vw, 4.8rem);
+        }
+
+        .convergence-gate * {
+            box-sizing: border-box;
+        }
+
+        .convergence-gate p,
+        .convergence-gate h2,
+        .convergence-gate h3 {
+            margin: 0;
+        }
+
+        .cg-reveal {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity .72s var(--ease), transform .72s var(--ease);
+        }
+
+        .cg-reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cg-masthead {
+            display: grid;
+            grid-template-columns: minmax(0, .76fr) minmax(280px, .42fr);
+            gap: clamp(1.6rem, 4vw, 4rem);
+            align-items: end;
+            padding-bottom: clamp(1.65rem, 3vw, 2.4rem);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .cg-register,
+        .cg-section-mark,
+        .cg-claim-register span,
+        .cg-claim-strip span,
+        .cg-boundary small,
+        .cg-lens-button .index,
+        .cg-lens-button em,
+        .cg-slider-head,
+        .cg-plain-button,
+        .cg-reading-row span,
+        .cg-verdict-row .key,
+        .cg-seam-step .index,
+        .cg-source-note {
+            font-family: var(--mono);
+            text-transform: uppercase;
+            letter-spacing: .14em;
+        }
+
+        .cg-register {
+            display: inline-grid;
+            grid-template-columns: 42px auto;
+            gap: .85rem;
+            align-items: center;
+            color: var(--accent);
+            font-size: .52rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .cg-register::before,
+        .cg-section-mark::after {
+            content: "";
+            height: 1px;
+            background: var(--accent);
+            opacity: .62;
+        }
+
+        .cg-title {
+            max-width: 760px;
+            color: var(--text);
+            font-family: var(--serif);
+            font-size: clamp(1.75rem, 3.2vw, 3.1rem);
+            font-weight: 500;
+            line-height: 1.18;
+            letter-spacing: -.02em;
+        }
+
+        .cg-lede {
+            max-width: 700px;
+            margin-top: 1.25rem;
+            color: var(--text-sub);
+            font-family: var(--serif);
+            font-size: clamp(.98rem, 1.45vw, 1.18rem);
+            line-height: 1.82;
+        }
+
+        .cg-claim-register {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .45rem .9rem;
+            margin-top: 1.5rem;
+            padding-top: .95rem;
+            border-top: 1px solid var(--border-sub);
+        }
+
+        .cg-claim-register span {
+            color: var(--muted);
+            font-size: .5rem;
+            line-height: 2.1;
+        }
+
+        .cg-claim-register b {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .cg-boundary {
+            align-self: stretch;
+            border-left: 1px solid color-mix(in srgb, var(--rust) 58%, var(--line));
+            padding: .15rem 0 .15rem 1.2rem;
+        }
+
+        .cg-boundary p {
+            color: var(--text-sub);
+            font-size: .82rem;
+            line-height: 1.75;
+        }
+
+        .cg-boundary strong {
+            color: var(--rust);
+            font-weight: 600;
+        }
+
+        .cg-boundary small {
+            display: block;
+            margin-top: .9rem;
+            color: var(--muted);
+            font-size: .48rem;
+            line-height: 1.8;
+        }
+
+        .cg-instrument {
+            display: grid;
+            grid-template-columns: minmax(260px, 350px) 1px minmax(0, 1fr);
+            gap: 0 clamp(1.6rem, 4vw, 3.5rem);
+            padding-top: 1.55rem;
+            border-top: 1px solid var(--line);
+        }
+
+        .cg-seam {
+            background: linear-gradient(180deg, transparent, var(--line) 12%, var(--line) 88%, transparent);
+        }
+
+        .cg-section-mark {
+            display: flex;
+            align-items: baseline;
+            gap: .9rem;
+            margin-bottom: 1.25rem;
+            color: var(--muted);
+            font-size: .49rem;
+        }
+
+        .cg-section-mark::after {
+            flex: 1;
+            background: var(--line);
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+
+        .cg-controls h2,
+        .cg-stage-title h2,
+        .cg-story-band h2 {
+            color: var(--text);
+            font-family: var(--serif);
+            font-size: clamp(1.32rem, 2.2vw, 2rem);
+            font-weight: 500;
+            line-height: 1.38;
+        }
+
+        .cg-explain,
+        .cg-stage-title p,
+        .cg-story-band p,
+        .cg-verdict-row p,
+        .cg-seam-step p,
+        .cg-colophon {
+            color: var(--text-sub);
+            font-size: .84rem;
+            line-height: 1.78;
+        }
+
+        .cg-explain {
+            margin-top: .95rem;
+        }
+
+        .cg-operator-note {
+            margin-top: 1.35rem;
+            padding: 1rem 0;
+            border-top: 1px solid var(--border-sub);
+            border-bottom: 1px solid var(--border-sub);
+            color: var(--muted);
+            font-size: .78rem;
+            line-height: 1.72;
+        }
+
+        .cg-operator-note strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .cg-lens-list {
+            display: grid;
+            margin-top: 1.45rem;
+        }
+
+        .cg-lens-button {
+            position: relative;
+            display: grid;
+            grid-template-columns: 2.2rem 1fr auto;
+            gap: .82rem;
+            align-items: baseline;
+            width: 100%;
+            border: 0;
+            border-bottom: 1px solid var(--border-sub);
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            font-family: var(--sans);
+            padding: .82rem .1rem .78rem;
+            text-align: left;
+            transition: color .24s var(--ease);
+        }
+
+        .cg-lens-button::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -1px;
+            width: 100%;
+            height: 1px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left center;
+            transition: transform .28s var(--ease);
+        }
+
+        .cg-lens-button:hover,
+        .cg-lens-button:focus-visible,
+        .cg-lens-button[aria-pressed='true'] {
+            color: var(--text);
+            outline: none;
+        }
+
+        .cg-lens-button:hover::after,
+        .cg-lens-button:focus-visible::after {
+            transform: scaleX(.24);
+        }
+
+        .cg-lens-button[aria-pressed='true']::after {
+            transform: scaleX(1);
+        }
+
+        .cg-lens-button .index {
+            color: var(--dim);
+            font-size: .48rem;
+        }
+
+        .cg-lens-button[aria-pressed='true'] .index {
+            color: var(--accent);
+        }
+
+        .cg-lens-button strong {
+            font-size: .86rem;
+            font-weight: 600;
+        }
+
+        .cg-lens-button em {
+            color: var(--muted);
+            font-size: .45rem;
+            font-style: normal;
+            text-align: right;
+        }
+
+        .cg-slider-grid {
+            display: grid;
+            gap: .58rem;
+            max-width: 280px;
+            margin-top: 1.05rem;
+        }
+
+        .cg-slider-row {
+            display: grid;
+            gap: .24rem;
+        }
+
+        .cg-slider-head {
+            display: flex;
+            justify-content: space-between;
+            gap: .75rem;
+            color: var(--muted);
+            font-size: .48rem;
+            line-height: 1.2;
+        }
+
+        .cg-slider-head output {
+            color: var(--accent);
+            font-size: .46rem;
+        }
+
+        .cg-slider-row input[type='range'] {
+            width: 100%;
+            height: 10px;
+            margin: 0;
+            background: transparent;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .cg-slider-row input[type='range']::-webkit-slider-runnable-track {
+            height: 1px;
+            border-radius: 999px;
+            background: color-mix(in srgb, var(--accent) 34%, var(--line));
+        }
+
+        .cg-slider-row input[type='range']::-webkit-slider-thumb {
+            width: 10px;
+            height: 10px;
+            margin-top: -4.5px;
+            border: 1px solid color-mix(in srgb, var(--accent) 52%, var(--line));
+            border-radius: 50%;
+            background: var(--paper-warm);
+            box-shadow: none;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .cg-slider-row input[type='range']::-moz-range-track {
+            height: 1px;
+            border: 0;
+            border-radius: 999px;
+            background: color-mix(in srgb, var(--accent) 34%, var(--line));
+        }
+
+        .cg-slider-row input[type='range']::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            border: 1px solid color-mix(in srgb, var(--accent) 52%, var(--line));
+            border-radius: 50%;
+            background: var(--paper-warm);
+            box-shadow: none;
+        }
+
+        .cg-slider-row input[type='range']:focus-visible {
+            outline: 1px solid color-mix(in srgb, var(--accent) 58%, transparent);
+            outline-offset: 4px;
+        }
+
+        .cg-toggles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .95rem;
+            margin-top: 1rem;
+        }
+
+        .cg-plain-button {
+            position: relative;
+            border: 0;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: .43rem;
+            padding: .18rem 0;
+            transition: color .22s var(--ease);
+        }
+
+        .cg-plain-button::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--water);
+            transform: scaleX(0);
+            transform-origin: left center;
+            transition: transform .28s var(--ease);
+        }
+
+        .cg-plain-button:hover,
+        .cg-plain-button:focus-visible {
+            color: var(--text);
+            outline: none;
+        }
+
+        .cg-plain-button:hover::after,
+        .cg-plain-button:focus-visible::after {
+            transform: scaleX(1);
+        }
+
+        .cg-claim-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .25rem 1rem;
+            margin-top: .9rem;
+        }
+
+        .cg-claim-strip span {
+            color: var(--muted);
+            font-size: .46rem;
+            line-height: 2.1;
+        }
+
+        .cg-claim-strip .observed { color: var(--moss); }
+        .cg-claim-strip .modeled { color: var(--water); }
+        .cg-claim-strip .inferred { color: var(--accent); }
+        .cg-claim-strip .boundary-flag { color: var(--rust); }
+
+        .cg-field-shell {
+            position: relative;
+            margin-top: 1.35rem;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            background:
+                linear-gradient(color-mix(in srgb, var(--text) 2.2%, transparent) 1px, transparent 1px),
+                linear-gradient(90deg, color-mix(in srgb, var(--text) 2.2%, transparent) 1px, transparent 1px),
+                color-mix(in srgb, var(--surface) 58%, var(--paper-warm));
+            background-size: 48px 48px, 48px 48px, auto;
+            overflow: hidden;
+        }
+
+        .cg-field-shell canvas {
+            display: block;
+            width: 100%;
+            height: clamp(360px, 50vh, 540px);
+        }
+
+        .cg-axis-label {
+            position: absolute;
+            pointer-events: none;
+            color: color-mix(in srgb, var(--text) 42%, transparent);
+            font-family: var(--mono);
+            font-size: .45rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .cg-axis-label.north { top: 1rem; left: 50%; transform: translateX(-50%); }
+        .cg-axis-label.depth { right: .8rem; top: 50%; transform: rotate(90deg) translateX(50%); transform-origin: right center; }
+        .cg-axis-label.mainshock { left: 1rem; bottom: .9rem; color: color-mix(in srgb, var(--rust) 86%, transparent); }
+
+        .cg-field-legend {
+            position: absolute;
+            right: 1rem;
+            bottom: .85rem;
+            display: grid;
+            gap: .38rem;
+            padding: .72rem 0 .72rem .9rem;
+            border-left: 1px solid var(--line);
+            background: color-mix(in srgb, var(--paper-warm) 76%, transparent);
+        }
+
+        .cg-legend-item {
+            display: grid;
+            grid-template-columns: .9rem auto;
+            gap: .52rem;
+            align-items: center;
+            color: var(--muted);
+            font-family: var(--mono);
+            font-size: .42rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .cg-legend-item i { width: .44rem; height: .44rem; border-radius: 50%; background: var(--muted); }
+        .cg-legend-item i.event { background: var(--moss); }
+        .cg-legend-item i.near { background: var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--text) 22%, transparent); }
+        .cg-legend-item i.slab { background: var(--water); }
+        .cg-legend-item i.axis { border-radius: 0; width: .9rem; height: 1.5px; background: var(--accent); }
+
+        .cg-hover-card {
+            position: absolute;
+            z-index: 4;
+            width: 232px;
+            padding: .8rem 0 .72rem .9rem;
+            border-left: 1px solid var(--line-strong);
+            background: color-mix(in srgb, var(--paper-warm) 88%, var(--bg));
+            pointer-events: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .cg-hover-card[hidden] { display: none; }
+        .cg-hover-card strong { display: block; margin-bottom: .45rem; color: var(--text); font-size: .78rem; font-weight: 600; }
+        .cg-hover-card span { display: block; color: var(--muted); font-family: var(--mono); font-size: .46rem; letter-spacing: .07em; line-height: 1.65; text-transform: uppercase; }
+
+        .cg-reading-rail {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .cg-reading-row {
+            padding: 1rem .9rem 1rem 1rem;
+            border-right: 1px solid var(--border-sub);
+        }
+
+        .cg-reading-row:first-child { padding-left: 0; }
+        .cg-reading-row:last-child { border-right: 0; }
+        .cg-reading-row span { display: block; margin-bottom: .42rem; color: var(--muted); font-size: .46rem; }
+        .cg-reading-row strong { display: block; color: var(--text); font-family: var(--serif); font-size: clamp(1.25rem, 2vw, 1.9rem); font-weight: 500; }
+        .cg-reading-row small { display: block; margin-top: .34rem; color: var(--muted); font-size: .68rem; line-height: 1.45; }
+
+        .cg-story,
+        .cg-sequence {
+            display: grid;
+            gap: clamp(2.1rem, 5vw, 4.6rem);
+        }
+
+        .cg-story-band {
+            display: grid;
+            grid-template-columns: minmax(0, .74fr) minmax(0, 1fr);
+            gap: clamp(1.8rem, 5vw, 4rem);
+            padding-top: 1.4rem;
+            border-top: 1px solid var(--line);
+        }
+
+        .cg-band-rail {
+            display: grid;
+            gap: .78rem;
+            align-self: start;
+        }
+
+        .cg-band {
+            display: grid;
+            grid-template-columns: 9.5rem 1fr 4.3rem;
+            gap: .8rem;
+            align-items: center;
+            color: var(--text-sub);
+            font-size: .78rem;
+        }
+
+        .cg-band strong {
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: .62rem;
+            font-weight: 600;
+            letter-spacing: .05em;
+            text-align: right;
+        }
+
+        .cg-bar { height: 1.5px; background: color-mix(in srgb, var(--text) 10%, transparent); }
+        .cg-bar i { display: block; height: 100%; background: var(--water); transform-origin: left center; }
+        .cg-band:nth-child(2) .cg-bar i { background: var(--accent); }
+        .cg-band:nth-child(3) .cg-bar i { background: var(--violet); }
+
+        .cg-verdict {
+            display: grid;
+        }
+
+        .cg-verdict-row {
+            display: grid;
+            grid-template-columns: 7.2rem 1fr;
+            gap: 1.2rem;
+            padding: 1rem 0;
+            border-top: 1px solid var(--border-sub);
+        }
+
+        .cg-verdict-row:first-child {
+            border-top: 0;
+            padding-top: 0;
+        }
+
+        .cg-verdict-row .key {
+            color: var(--muted);
+            font-size: .48rem;
+            padding-top: .18rem;
+        }
+
+        .cg-seam-steps {
+            position: relative;
+            display: grid;
+            gap: clamp(1.55rem, 4vw, 3rem);
+            border-left: 1px solid var(--line);
+            padding-left: 1.45rem;
+        }
+
+        .cg-seam-step {
+            position: relative;
+            max-width: 660px;
+        }
+
+        .cg-seam-step::before {
+            content: "";
+            position: absolute;
+            left: -1.68rem;
+            top: .42rem;
+            width: .42rem;
+            height: .42rem;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 1px solid var(--accent);
+        }
+
+        .cg-seam-step:nth-child(2) { margin-left: clamp(0px, 4vw, 3rem); }
+        .cg-seam-step:nth-child(3) { margin-left: clamp(0px, 8vw, 6rem); }
+        .cg-seam-step:nth-child(4) { margin-left: clamp(0px, 4vw, 3rem); }
+        .cg-seam-step .index { display: block; margin-bottom: .5rem; color: var(--accent); font-size: .47rem; }
+        .cg-seam-step strong { display: block; margin-bottom: .4rem; color: var(--text); font-family: var(--serif); font-size: 1.05rem; font-weight: 500; }
+
+        .cg-colophon {
+            max-width: 760px;
+            margin-left: auto;
+            padding-top: 1.1rem;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: .74rem;
+        }
+
+        [data-theme='light'] .cg-field-shell {
+            background:
+                linear-gradient(rgba(33, 30, 25, .026) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(33, 30, 25, .022) 1px, transparent 1px),
+                #f4efe4;
+            background-size: 48px 48px, 48px 48px, auto;
+        }
+
+        [data-theme='light'] .cg-field-legend,
+        [data-theme='light'] .cg-hover-card {
+            background: rgba(249, 246, 238, .88);
+        }
+
+        @media (max-width: 1020px) {
+            .cg-masthead,
+            .cg-instrument,
+            .cg-story-band {
+                grid-template-columns: 1fr;
+            }
+            .cg-seam { display: none; }
+            .cg-stage { margin-top: 2.4rem; }
+            .cg-reading-rail { grid-template-columns: 1fr 1fr; }
+            .cg-reading-row:nth-child(2) { border-right: 0; }
+            .cg-reading-row { padding-left: 0; border-bottom: 1px solid var(--border-sub); }
+            .cg-seam-step { margin-left: 0 !important; }
+        }
+
+        @media (max-width: 640px) {
+            .cg-reading-rail,
+            .cg-band,
+            .cg-verdict-row {
+                grid-template-columns: 1fr;
+            }
+            .cg-band { gap: .4rem; }
+            .cg-band strong { text-align: left; }
+            .cg-field-legend { position: static; border-left: 0; border-top: 1px solid var(--line); padding: .8rem 0; background: transparent; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .cg-reveal {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
         ::selection {
             background: color-mix(in srgb, var(--accent) 38%, transparent);
             color: var(--text);
@@ -4637,100 +5308,145 @@
         </div>
     </div>
 
+
     <div class='tab-panel' id='tab-forecast'>
-        <div class='card'>
-            <div class='card-title'>Raw Model Forecast Output</div>
-            <div class='pre-wrap'>================================================================================
-                TECTONIC PHASE-OBSERVATION MODEL (HISTORICAL REFERENCE)
-                Slip Threshold Forecasts (Reference Time: 2026-06-09 00:49:15)
-                ================================================================================
-                - Fitted Baseline Pulse Period: 35.552 minutes
+        <div class='card full convergence-gate' id='tmch-convergence-gate' data-evidence-type='tmch-slab2-convergence' data-certainty='exploratory-analysis' data-official-status='not-official'>
+            <section class='cg-masthead cg-reveal' aria-labelledby='cg-page-title'>
+                <div>
+                    <div class='cg-register'>TMCH · Slab2 convergence gate · v0.1</div>
+                    <h2 class='cg-title' id='cg-page-title'>The slab is real. The corridor is honest. The cause is still a question.</h2>
+                    <p class='cg-lede'>An interactive reading of the Sarangani–Cotabato aftershock field against independently modeled subduction geometry — built to keep the hypothesis disciplined, not to make it louder.</p>
+                    <div class='cg-claim-register' aria-label='Source and claim summary'>
+                        <span><b>900</b> PHIVOLCS-derived rows</span>
+                        <span><b>Slab2</b> independent geometry</span>
+                        <span><b>v0.1</b> exploratory gate</span>
+                        <span><b>No</b> prediction claim</span>
+                    </div>
+                </div>
+                <aside class='cg-boundary' aria-label='Scientific boundary'>
+                    <p><strong>Boundary.</strong> This archive is not an earthquake prediction system, hazard alert, or proof of inherited tectonic memory. It is a convergence gate: a way of testing whether the pattern deserves the next, harder question.</p>
+                    <small>Verdict — underdetermined. Strong enough to investigate. Not strong enough to claim.</small>
+                </aside>
+            </section>
 
-                Phase | Observation Window | Watch Time | Post-Window Class
-                --------------------------------------------------------------------------------
-                1.0x phase | 35.6 minutes | 2026-06-09 01:24:48 | ELAPSED -> no confirmed local release
-                3.5x phase | 124.4 minutes | 2026-06-09 02:53:40 | ELAPSED -> no confirmed local release
-                7.0x phase | 248.9 minutes | 2026-06-09 04:58:06 | ELAPSED -> no confirmed local release
-                9.5x phase | 337.7 minutes | 2026-06-09 06:26:59 | ELAPSED -> no confirmed local release
-                ================================================================================
+            <section class='cg-instrument' aria-label='Interactive Slab2 convergence instrument'>
+                <aside class='cg-controls cg-reveal'>
+                    <div class='cg-section-mark'>01 · Instrument</div>
+                    <h2>One sequence, five lenses.</h2>
+                    <p class='cg-explain' id='cg-lens-copy'>Particles stand for aftershocks. The blue lines stand for modeled Slab2 geometry. The brass axis is the measured corridor. Nothing here is raw data; everything here is the report's structure, made visible.</p>
+                    <p class='cg-operator-note'><strong>Use it like an instrument.</strong> Switching lenses changes the question, not the verdict. The animation explains the report; it does not add evidence.</p>
 
-                ================================================================================
-                TECTONIC PHASE-OBSERVATION MODEL (A7 ANCHOR)
-                Slip Threshold Forecasts (Reference Time: 2026-06-10 02:12:00)
-                ================================================================================
-                - Fitted Baseline Pulse Period: 35.552 minutes
+                    <div class='cg-lens-list' role='group' aria-label='Visualization lens'>
+                        <button class='cg-lens-button' type='button' data-lens='geometry' aria-pressed='true'><span class='index'>01</span><strong>Geometry</strong><em>where</em></button>
+                        <button class='cg-lens-button' type='button' data-lens='depth' aria-pressed='false'><span class='index'>02</span><strong>Depth offset</strong><em>above / near / below</em></button>
+                        <button class='cg-lens-button' type='button' data-lens='corridor' aria-pressed='false'><span class='index'>03</span><strong>Corridor</strong><em>179.4&deg; axis</em></button>
+                        <button class='cg-lens-button' type='button' data-lens='slab' aria-pressed='false'><span class='index'>04</span><strong>Slab match</strong><em>815 / 900</em></button>
+                        <button class='cg-lens-button' type='button' data-lens='residual' aria-pressed='false'><span class='index'>05</span><strong>Residual</strong><em>what remains</em></button>
+                    </div>
 
-                Phase | Observation Window | Watch Time | Post-Window Class
-                --------------------------------------------------------------------------------
-                1.0x phase | 35.6 minutes | 2026-06-10 02:47:33 | ELAPSED -> micro-pulse / timing check
-                3.5x phase | 124.4 minutes | 2026-06-10 04:16:25 | WATCH
-                7.0x phase | 248.9 minutes | 2026-06-10 06:20:51 | WATCH
-                9.5x phase | 337.7 minutes | 2026-06-10 07:49:44 | WATCH
-                ================================================================================
+                    <div class='cg-slider-grid' aria-label='Physics controls'>
+                        <div class='cg-slider-row'>
+                            <div class='cg-slider-head'><label for='cg-coupling'>Slab coupling</label><output id='cg-coupling-output' for='cg-coupling'>58%</output></div>
+                            <input id='cg-coupling' type='range' min='0' max='100' value='58'>
+                        </div>
+                        <div class='cg-slider-row'>
+                            <div class='cg-slider-head'><label for='cg-residual'>Residual drift</label><output id='cg-residual-output' for='cg-residual'>34%</output></div>
+                            <input id='cg-residual' type='range' min='0' max='100' value='34'>
+                        </div>
+                        <div class='cg-slider-row'>
+                            <div class='cg-slider-head'><label for='cg-damping'>Damping</label><output id='cg-damping-output' for='cg-damping'>82%</output></div>
+                            <input id='cg-damping' type='range' min='60' max='96' value='82'>
+                        </div>
+                    </div>
 
-                ================================================================================
-                TECTONIC PHASE-OBSERVATION MODEL (A8 ANCHOR - LIVE)
-                Slip Threshold Forecasts (Reference Time: 2026-06-10 02:55:00)
-                ================================================================================
-                - Fitted Baseline Pulse Period: 35.552 minutes
+                    <div class='cg-toggles'>
+                        <button class='cg-plain-button' type='button' id='cg-pause-button'>Pause field</button>
+                        <button class='cg-plain-button' type='button' id='cg-reset-button'>Reset particles</button>
+                    </div>
+                </aside>
 
-                Phase | Observation Window | Watch Time | Post-Window Class
-                --------------------------------------------------------------------------------
-                1.0x phase | 35.6 minutes | 2026-06-10 03:30:33 | WATCH
-                3.5x phase | 124.4 minutes | 2026-06-10 04:59:25 | WATCH
-                7.0x phase | 248.9 minutes | 2026-06-10 07:03:51 | WATCH
-                9.5x phase | 337.7 minutes | 2026-06-10 08:32:44 | WATCH
-                ================================================================================
+                <div class='cg-seam' aria-hidden='true'></div>
 
-                ================================================================================
-                TECTONIC PHASE-OBSERVATION MODEL (A10 ANCHOR - UPDATED OUTCOME)
-                Watch Center / Observation Outcome Record (Reference Time: 2026-06-10 03:36:00)
-                ================================================================================
-                - Fitted Baseline Pulse Period: 35.552 minutes
-                - Architecture Rule: confirmed events, felt observations, and model watch windows are separate fields
+                <section class='cg-stage cg-reveal' aria-labelledby='cg-stage-heading'>
+                    <div class='cg-section-mark'>02 · Field</div>
+                    <div class='cg-stage-title'>
+                        <h2 id='cg-stage-heading'>Slab-aware aftershock field</h2>
+                        <p id='cg-stage-description'>Most aftershocks sit inside or near the Cotabato Slab2 region, but their depths do not form a simple slab-interface-only story.</p>
+                        <div class='cg-claim-strip' aria-label='Claim status'>
+                            <span class='observed'>Observed catalog</span>
+                            <span class='modeled'>Modeled Slab2</span>
+                            <span class='inferred'>Inferred corridor</span>
+                            <span class='boundary-flag'>Not prediction</span>
+                        </div>
+                    </div>
 
-                Phase | Observation Window | Watch Center | Observation Outcome
-                --------------------------------------------------------------------------------
-                1.0x phase | 35.6 minutes | 2026-06-10 04:11:33 | elapsed / no local outcome recorded
-                3.5x phase | 124.4 minutes | 2026-06-10 05:40:24 | elapsed / no local outcome recorded
-                7.0x phase | 248.9 minutes | 2026-06-10 07:44:51 | elapsed / no local outcome recorded
-                9.5x phase | 337.7 minutes | 2026-06-10 09:13:42 | significant felt activity reported by ~09:55 AM; exact onset earlier/uncertain; pending official confirmation
-                ================================================================================
+                    <div class='cg-field-shell'>
+                        <canvas id='cg-field' aria-label='Animated conceptual field of aftershock particles, Slab2 contours, and corridor alignment'></canvas>
+                        <div class='cg-axis-label north'>north&ndash;south corridor</div>
+                        <div class='cg-axis-label depth'>modeled slab depth</div>
+                        <div class='cg-axis-label mainshock'>&#9733; mainshock reference</div>
+                        <div class='cg-field-legend' aria-label='Canvas legend'>
+                            <div class='cg-legend-item'><i class='event'></i><span>event particle</span></div>
+                            <div class='cg-legend-item'><i class='near'></i><span>near slab top</span></div>
+                            <div class='cg-legend-item'><i class='slab'></i><span>Slab2 contour</span></div>
+                            <div class='cg-legend-item'><i class='axis'></i><span>PCA axis</span></div>
+                        </div>
+                        <div class='cg-hover-card' id='cg-hover-card' hidden aria-hidden='true'></div>
+                    </div>
 
-                ================================================================================
-                TECTONIC PHASE-OBSERVATION MODEL (PROVISIONAL FELT-OBSERVATION ANCHOR)
-                Watch Schedule From Report Time (Reference Time: 2026-06-10 09:55:00)
-                ================================================================================
-                - Fitted Baseline Pulse Period: 35.552 minutes
-                - Architecture Rule: this anchor is provisional because exact onset is uncertain
-                - Operational Outcome: 7.0x and 9.5x windows elapsed with no local outcome observed
+                    <div class='cg-reading-rail' aria-label='Core report metrics'>
+                        <div class='cg-reading-row'><span>events total</span><strong>900</strong><small>PHIVOLCS-derived public-page scaffold</small></div>
+                        <div class='cg-reading-row'><span>valid slab2 match</span><strong>815</strong><small>nearest modeled slab node found</small></div>
+                        <div class='cg-reading-row'><span>median node distance</span><strong>3.14 km</strong><small>strong spatial coverage context</small></div>
+                        <div class='cg-reading-row'><span>median depth delta</span><strong>&minus;28.8 km</strong><small>events mostly above slab top</small></div>
+                    </div>
+                </section>
+            </section>
 
-                Phase | Observation Window | Watch Center | Operational Status
-                --------------------------------------------------------------------------------
-                1.0x phase | 35.6 minutes | 2026-06-10 10:30:33 | elapsed post-report check
-                3.5x phase | 124.4 minutes | 2026-06-10 11:59:25 | elapsed activity-cluster check
-                7.0x phase | 248.9 minutes | 2026-06-10 14:03:51 | elapsed -> no local outcome observed
-                9.5x phase | 337.7 minutes | 2026-06-10 15:32:44 | elapsed -> no local outcome observed
-                ================================================================================
+            <section class='cg-story' aria-label='Report explanation'>
+                <div class='cg-story-band cg-reveal'>
+                    <div>
+                        <div class='cg-section-mark'>03 · Reading</div>
+                        <h2>The slab matters, but it does not explain everything.</h2>
+                        <p>The sequence is clearly inside the active Cotabato subduction environment, which makes ordinary tectonic coupling the first explanation to respect. But most hypocenters are shallower than the modeled slab top, and the corridor does not simply trace Slab2 strike or contour lines.</p>
+                    </div>
+                    <div class='cg-band-rail' aria-label='Depth position classes'>
+                        <div class='cg-band'><span>above slab top</span><div class='cg-bar'><i style='width:64.62%'></i></div><strong>64.62%</strong></div>
+                        <div class='cg-band'><span>near slab top</span><div class='cg-bar'><i style='width:32.56%'></i></div><strong>32.56%</strong></div>
+                        <div class='cg-band'><span>below slab top</span><div class='cg-bar'><i style='width:2.83%'></i></div><strong>2.83%</strong></div>
+                    </div>
+                </div>
 
-                ================================================================================
-                TECTONIC PHASE-OBSERVATION MODEL (POST-01:07 PM NEW OBSERVATION CYCLE)
-                Watch Schedule From Latest Local Outcome (Reference Time: 2026-06-14 13:07:44 local observation anchor)
-                ================================================================================
-                - Fitted Baseline Pulse Period: 35.552 minutes
-                - Architecture Rule: no confirmed event is added; felt observations and elapsed local outcomes stay separate from confirmed seismic records
-                - Operational Relation: 01:07 PM 9.5× extended-phase watch elapsed with no local shake observed; new observation cycle opened from that local outcome anchor
+                <div class='cg-story-band cg-reveal'>
+                    <div>
+                        <div class='cg-section-mark'>04 · Claim ledger</div>
+                        <h2>What is observed, what is modeled, what remains.</h2>
+                        <p>The gate exists to keep these categories from bleeding into each other.</p>
+                    </div>
+                    <div class='cg-verdict'>
+                        <div class='cg-verdict-row'><div class='key'>observed</div><p>PHIVOLCS-derived events form a structured aftershock field around Sarangani / Cotabato.</p></div>
+                        <div class='cg-verdict-row'><div class='key'>modeled</div><p>USGS Slab2 places those events inside or near the Cotabato slab geometry region, with dense nearest-node coverage.</p></div>
+                        <div class='cg-verdict-row'><div class='key'>inferred</div><p>The aftershock corridor is nearly north&ndash;south at about 179.4&deg;, but local Slab2 strike differs by a median 34.7&deg;.</p></div>
+                        <div class='cg-verdict-row'><div class='key'>remaining</div><p>TMCH survives only as a residual hypothesis: test bathymetric, gravity, magnetic, ridge, seamount, or buried-lineament structures after active slab and fault mechanics are accounted for.</p></div>
+                    </div>
+                </div>
+            </section>
 
-                Phase | Observation Window | Watch Center | Operational Status
-                --------------------------------------------------------------------------------
-                1.0x phase | 35.6 minutes | 2026-06-14 13:43:17 | NEXT WATCH -> observe ~01:32-01:55 PM
-                3.5x phase | 124.4 minutes | 2026-06-14 15:12:09 | later phase-sensitive observation watch
-                7.0x phase | 248.9 minutes | 2026-06-14 17:16:35 | later long-phase observation watch
-                9.5x phase | 337.7 minutes | 2026-06-14 18:45:28 | later extended-phase observation watch
-                ================================================================================
-            </div>
+            <section class='cg-sequence cg-reveal' aria-label='Convergence gate sequence'>
+                <div class='cg-section-mark'>05 · How to read the gate</div>
+                <div class='cg-seam-steps'>
+                    <article class='cg-seam-step'><span class='index'>01 / scaffold</span><strong>Start with events.</strong><p>Each dot is an earthquake in the PHIVOLCS-derived working scaffold, not an official aftershock-association export.</p></article>
+                    <article class='cg-seam-step'><span class='index'>02 / slab</span><strong>Add independent geometry.</strong><p>Slab2 contributes modeled slab depth, strike, dip, uncertainty, and contours — an outside witness the visual pattern cannot argue with.</p></article>
+                    <article class='cg-seam-step'><span class='index'>03 / depth</span><strong>Compare vertical position.</strong><p>Most events sit above the modeled slab top, so the simple interface-only interpretation weakens.</p></article>
+                    <article class='cg-seam-step'><span class='index'>04 / corridor</span><strong>Test the visible line.</strong><p>The measured corridor does not simply match slab strike or depth-contour direction. The line is real-looking; it is not self-explaining.</p></article>
+                    <article class='cg-seam-step'><span class='index'>05 / residual</span><strong>Only then ask TMCH.</strong><p>If inherited structure exists, it should appear as residual alignment beyond Slab2, active faults, and catalog artifacts.</p></article>
+                </div>
+            </section>
+
+            <p class='cg-colophon cg-reveal'>Source report: TMCH Slab2 Alignment v0.1 — USGS ScienceBase Slab2 Cotabato data release, Hayes 2018, DOI 10.5066/F7PV6JNV; PHIVOLCS-derived 900-row public latest-earthquake scaffold. This archive visualizes the report&rsquo;s interpretation; it does not add new scientific evidence.</p>
         </div>
     </div>
+
 
     <div class='tab-panel' id='tab-origin'>
         <div class='card'>
@@ -5446,7 +6162,7 @@
             applyLowDataMode(enabled);
         }
 
-        const TSRA_APP_VERSION = 'tsra-field-cache-v51';
+        const TSRA_APP_VERSION = 'tsra-field-cache-v52';
         const TSRA_VERSION_URL = '/tsra-version.json';
         const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
         let tsraReloadingForUpdate = false;
@@ -5596,6 +6312,457 @@
             updateCacheStatus('offline ready');
             recordFieldMemory('connection', { state: 'offline' });
         });
+
+
+
+        function initConvergenceGate() {
+            const root = document.getElementById('tmch-convergence-gate');
+            if (!root || root.dataset.initialized === 'true') return;
+            root.dataset.initialized = 'true';
+            const canvas = document.getElementById('cg-field');
+            if (!canvas) return;
+            const context = canvas.getContext('2d');
+            if (!context) return;
+
+            const lensButtons = Array.from(root.querySelectorAll('.cg-lens-button'));
+            const lensCopy = document.getElementById('cg-lens-copy');
+            const stageHeading = document.getElementById('cg-stage-heading');
+            const stageDescription = document.getElementById('cg-stage-description');
+            const coupling = document.getElementById('cg-coupling');
+            const residual = document.getElementById('cg-residual');
+            const damping = document.getElementById('cg-damping');
+            const couplingOutput = document.getElementById('cg-coupling-output');
+            const residualOutput = document.getElementById('cg-residual-output');
+            const dampingOutput = document.getElementById('cg-damping-output');
+            const pauseButton = document.getElementById('cg-pause-button');
+            const resetButton = document.getElementById('cg-reset-button');
+            const hoverCard = document.getElementById('cg-hover-card');
+            if (!lensCopy || !stageHeading || !stageDescription || !coupling || !residual || !damping || !couplingOutput || !residualOutput || !dampingOutput || !pauseButton || !resetButton) return;
+
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const lensText = {
+                geometry: {
+                    title: 'Slab-aware aftershock field',
+                    description: 'Most aftershocks sit inside or near the Cotabato Slab2 region, but their depths do not form a simple slab-interface-only story.',
+                    copy: "Particles stand for aftershocks. The blue lines stand for modeled Slab2 geometry. The brass axis is the measured corridor. Nothing here is raw data; everything here is the report's structure, made visible."
+                },
+                depth: {
+                    title: 'Depth offset: above, near, below',
+                    description: 'A majority of events are more than 20 km above the modeled slab top. The near-slab subset matters, but it is not the whole field.',
+                    copy: 'Color now marks vertical relation to the modeled slab top: moss means above, brass means near, violet means below.'
+                },
+                corridor: {
+                    title: 'The corridor is real-looking, not self-explaining',
+                    description: 'The measured aftershock axis is about 179.4 degrees, but Slab2 strike and contours do not collapse into that same direction.',
+                    copy: 'The brass line behaves like a descriptive PCA axis: useful for asking questions, not enough to declare a fault, source, or cause.'
+                },
+                slab: {
+                    title: 'Slab2 coverage is strong',
+                    description: '815 of 900 events matched a valid Slab2 node, with a median nearest-node distance of 3.14 km.',
+                    copy: 'This lens pulls particles toward the modeled slab field to show why the active Cotabato subduction environment must be accounted for first.'
+                },
+                residual: {
+                    title: 'The residual is where TMCH is allowed to live',
+                    description: 'After Slab2 and ordinary tectonic coupling are respected, remaining structure should be tested against bathymetry, gravity, magnetic anomalies, ridges, seamounts, and buried lineaments.',
+                    copy: 'This lens lets unaccounted particles drift. That drift is not evidence by itself; it marks the next research gate.'
+                }
+            };
+            const palette = {
+                bone: '#e9e2d3',
+                stone: '#948c7c',
+                moss: 'rgba(143, 174, 148, 0.72)',
+                mossSolid: '#8fae94',
+                brass: '#b59560',
+                water: '#7aa7b5',
+                rust: '#c4674f',
+                violet: '#9b8cc0'
+            };
+            let width = 0;
+            let height = 0;
+            let activeLens = 'geometry';
+            let paused = prefersReducedMotion;
+            let tick = 0;
+            let particles = [];
+            let frameRequest = 0;
+            const pointer = { x: -1000, y: -1000, active: false };
+
+            function seededRandom(seed) {
+                let value = seed % 2147483647;
+                if (value <= 0) value += 2147483646;
+                return function next() {
+                    value = value * 16807 % 2147483647;
+                    return (value - 1) / 2147483646;
+                };
+            }
+            const random = seededRandom(20260611);
+
+            function resizeConvergenceField() {
+                const rect = canvas.getBoundingClientRect();
+                const ratio = window.devicePixelRatio || 1;
+                width = Math.max(320, Math.floor(rect.width));
+                height = Math.max(360, Math.floor(rect.height));
+                canvas.width = Math.floor(width * ratio);
+                canvas.height = Math.floor(height * ratio);
+                context.setTransform(ratio, 0, 0, ratio, 0, 0);
+            }
+
+            function makeParticle(index) {
+                const cluster = random();
+                const along = (random() - 0.5) * (cluster > 0.74 ? 0.9 : 0.42);
+                const spread = cluster > 0.74 ? 0.42 : 0.22;
+                const cross = (random() - 0.5) * spread;
+                const depthClassRoll = random();
+                const depthClass = depthClassRoll < 0.6462 ? 'above' : depthClassRoll < 0.9718 ? 'near' : 'below';
+                const magnitude = 1.2 + Math.pow(random(), 2.7) * 4.1;
+                const time = random();
+                const slabOffset = depthClass === 'above' ? -0.35 - random() * 0.34 : depthClass === 'near' ? (random() - 0.5) * 0.18 : 0.25 + random() * 0.35;
+                const targetX = 0.52 + cross + Math.sin(along * Math.PI) * 0.05;
+                const targetY = 0.5 + along;
+                return {
+                    index,
+                    x: 0.5 + (random() - 0.5) * 0.86,
+                    y: 0.5 + (random() - 0.5) * 0.74,
+                    vx: (random() - 0.5) * 0.002,
+                    vy: (random() - 0.5) * 0.002,
+                    targetX,
+                    targetY,
+                    depthClass,
+                    magnitude,
+                    time,
+                    slabOffset,
+                    phase: random() * Math.PI * 2
+                };
+            }
+
+            function resetParticles() {
+                particles = Array.from({ length: 230 }, (_, index) => makeParticle(index));
+            }
+            function getNumericValue(element) { return Number.parseFloat(element.value) / 100; }
+            function syncOutputs() {
+                couplingOutput.value = `${coupling.value}%`;
+                residualOutput.value = `${residual.value}%`;
+                dampingOutput.value = `${damping.value}%`;
+            }
+            function setLens(nextLens) {
+                const text = lensText[nextLens];
+                if (!text) return;
+                activeLens = nextLens;
+                stageHeading.textContent = text.title;
+                stageDescription.textContent = text.description;
+                lensCopy.textContent = text.copy;
+                for (const button of lensButtons) {
+                    button.setAttribute('aria-pressed', String(button.dataset.lens === nextLens));
+                }
+            }
+            function drawTectonicEnvelope() {
+                const gradient = context.createLinearGradient(0, height * 0.18, width, height * 0.82);
+                gradient.addColorStop(0, 'rgba(122, 167, 181, 0.015)');
+                gradient.addColorStop(0.48, 'rgba(122, 167, 181, 0.085)');
+                gradient.addColorStop(1, 'rgba(181, 149, 96, 0.02)');
+                context.save();
+                context.beginPath();
+                context.moveTo(width * 0.12, height * 0.18);
+                context.bezierCurveTo(width * 0.36, height * 0.08, width * 0.68, height * 0.28, width * 0.88, height * 0.18);
+                context.lineTo(width * 0.86, height * 0.84);
+                context.bezierCurveTo(width * 0.62, height * 0.94, width * 0.34, height * 0.72, width * 0.14, height * 0.86);
+                context.closePath();
+                context.fillStyle = gradient;
+                context.fill();
+                context.strokeStyle = 'rgba(122, 167, 181, 0.16)';
+                context.lineWidth = 1;
+                context.setLineDash([3, 9]);
+                context.stroke();
+                context.setLineDash([]);
+                context.restore();
+            }
+            function drawTrenchTrace() {
+                context.save();
+                context.strokeStyle = 'rgba(233, 226, 211, 0.14)';
+                context.lineWidth = 1;
+                context.beginPath();
+                for (let step = 0; step <= 90; step += 1) {
+                    const ratio = step / 90;
+                    const x = width * (0.08 + ratio * 0.84);
+                    const y = height * (0.18 + Math.sin(ratio * Math.PI * 1.3 + 0.8) * 0.07 + ratio * 0.08);
+                    if (step === 0) context.moveTo(x, y);
+                    else context.lineTo(x, y);
+                }
+                context.stroke();
+                context.fillStyle = 'rgba(233, 226, 211, 0.34)';
+                context.font = '9px JetBrains Mono, ui-monospace, monospace';
+                context.fillText('conceptual trench / offshore structure trace', width * 0.56, height * 0.21);
+                context.restore();
+            }
+            function drawSlabContours() {
+                context.save();
+                context.lineWidth = 1;
+                for (let contour = 0; contour < 7; contour += 1) {
+                    const yBase = height * (0.2 + contour * 0.095);
+                    const alpha = 0.13 + contour * 0.022;
+                    context.strokeStyle = `rgba(122, 167, 181, ${alpha})`;
+                    context.beginPath();
+                    for (let step = 0; step <= 120; step += 1) {
+                        const x = (step / 120) * width;
+                        const y = yBase + Math.sin(step * 0.12 + contour * 0.88 + tick * 0.008) * 16 + Math.cos(step * 0.04 + contour) * 24;
+                        if (step === 0) context.moveTo(x, y);
+                        else context.lineTo(x, y);
+                    }
+                    context.stroke();
+                    context.fillStyle = `rgba(122, 167, 181, ${Math.min(0.5, alpha + 0.18)})`;
+                    context.font = '9px JetBrains Mono, ui-monospace, monospace';
+                    context.fillText(`-${20 + contour * 20} km`, 16, yBase - 6);
+                }
+                context.restore();
+            }
+            function drawCorridor() {
+                const centerX = width * 0.53;
+                const top = height * 0.1;
+                const bottom = height * 0.9;
+                const lean = width * 0.018;
+                context.save();
+                context.strokeStyle = 'rgba(181, 149, 96, 0.7)';
+                context.lineWidth = 1.6;
+                context.beginPath();
+                context.moveTo(centerX - lean, top);
+                context.lineTo(centerX + lean, bottom);
+                context.stroke();
+                context.strokeStyle = 'rgba(181, 149, 96, 0.1)';
+                context.lineWidth = 30;
+                context.beginPath();
+                context.moveTo(centerX - lean, top);
+                context.lineTo(centerX + lean, bottom);
+                context.stroke();
+                context.restore();
+            }
+            function drawMainshock() {
+                const x = width * 0.36;
+                const y = height * 0.52;
+                context.save();
+                context.translate(x, y);
+                context.rotate(-Math.PI / 2);
+                context.beginPath();
+                for (let i = 0; i < 10; i += 1) {
+                    const radius = i % 2 === 0 ? 15 : 6.4;
+                    const angle = i * Math.PI / 5;
+                    const px = Math.cos(angle) * radius;
+                    const py = Math.sin(angle) * radius;
+                    if (i === 0) context.moveTo(px, py);
+                    else context.lineTo(px, py);
+                }
+                context.closePath();
+                context.fillStyle = palette.rust;
+                context.strokeStyle = 'rgba(233, 226, 211, 0.85)';
+                context.lineWidth = 1.6;
+                context.fill();
+                context.stroke();
+                context.restore();
+            }
+            function particleTarget(particle) {
+                const slabCoupling = getNumericValue(coupling);
+                const residualDrift = getNumericValue(residual);
+                const timeWave = Math.sin(tick * 0.01 + particle.phase) * 0.018;
+                const slabY = 0.22 + particle.targetX * 0.48 + Math.sin(particle.targetX * 9 + tick * 0.006) * 0.045;
+                const corridorX = 0.53 + (particle.targetY - 0.5) * 0.045;
+                let x = particle.targetX;
+                let y = particle.targetY;
+                if (activeLens === 'slab') {
+                    y = y * (1 - slabCoupling) + (slabY + particle.slabOffset * 0.24) * slabCoupling;
+                    x = x * 0.72 + corridorX * 0.28;
+                }
+                if (activeLens === 'depth') {
+                    const classY = particle.depthClass === 'above' ? 0.28 : particle.depthClass === 'near' ? 0.52 : 0.76;
+                    y = y * 0.46 + classY * 0.54;
+                    x = 0.18 + particle.time * 0.68;
+                }
+                if (activeLens === 'corridor') {
+                    x = x * 0.42 + corridorX * 0.58;
+                    y = particle.targetY + timeWave;
+                }
+                if (activeLens === 'residual') {
+                    const orbital = particle.index % 3 === 0 ? -1 : 1;
+                    x = particle.targetX + Math.sin(tick * 0.009 + particle.phase) * residualDrift * 0.16 * orbital;
+                    y = particle.targetY + Math.cos(tick * 0.007 + particle.phase) * residualDrift * 0.13;
+                }
+                if (activeLens === 'geometry') {
+                    x += Math.sin(tick * 0.008 + particle.phase) * 0.012;
+                    y += Math.cos(tick * 0.007 + particle.phase) * 0.012;
+                }
+                return { x: Math.max(0.05, Math.min(0.95, x)), y: Math.max(0.08, Math.min(0.92, y)) };
+            }
+            function colorForParticle(particle) {
+                if (activeLens === 'depth') {
+                    if (particle.depthClass === 'above') return palette.mossSolid;
+                    if (particle.depthClass === 'near') return palette.brass;
+                    return palette.violet;
+                }
+                if (activeLens === 'slab' && particle.depthClass === 'near') return palette.water;
+                if (activeLens === 'residual' && particle.depthClass !== 'near') return 'rgba(233, 226, 211, 0.38)';
+                return particle.time > 0.56 ? 'rgba(181, 149, 96, 0.72)' : palette.moss;
+            }
+            function updateParticle(particle) {
+                const target = particleTarget(particle);
+                const stiffness = activeLens === 'residual' ? 0.004 : 0.008;
+                const friction = getNumericValue(damping);
+                particle.vx = (particle.vx + (target.x - particle.x) * stiffness) * friction;
+                particle.vy = (particle.vy + (target.y - particle.y) * stiffness) * friction;
+                particle.x += particle.vx;
+                particle.y += particle.vy;
+            }
+            function classLabel(depthClass) {
+                if (depthClass === 'above') return 'above modeled slab top';
+                if (depthClass === 'near') return 'within +/-20 km slab top';
+                return 'below modeled slab top';
+            }
+            function syncHoverCard(nearest) {
+                if (!hoverCard) return;
+                if (!nearest || !pointer.active) {
+                    hoverCard.hidden = true;
+                    hoverCard.setAttribute('aria-hidden', 'true');
+                    return;
+                }
+                const delta = Math.round(nearest.particle.slabOffset * 82);
+                const left = Math.min(Math.max(18, nearest.x + 18), width - 256);
+                const top = Math.min(Math.max(18, nearest.y - 12), height - 128);
+                hoverCard.style.left = `${left}px`;
+                hoverCard.style.top = `${top}px`;
+                hoverCard.innerHTML = `<strong>Conceptual event particle</strong><span>class: ${classLabel(nearest.particle.depthClass)}</span><span>magnitude scale: M${nearest.particle.magnitude.toFixed(1)}</span><span>approx delta: ${delta > 0 ? '+' : ''}${delta} km</span><span>visual aid, not source row</span>`;
+                hoverCard.hidden = false;
+                hoverCard.setAttribute('aria-hidden', 'false');
+            }
+            function drawParticles() {
+                let nearest = null;
+                let nearestDistance = 18;
+                for (const particle of particles) {
+                    if (!paused) updateParticle(particle);
+                    const x = particle.x * width;
+                    const y = particle.y * height;
+                    const radius = 1.6 + particle.magnitude * 0.68;
+                    context.beginPath();
+                    context.arc(x, y, radius, 0, Math.PI * 2);
+                    context.fillStyle = colorForParticle(particle);
+                    context.fill();
+                    if (particle.depthClass === 'near') {
+                        context.strokeStyle = 'rgba(233, 226, 211, 0.5)';
+                        context.lineWidth = 0.8;
+                        context.stroke();
+                    }
+                    if (pointer.active) {
+                        const dx = pointer.x - x;
+                        const dy = pointer.y - y;
+                        const distance = Math.sqrt(dx * dx + dy * dy) - radius;
+                        if (distance < nearestDistance) {
+                            nearestDistance = distance;
+                            nearest = { particle, x, y, radius };
+                        }
+                    }
+                }
+                if (nearest) {
+                    context.save();
+                    context.beginPath();
+                    context.arc(nearest.x, nearest.y, nearest.radius + 7, 0, Math.PI * 2);
+                    context.strokeStyle = 'rgba(233, 226, 211, 0.7)';
+                    context.lineWidth = 1;
+                    context.stroke();
+                    context.restore();
+                }
+                syncHoverCard(nearest);
+            }
+            function drawDepthLegend() {
+                if (activeLens !== 'depth') return;
+                const items = [['above slab', palette.mossSolid], ['near slab', palette.brass], ['below slab', palette.violet]];
+                context.save();
+                context.font = '10px JetBrains Mono, ui-monospace, monospace';
+                items.forEach((item, index) => {
+                    const y = height * (0.28 + index * 0.24);
+                    context.strokeStyle = 'rgba(233, 226, 211, 0.1)';
+                    context.beginPath();
+                    context.moveTo(width * 0.08, y);
+                    context.lineTo(width * 0.92, y);
+                    context.stroke();
+                    context.fillStyle = item[1];
+                    context.fillText(item[0], width * 0.08, y - 10);
+                });
+                context.restore();
+            }
+            function drawResidualGate() {
+                if (activeLens !== 'residual') return;
+                context.save();
+                context.strokeStyle = 'rgba(196, 103, 79, 0.38)';
+                context.setLineDash([8, 8]);
+                context.lineWidth = 1.2;
+                context.strokeRect(width * 0.17, height * 0.18, width * 0.66, height * 0.64);
+                context.setLineDash([]);
+                context.fillStyle = 'rgba(196, 103, 79, 0.72)';
+                context.font = '9px JetBrains Mono, ui-monospace, monospace';
+                context.fillText('residual gate: bathymetry + gravity + magnetic + lineament overlays', width * 0.18, height * 0.16);
+                context.restore();
+            }
+            function renderConvergenceGate() {
+                tick += paused ? 0 : 1;
+                context.clearRect(0, 0, width, height);
+                drawTectonicEnvelope();
+                drawTrenchTrace();
+                drawSlabContours();
+                drawCorridor();
+                drawDepthLegend();
+                drawResidualGate();
+                drawParticles();
+                drawMainshock();
+                frameRequest = window.requestAnimationFrame(renderConvergenceGate);
+            }
+            for (const button of lensButtons) {
+                button.addEventListener('click', () => {
+                    const nextLens = button.dataset.lens;
+                    if (nextLens) setLens(nextLens);
+                });
+            }
+            for (const slider of [coupling, residual, damping]) slider.addEventListener('input', syncOutputs);
+            pauseButton.addEventListener('click', () => {
+                paused = !paused;
+                pauseButton.textContent = paused ? 'Resume field' : 'Pause field';
+            });
+            resetButton.addEventListener('click', resetParticles);
+            canvas.addEventListener('pointermove', event => {
+                const rect = canvas.getBoundingClientRect();
+                pointer.x = event.clientX - rect.left;
+                pointer.y = event.clientY - rect.top;
+                pointer.active = true;
+            });
+            canvas.addEventListener('pointerleave', () => {
+                pointer.active = false;
+                if (hoverCard) {
+                    hoverCard.hidden = true;
+                    hoverCard.setAttribute('aria-hidden', 'true');
+                }
+            });
+            window.addEventListener('resize', resizeConvergenceField);
+            const revealElements = Array.from(root.querySelectorAll('.cg-reveal'));
+            if ('IntersectionObserver' in window) {
+                const revealObserver = new IntersectionObserver(entries => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            revealObserver.unobserve(entry.target);
+                        }
+                    }
+                }, { threshold: 0.12 });
+                for (const element of revealElements) revealObserver.observe(element);
+            } else {
+                for (const element of revealElements) element.classList.add('is-visible');
+            }
+            syncOutputs();
+            resizeConvergenceField();
+            resetParticles();
+            if (prefersReducedMotion) {
+                pauseButton.textContent = 'Resume field';
+                for (const element of revealElements) element.classList.add('is-visible');
+            }
+            renderConvergenceGate();
+            window.addEventListener('beforeunload', () => {
+                if (frameRequest) window.cancelAnimationFrame(frameRequest);
+            }, { once: true });
+        }
+        initConvergenceGate();
 
         // ── Clock + Date ────────────────────────────────────────────────────────────
         function updateClock() {
