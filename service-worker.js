@@ -1,4 +1,4 @@
-const TSRA_CACHE_VERSION = 'tsra-field-cache-v55';
+const TSRA_CACHE_VERSION = 'tsra-field-cache-v56';
 const CORE_ASSETS = [
   '/',
   '/seismic_report.html',

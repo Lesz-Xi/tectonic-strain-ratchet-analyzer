@@ -7,6 +7,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem("tmch-theme");
+        const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+        document.documentElement.dataset.theme = saved || (prefersLight ? "light" : "dark");
+      } catch (_) {
+        document.documentElement.dataset.theme = "dark";
+      }
+    })();
+  </script>
   <style>
     :root {
       --sumi: #0b0b0a;
@@ -25,7 +36,45 @@
       --sans: "Zen Kaku Gothic New", "M PLUS 1p", Inter, system-ui, sans-serif;
       --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --page-grid-a: rgba(233, 226, 211, 0.006);
+      --page-grid-b: rgba(233, 226, 211, 0.004);
+      --field-grid-line: rgba(233, 226, 211, 0.022);
+      --legend-surface: rgba(11, 11, 10, 0.72);
+      --hover-surface: rgba(11, 11, 10, 0.88);
+      --axis-label: rgba(233, 226, 211, 0.4);
+      --near-ring: rgba(233, 226, 211, 0.28);
+      --canvas-line: rgba(233, 226, 211, 0.14);
+      --canvas-label: rgba(233, 226, 211, 0.34);
+      --canvas-soft-line: rgba(233, 226, 211, 0.1);
+      --mainshock-stroke: rgba(233, 226, 211, 0.85);
       color-scheme: dark;
+    }
+
+    [data-theme="light"] {
+      --sumi: #f4efe4;
+      --bone: #211e19;
+      --bone-soft: #514a40;
+      --stone: #7f7465;
+      --dim: #a1937f;
+      --rule: rgba(33, 30, 25, 0.13);
+      --rule-strong: rgba(33, 30, 25, 0.24);
+      --moss: #617f67;
+      --brass: #8f7044;
+      --rust: #a95642;
+      --water: #527f8d;
+      --violet: #776a9e;
+      --page-grid-a: rgba(33, 30, 25, 0.026);
+      --page-grid-b: rgba(33, 30, 25, 0.018);
+      --field-grid-line: rgba(33, 30, 25, 0.026);
+      --legend-surface: rgba(244, 239, 228, 0.86);
+      --hover-surface: rgba(244, 239, 228, 0.92);
+      --axis-label: rgba(33, 30, 25, 0.42);
+      --near-ring: rgba(33, 30, 25, 0.24);
+      --canvas-line: rgba(33, 30, 25, 0.16);
+      --canvas-label: rgba(33, 30, 25, 0.38);
+      --canvas-soft-line: rgba(33, 30, 25, 0.1);
+      --mainshock-stroke: rgba(244, 239, 228, 0.9);
+      color-scheme: light;
     }
 
     * { box-sizing: border-box; }
@@ -47,8 +96,8 @@
       z-index: 0;
       pointer-events: none;
       background-image:
-        repeating-linear-gradient(0deg, transparent 0 3px, rgba(233, 226, 211, 0.006) 3px 4px),
-        repeating-linear-gradient(90deg, transparent 0 3px, rgba(233, 226, 211, 0.004) 3px 4px);
+        repeating-linear-gradient(0deg, transparent 0 3px, var(--page-grid-a) 3px 4px),
+        repeating-linear-gradient(90deg, transparent 0 3px, var(--page-grid-b) 3px 4px);
     }
 
     main {
@@ -56,7 +105,7 @@
       z-index: 1;
       width: min(1280px, calc(100vw - 48px));
       margin: 0 auto;
-      padding: clamp(64px, 9vw, 128px) 0 96px;
+      padding: clamp(32px, 5.5vw, 76px) 0 72px;
     }
 
     h1, h2, h3 {
@@ -76,20 +125,53 @@
 
     .reveal.is-visible { opacity: 1; transform: translateY(0); }
 
-    .register {
-      display: inline-grid;
-      grid-template-columns: 40px auto;
-      gap: 14px;
+    .page-tools {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      margin-bottom: 34px;
-      color: var(--brass);
+      gap: 16px;
+      margin-bottom: clamp(34px, 5vw, 64px);
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .tool-link,
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 36px;
+      border: 1px solid var(--rule);
+      background: transparent;
+      color: var(--stone);
+      cursor: pointer;
       font-family: var(--mono);
       font-size: 10px;
       letter-spacing: 0.14em;
+      line-height: 1;
+      text-decoration: none;
       text-transform: uppercase;
+      transition: color 220ms var(--ease), border-color 220ms var(--ease), background 220ms var(--ease);
     }
 
-    .register::before { content: ""; height: 1px; background: var(--brass); opacity: 0.6; }
+    .tool-link { padding: 0 14px 0 11px; }
+    .theme-toggle { padding: 0 13px; }
+
+    .tool-link svg,
+    .theme-toggle svg {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+    }
+
+    .tool-link:hover,
+    .tool-link:focus-visible,
+    .theme-toggle:hover,
+    .theme-toggle:focus-visible {
+      color: var(--bone);
+      border-color: var(--brass);
+      outline: none;
+    }
 
     .masthead { max-width: 760px; }
 
@@ -100,7 +182,7 @@
 
     .lede {
       max-width: 640px;
-      margin-top: 28px;
+      margin-top: 22px;
       color: var(--bone-soft);
       font-family: var(--serif);
       font-size: clamp(15px, 1.5vw, 18px);
@@ -112,7 +194,7 @@
       flex-wrap: wrap;
       gap: 0 28px;
       max-width: 640px;
-      margin-top: 40px;
+      margin-top: 30px;
       padding-top: 18px;
       border-top: 1px solid var(--rule);
     }
@@ -130,7 +212,7 @@
 
     .boundary {
       max-width: 600px;
-      margin: clamp(72px, 9vw, 130px) 0 0 clamp(0px, 8vw, 116px);
+      margin: clamp(44px, 6.5vw, 86px) 0 0 clamp(0px, 6vw, 92px);
       padding-left: 26px;
       border-left: 1px solid rgba(196, 103, 79, 0.55);
     }
@@ -172,7 +254,7 @@
       display: grid;
       grid-template-columns: minmax(280px, 360px) 1px minmax(0, 1fr);
       gap: 0 clamp(28px, 4vw, 56px);
-      margin-top: clamp(88px, 11vw, 150px);
+      margin-top: clamp(68px, 9vw, 118px);
       padding-top: 26px;
       border-top: 1px solid var(--rule);
     }
@@ -339,17 +421,17 @@
       border-top: 1px solid var(--rule);
       border-bottom: 1px solid var(--rule);
       background:
-        linear-gradient(rgba(233, 226, 211, 0.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(233, 226, 211, 0.022) 1px, transparent 1px);
+        linear-gradient(var(--field-grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--field-grid-line) 1px, transparent 1px);
       background-size: 48px 48px;
     }
 
-    canvas { display: block; width: 100%; height: 540px; }
+    canvas { display: block; width: 100%; height: clamp(420px, 48vh, 500px); }
 
     .axis-label {
       position: absolute;
       pointer-events: none;
-      color: rgba(233, 226, 211, 0.4);
+      color: var(--axis-label);
       font-family: var(--mono);
       font-size: 9.5px;
       letter-spacing: 0.12em;
@@ -368,7 +450,7 @@
       gap: 7px;
       padding: 12px 0 12px 16px;
       border-left: 1px solid var(--rule);
-      background: rgba(11, 11, 10, 0.72);
+      background: var(--legend-surface);
     }
 
     .legend-item {
@@ -385,7 +467,7 @@
 
     .legend-item i { width: 8px; height: 8px; border-radius: 50%; background: var(--stone); }
     .legend-item i.event { background: var(--moss); }
-    .legend-item i.near { background: var(--brass); box-shadow: 0 0 0 2px rgba(233, 226, 211, 0.28); }
+    .legend-item i.near { background: var(--brass); box-shadow: 0 0 0 2px var(--near-ring); }
     .legend-item i.slab { background: var(--water); }
     .legend-item i.axis { border-radius: 0; width: 14px; height: 1.5px; background: var(--brass); }
 
@@ -395,7 +477,7 @@
       width: 232px;
       padding: 14px 0 12px 16px;
       border-left: 1px solid var(--rule-strong);
-      background: rgba(11, 11, 10, 0.88);
+      background: var(--hover-surface);
       pointer-events: none;
     }
 
@@ -456,7 +538,7 @@
     .reading-row small { display: block; margin-top: 7px; color: var(--dim); font-size: 11.5px; line-height: 1.5; }
 
     .story {
-      margin-top: clamp(88px, 11vw, 150px);
+      margin-top: clamp(68px, 9vw, 118px);
     }
 
     .story-band {
@@ -485,7 +567,7 @@
 
     .band strong { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--bone); font-weight: 500; text-align: right; }
 
-    .bar { height: 1.5px; background: rgba(233, 226, 211, 0.1); }
+    .bar { height: 1.5px; background: var(--canvas-soft-line); }
 
     .bar i {
       display: block;
@@ -523,7 +605,7 @@
 
     .verdict-row p { color: var(--bone-soft); font-size: 13.5px; line-height: 1.75; }
 
-    .sequence { margin-top: clamp(88px, 11vw, 150px); }
+    .sequence { margin-top: clamp(68px, 9vw, 118px); }
 
     .seam-steps {
       position: relative;
@@ -574,7 +656,7 @@
 
     .colophon {
       max-width: 620px;
-      margin: clamp(72px, 9vw, 130px) 0 0 auto;
+      margin: clamp(56px, 7vw, 96px) 0 0 auto;
       padding-top: 22px;
       border-top: 1px solid var(--rule);
       color: var(--dim);
@@ -596,6 +678,10 @@
     }
 
     @media (max-width: 640px) {
+      main { width: min(100vw - 32px, 1280px); }
+      .page-tools { align-items: stretch; }
+      .tool-link, .theme-toggle { justify-content: center; }
+      .tool-link span, .theme-toggle span { display: none; }
       .reading-rail { grid-template-columns: 1fr; }
       .reading-row { border-right: 0; }
       .band { grid-template-columns: 1fr; gap: 6px; }
@@ -615,8 +701,31 @@
 </head>
 <body>
   <main>
+    <nav class="page-tools" aria-label="Archive page controls">
+      <a class="tool-link" href="https://www.tectonicrhythm.site/" aria-label="Back to TSRA home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12H5" />
+          <path d="m12 19-7-7 7-7" />
+        </svg>
+        <span>Back to TSRA</span>
+      </a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle light and dark theme" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2" />
+          <path d="M12 20v2" />
+          <path d="m4.93 4.93 1.41 1.41" />
+          <path d="m17.66 17.66 1.41 1.41" />
+          <path d="M2 12h2" />
+          <path d="M20 12h2" />
+          <path d="m6.34 17.66-1.41 1.41" />
+          <path d="m19.07 4.93-1.41 1.41" />
+        </svg>
+        <span id="theme-toggle-label">Light</span>
+      </button>
+    </nav>
+
     <section class="masthead reveal" aria-labelledby="page-title">
-      <div class="register">TMCH · Slab2 convergence gate · v0.1</div>
       <h1 id="page-title">The slab is real. The corridor is honest. The cause is still a question.</h1>
       <p class="lede">An interactive reading of the Sarangani–Cotabato aftershock field against independently modeled subduction geometry — built to keep the hypothesis disciplined, not to make it louder.</p>
       <div class="claim-register" aria-label="Source and claim summary">
@@ -765,6 +874,8 @@
     const pauseButton = document.getElementById("pause-button");
     const resetButton = document.getElementById("reset-button");
     const hoverCard = document.getElementById("hover-card");
+    const themeToggle = document.getElementById("theme-toggle");
+    const themeToggleLabel = document.getElementById("theme-toggle-label");
 
     if (!context) {
       throw new Error("Canvas rendering context unavailable.");
@@ -800,16 +911,64 @@
       }
     };
 
-    const palette = {
-      bone: "#e9e2d3",
-      stone: "#948c7c",
-      moss: "rgba(143, 174, 148, 0.72)",
-      mossSolid: "#8fae94",
-      brass: "#b59560",
-      water: "#7aa7b5",
-      rust: "#c4674f",
-      violet: "#9b8cc0"
+    const DEFAULT_CONTROLS = {
+      coupling: "58",
+      residual: "34",
+      damping: "82"
     };
+
+    function cssVar(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    function readCanvasPalette() {
+      return {
+        bone: cssVar("--bone"),
+        stone: cssVar("--stone"),
+        moss: cssVar("--moss"),
+        mossSolid: cssVar("--moss"),
+        brass: cssVar("--brass"),
+        water: cssVar("--water"),
+        rust: cssVar("--rust"),
+        violet: cssVar("--violet"),
+        canvasLine: cssVar("--canvas-line"),
+        canvasLabel: cssVar("--canvas-label"),
+        canvasSoftLine: cssVar("--canvas-soft-line"),
+        mainshockStroke: cssVar("--mainshock-stroke")
+      };
+    }
+
+    let palette = readCanvasPalette();
+
+    function setTheme(theme, persist = true) {
+      const nextTheme = theme === "light" ? "light" : "dark";
+      document.documentElement.dataset.theme = nextTheme;
+      if (persist) {
+        try { localStorage.setItem("tmch-theme", nextTheme); } catch (_) { }
+      }
+      if (themeToggle) {
+        const isLight = nextTheme === "light";
+        themeToggle.setAttribute("aria-pressed", String(isLight));
+        themeToggle.title = isLight ? "Switch to dark theme" : "Switch to light theme";
+      }
+      if (themeToggleLabel) themeToggleLabel.textContent = nextTheme === "light" ? "Dark" : "Light";
+      palette = readCanvasPalette();
+    }
+
+    function restoreDefaultControls() {
+      coupling.value = DEFAULT_CONTROLS.coupling;
+      residual.value = DEFAULT_CONTROLS.residual;
+      damping.value = DEFAULT_CONTROLS.damping;
+      syncOutputs();
+    }
+
+    if (themeToggle) {
+      themeToggle.addEventListener("click", () => {
+        const current = document.documentElement.dataset.theme === "light" ? "light" : "dark";
+        setTheme(current === "light" ? "dark" : "light");
+      });
+    }
+    setTheme(document.documentElement.dataset.theme || "dark", false);
 
     let width = 0;
     let height = 0;
@@ -909,7 +1068,7 @@
       context.fillStyle = gradient;
       context.fill();
 
-      context.strokeStyle = "rgba(122, 167, 181, 0.16)";
+      context.strokeStyle = palette.canvasSoftLine;
       context.lineWidth = 1;
       context.setLineDash([3, 9]);
       context.stroke();
@@ -919,7 +1078,7 @@
 
     function drawTrenchTrace() {
       context.save();
-      context.strokeStyle = "rgba(233, 226, 211, 0.14)";
+      context.strokeStyle = palette.canvasLine;
       context.lineWidth = 1;
       context.beginPath();
       for (let step = 0; step <= 90; step += 1) {
@@ -930,7 +1089,7 @@
         else context.lineTo(x, y);
       }
       context.stroke();
-      context.fillStyle = "rgba(233, 226, 211, 0.34)";
+      context.fillStyle = palette.canvasLabel;
       context.font = "9px JetBrains Mono, ui-monospace, monospace";
       context.fillText("conceptual trench / offshore structure trace", width * 0.56, height * 0.21);
       context.restore();
@@ -998,7 +1157,7 @@
       }
       context.closePath();
       context.fillStyle = palette.rust;
-      context.strokeStyle = "rgba(233, 226, 211, 0.85)";
+      context.strokeStyle = palette.mainshockStroke;
       context.lineWidth = 1.6;
       context.fill();
       context.stroke();
@@ -1051,7 +1210,7 @@
         return palette.violet;
       }
       if (activeLens === "slab" && particle.depthClass === "near") return palette.water;
-      if (activeLens === "residual" && particle.depthClass !== "near") return "rgba(233, 226, 211, 0.38)";
+      if (activeLens === "residual" && particle.depthClass !== "near") return palette.canvasLabel;
       const warm = particle.time > 0.56;
       return warm ? "rgba(181, 149, 96, 0.72)" : palette.moss;
     }
@@ -1109,7 +1268,7 @@
         context.fillStyle = colorForParticle(particle);
         context.fill();
         if (particle.depthClass === "near") {
-          context.strokeStyle = "rgba(233, 226, 211, 0.5)";
+          context.strokeStyle = palette.mainshockStroke;
           context.lineWidth = 0.8;
           context.stroke();
         }
@@ -1129,7 +1288,7 @@
         context.save();
         context.beginPath();
         context.arc(nearest.x, nearest.y, nearest.radius + 7, 0, Math.PI * 2);
-        context.strokeStyle = "rgba(233, 226, 211, 0.7)";
+        context.strokeStyle = palette.mainshockStroke;
         context.lineWidth = 1;
         context.stroke();
         context.restore();
@@ -1149,7 +1308,7 @@
       context.font = "10px JetBrains Mono, ui-monospace, monospace";
       items.forEach((item, index) => {
         const y = height * (0.28 + index * 0.24);
-        context.strokeStyle = "rgba(233, 226, 211, 0.1)";
+        context.strokeStyle = palette.canvasSoftLine;
         context.beginPath();
         context.moveTo(width * 0.08, y);
         context.lineTo(width * 0.92, y);
@@ -1205,6 +1364,7 @@
     });
 
     resetButton.addEventListener("click", () => {
+      restoreDefaultControls();
       resetParticles();
     });
 
@@ -1238,7 +1398,7 @@
       revealObserver.observe(element);
     }
 
-    syncOutputs();
+    restoreDefaultControls();
     resize();
     resetParticles();
     if (prefersReducedMotion) {
