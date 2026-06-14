@@ -425,12 +425,12 @@ class TSRAVisualizer:
         fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 8), gridspec_kw={'height_ratios': [2, 1]})
         fig.patch.set_facecolor(c_bg)
         
-        # Subplot 1: Strain Ratchet
+        # Subplot 1: Phase Timing Ratchet
         ax1.set_facecolor(c_bg)
         ax1.grid(True, color=c_grid, linestyle='--', alpha=0.5)
         
         inst_times, inst_strains = inst_model.simulate_strain_curve(inst_timeline)
-        ax1.plot(inst_times, inst_strains, color=c_strain, linewidth=2, label='Tectonic Strain Accumulation S(t)', zorder=2)
+        ax1.plot(inst_times, inst_strains, color=c_strain, linewidth=2, label='Timing Phase Accumulation S(t)', zorder=2)
         ax1.fill_between(inst_times, inst_strains, color=c_strain, alpha=0.08, zorder=1)
 
         inst_events = inst_timeline.get_all_events()
@@ -454,8 +454,8 @@ class TSRAVisualizer:
                 bbox=dict(boxstyle="round,pad=0.2", fc='#1a2432', ec=c_grid, alpha=0.8)
             )
 
-        ax1.set_title("TECTONIC STRAIN SAWTOOTH & DISCRETE SLIP TIMELINE", color=c_text, fontsize=12, weight='bold')
-        ax1.set_ylabel("Accumulated Strain (Normalized Capacity C)", color=c_text, fontsize=10)
+        ax1.set_title("PHASE ACCUMULATION SAWTOOTH & DISCRETE EVENT TIMELINE", color=c_text, fontsize=12, weight='bold')
+        ax1.set_ylabel("Phase Accumulation Index S(t)", color=c_text, fontsize=10)
         ax1.tick_params(colors=c_text)
         ax1.set_ylim(-0.5, 11)
         legend = ax1.legend(facecolor='#1a2432', edgecolor=c_grid, loc='upper left')

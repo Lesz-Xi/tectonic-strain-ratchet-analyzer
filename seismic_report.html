@@ -4660,7 +4660,7 @@
         <div class='card dashboard-card'>
             <div class='card-title'>Dashboard Chart</div>
             <div class='dashboard-chart-frame'>
-                <img class='chart' src='seismic_pattern_analysis.svg' alt='Light-theme TSRA timing chart showing strain sawtooth behavior and observer versus instrument timing drift'>
+                <img class='chart' src='seismic_pattern_analysis.svg' alt='Light-theme TSRA timing chart showing phase accumulation behavior and observer versus instrument timing drift'>
             </div>
 
             <div class='chart-description' aria-label='Dashboard chart description'>
@@ -4669,7 +4669,7 @@
                     <p>Read the dashboard as a timing diary. It shows when confirmed events happened, how far apart they were, and where the current observation windows sit relative to the fitted pulse rhythm.</p>
                 </div>
                 <div class='chart-description-list'>
-                    <div class='chart-description-item'><span>1</span><p>The main rhythm is the repeated rise-and-reset pattern: quiet build-up, then an observed release or watch outcome.</p></div>
+                    <div class='chart-description-item'><span>1</span><p>The main rhythm is a repeated phase-rise/reset pattern: elapsed timing accumulates, then an event or local watch outcome resets the visual index.</p></div>
                     <div class='chart-description-item'><span>2</span><p>The labeled phase bands organize time. They do not certify that shaking will happen or how strong it will be.</p></div>
                     <div class='chart-description-item'><span>3</span><p>Confirmed events, felt reports, and model watch windows stay separate so the chart remains useful without overstating certainty.</p></div>
                 </div>
@@ -4681,7 +4681,7 @@
                     <div class='explainer-block'>
                         <div class='explain-icon' aria-hidden='true'><svg viewBox='0 0 24 24'><path d='M4 18 9 8l4 8 4-10 3 6'/><path d='M4 20h16'/></svg></div>
                         <h4>Sawtooth rhythm</h4>
-                        <p>Rising lines mark quiet stress build-up. Drops mark observed release and reset.</p>
+                        <p>Rising lines mark elapsed phase accumulation. Drops mark a reset in the timing index after an observed event or local watch outcome.</p>
                     </div>
                     <div class='explainer-block'>
                         <div class='explain-icon' aria-hidden='true'><svg viewBox='0 0 24 24'><path d='M4 18 11 6l3.2 5.5L16 9l4 9H4Z'/></svg></div>
@@ -5499,7 +5499,7 @@
             applyLowDataMode(enabled);
         }
 
-        const TSRA_APP_VERSION = 'tsra-field-cache-v60';
+        const TSRA_APP_VERSION = 'tsra-field-cache-v61';
         const TSRA_VERSION_URL = '/tsra-version.json';
         const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
         let tsraReloadingForUpdate = false;
