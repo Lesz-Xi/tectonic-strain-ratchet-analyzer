@@ -713,6 +713,121 @@
             background: var(--row-hover)
         }
 
+        .ledger-card {
+            padding: 0;
+            overflow: hidden
+        }
+
+        .ledger-disclosure {
+            display: block
+        }
+
+        .ledger-summary {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto auto;
+            align-items: center;
+            gap: .8rem;
+            padding: .95rem 1rem;
+            cursor: pointer;
+            list-style: none;
+            border-bottom: 1px solid transparent;
+            transition: background .16s, border-color .16s
+        }
+
+        .ledger-summary::-webkit-details-marker {
+            display: none
+        }
+
+        .ledger-summary::after {
+            content: "open";
+            min-width: 4.2rem;
+            text-align: center;
+            border: 1px solid var(--border-sub);
+            padding: .28rem .44rem;
+            font-family: var(--mono);
+            font-size: .44rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--muted)
+        }
+
+        .ledger-disclosure[open] .ledger-summary {
+            border-bottom-color: var(--border-sub);
+            background: color-mix(in srgb, var(--surface2) 34%, transparent)
+        }
+
+        .ledger-disclosure[open] .ledger-summary::after {
+            content: "close";
+            color: var(--accent);
+            border-color: color-mix(in srgb, var(--accent) 32%, var(--border-sub))
+        }
+
+        .ledger-summary-main {
+            display: grid;
+            gap: .24rem;
+            min-width: 0
+        }
+
+        .ledger-kicker,
+        .ledger-summary-meta {
+            font-family: var(--mono);
+            font-size: .46rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: var(--muted)
+        }
+
+        .ledger-summary-main strong {
+            font-family: var(--serif);
+            font-size: clamp(1.05rem, 2vw, 1.45rem);
+            font-weight: 300;
+            color: var(--text);
+            line-height: 1.08;
+            letter-spacing: -.03em
+        }
+
+        .ledger-summary-meta {
+            white-space: nowrap;
+            color: var(--text-sub)
+        }
+
+        .ledger-disclosure-body {
+            padding: .92rem 1rem 1rem
+        }
+
+        .ledger-summary-copy {
+            max-width: 780px;
+            margin: 0 0 .78rem;
+            color: var(--muted);
+            font-size: .68rem;
+            line-height: 1.5
+        }
+
+        .ledger-table-wrap {
+            max-height: min(62vh, 720px);
+            overflow: auto;
+            border-top: 1px solid var(--border-sub)
+        }
+
+        .ledger-table-wrap table {
+            min-width: 760px
+        }
+
+        @media (max-width: 720px) {
+            .ledger-summary {
+                grid-template-columns: 1fr;
+                align-items: stretch;
+                gap: .62rem
+            }
+            .ledger-summary::after {
+                width: fit-content;
+                min-width: 0
+            }
+            .ledger-summary-meta {
+                white-space: normal
+            }
+        }
+
         .badge {
             display: inline-block;
             font-family: var(--mono);
@@ -4170,8 +4285,15 @@
     </div>
 
     <div class='tab-panel' id='tab-events'>
-        <div class='card'>
-            <div class='card-title'>Confirmed Event Log</div>
+        <div class='card ledger-card'>
+            <details class='ledger-disclosure'>
+                <summary class='ledger-summary'>
+                    <span class='ledger-summary-main'><span class='ledger-kicker'>Confirmed Event Log</span><strong>Confirmed seismic sequence</strong></span>
+                    <span class='ledger-summary-meta'>11 confirmed rows</span>
+                </summary>
+                <div class='ledger-disclosure-body'>
+                    <p class='ledger-summary-copy'>Compact by default; expand only when you need the full confirmed event chain. These rows stay separate from local observation outcomes.</p>
+                    <div class='ledger-table-wrap'>
             <table>
                 <thead>
                     <tr>
@@ -4254,13 +4376,21 @@
                     </tr>
                 </tbody>
             </table>
+                    </div>
+                </div>
+            </details>
         </div>
-        <div class='card' style='margin-top:1rem'>
-            <div class='card-title'>Observation Outcome Log</div>
-            <div class='outcome-ledger-toolbar'>
-                <div class='outcome-ledger-copy'>Local outcome records are stored on this device and remain separate from confirmed seismic events.</div>
-                <div class='outcome-ledger-status' id='outcome-ledger-status'>0 local records</div>
-            </div>
+        <div class='card ledger-card' style='margin-top:1rem'>
+            <details class='ledger-disclosure'>
+                <summary class='ledger-summary'>
+                    <span class='ledger-summary-main'><span class='ledger-kicker'>Observation Outcome Log</span><strong>Local observation outcomes</strong></span>
+                    <span class='ledger-summary-meta' id='outcome-ledger-status'>0 local records</span>
+                </summary>
+                <div class='ledger-disclosure-body'>
+                    <div class='outcome-ledger-toolbar'>
+                        <div class='outcome-ledger-copy'>Local outcome records are stored on this device and remain separate from confirmed seismic events.</div>
+                    </div>
+                    <div class='ledger-table-wrap'>
             <table>
                 <thead>
                     <tr>
@@ -4427,6 +4557,9 @@
                     </tr>
                 </tbody>
             </table>
+                    </div>
+                </div>
+            </details>
         </div>
     </div>
 
@@ -5366,7 +5499,7 @@
             applyLowDataMode(enabled);
         }
 
-        const TSRA_APP_VERSION = 'tsra-field-cache-v59';
+        const TSRA_APP_VERSION = 'tsra-field-cache-v60';
         const TSRA_VERSION_URL = '/tsra-version.json';
         const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
         let tsraReloadingForUpdate = false;

@@ -217,7 +217,7 @@ def compact_html(value: str) -> str:
 def append_outcome_log(report: str, row_html: str) -> str:
     if compact_html(row_html) in compact_html(report):
         return report
-    marker = "                </tbody>\n            </table>\n        </div>\n    </div>\n\n    <div class='tab-panel' id='tab-rhythm'>"
+    marker = "                </tbody>\n            </table>\n                    </div>\n                </div>\n            </details>\n        </div>\n    </div>\n\n    <div class='tab-panel' id='tab-rhythm'>"
     if marker not in report:
         die("could not locate end of Observation Outcome Log")
     return report.replace(marker, row_html + marker, 1)
@@ -499,7 +499,7 @@ def apply_outcome(report: str, service_worker: str, outcome: Outcome) -> tuple[s
 
 def verify_report(report: str, service_worker: str) -> list[str]:
     errors: list[str] = []
-    confirmed_match = re.search(r"<div class='card-title'>Confirmed Event Log</div>(?P<body>.*?)<div class='card' style='margin-top:1rem'>", report, re.S)
+    confirmed_match = re.search(r"<tbody id='confirmed-event-body'>(?P<body>.*?)</tbody>", report, re.S)
     if not confirmed_match:
         errors.append("confirmed event log not found")
     else:
