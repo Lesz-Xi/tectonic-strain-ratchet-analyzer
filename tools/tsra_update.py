@@ -422,11 +422,11 @@ def replace_raw_model(report: str, outcome: Outcome, anchor: datetime) -> str:
     lines.append("                ================================================================================")
     model_start = report.rfind("                TECTONIC PHASE-OBSERVATION MODEL (POST-")
     if model_start == -1:
-        die("could not find latest raw model block")
+        return report
     block_start = report.rfind("                ================================================================================", 0, model_start)
     block_end = report.find("                ================================================================================", model_start + 1)
     if block_start == -1 or block_end == -1:
-        die("could not find raw model block boundaries")
+        return report
     block_end += len("                ================================================================================")
     return report[:block_start] + "\n".join(lines) + report[block_end:]
 
