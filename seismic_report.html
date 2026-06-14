@@ -4305,13 +4305,13 @@
 
     <div class='tab-panel' id='tab-events'>
         <div class='card ledger-card'>
-            <details class='ledger-disclosure'>
+            <details class='ledger-disclosure' open>
                 <summary class='ledger-summary'>
                     <span class='ledger-summary-main'><span class='ledger-kicker'>Confirmed Event Log</span><strong>Confirmed seismic sequence</strong></span>
                     <span class='ledger-summary-meta'>11 confirmed rows</span>
                 </summary>
                 <div class='ledger-disclosure-body'>
-                    <p class='ledger-summary-copy'>Compact by default; expand only when you need the full confirmed event chain. These rows stay separate from local observation outcomes.</p>
+                    <p class='ledger-summary-copy'>Open by default for immediate sequence review; collapse it when you want a shorter Ledger read. These rows stay separate from local observation outcomes.</p>
                     <div class='ledger-table-wrap'>
             <table>
                 <thead>
@@ -5518,7 +5518,7 @@
             applyLowDataMode(enabled);
         }
 
-        const TSRA_APP_VERSION = 'tsra-field-cache-v62';
+        const TSRA_APP_VERSION = 'tsra-field-cache-v63';
         const TSRA_VERSION_URL = '/tsra-version.json';
         const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
         let tsraReloadingForUpdate = false;
