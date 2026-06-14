@@ -753,15 +753,19 @@
       .stage-title h2 { font-size: clamp(25px, 8vw, 38px); }
       .claim-strip { gap: 0 18px; }
       canvas { height: clamp(360px, 72vh, 460px); }
+      .axis-label.mainshock {
+        bottom: 104px;
+        left: 18px;
+      }
       .field-legend {
         position: static;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 9px 12px;
         margin: 0 14px;
-        padding: 13px 0 14px;
+        padding: 15px 0 14px;
         border-top: 1px solid var(--rule);
         border-left: 0;
-        background: transparent;
+        background: color-mix(in srgb, var(--sumi) 72%, transparent);
       }
       .hover-card {
         width: min(230px, calc(100% - 28px));
