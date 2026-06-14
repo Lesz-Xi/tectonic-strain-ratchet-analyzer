@@ -1071,6 +1071,7 @@
     let width = 0;
     let height = 0;
     let activeLens = "geometry";
+    let lastDirectLensTapAt = 0;
     let paused = prefersReducedMotion;
     let tick = 0;
     let particles = [];
@@ -1160,6 +1161,12 @@
       window.requestAnimationFrame(() => {
         stage.scrollIntoView({ behavior, block: "start", inline: "nearest" });
       });
+    }
+
+    function selectLens(nextLens) {
+      if (!nextLens) return;
+      setLens(nextLens);
+      if (shouldReturnToField(nextLens)) returnToField();
     }
 
     function drawTectonicEnvelope() {
@@ -1466,11 +1473,16 @@
     }
 
     for (const button of lensButtons) {
+      button.addEventListener("pointerup", (event) => {
+        if (event.pointerType === "mouse") return;
+        lastDirectLensTapAt = Date.now();
+        event.preventDefault();
+        selectLens(button.dataset.lens);
+      });
+
       button.addEventListener("click", () => {
-        const nextLens = button.dataset.lens;
-        if (!nextLens) return;
-        setLens(nextLens);
-        if (shouldReturnToField(nextLens)) returnToField();
+        if (Date.now() - lastDirectLensTapAt < 650) return;
+        selectLens(button.dataset.lens);
       });
     }
 
