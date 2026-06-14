@@ -265,9 +265,15 @@
       border-top: 1px solid var(--rule);
     }
 
+    .controls { grid-column: 1; grid-row: 1; }
+
     .seam {
+      grid-column: 2;
+      grid-row: 1;
       background: linear-gradient(180deg, transparent, var(--rule) 12%, var(--rule) 88%, transparent);
     }
+
+    .stage { grid-column: 3; grid-row: 1; }
 
     .controls h2 { font-size: clamp(20px, 2vw, 27px); line-height: 1.45; margin-bottom: 22px; }
     .controls .explain { color: var(--bone-soft); font-size: 14px; line-height: 1.8; }
@@ -361,7 +367,54 @@
       letter-spacing: 0.1em;
     }
 
-    input[type="range"] { width: 100%; height: 2px; accent-color: var(--brass); }
+    input[type="range"] {
+      width: 100%;
+      height: 14px;
+      margin: 0;
+      background: transparent;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 1px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--brass) 38%, var(--rule-strong));
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      width: 12px;
+      height: 12px;
+      margin-top: -5.5px;
+      border: 1px solid color-mix(in srgb, var(--brass) 62%, var(--rule-strong));
+      border-radius: 50%;
+      background: var(--brass);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--sumi) 78%, transparent);
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-moz-range-track {
+      height: 1px;
+      border: 0;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--brass) 38%, var(--rule-strong));
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border: 1px solid color-mix(in srgb, var(--brass) 62%, var(--rule-strong));
+      border-radius: 50%;
+      background: var(--brass);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--sumi) 78%, transparent);
+    }
+
+    input[type="range"]:focus-visible {
+      outline: 1px solid color-mix(in srgb, var(--brass) 58%, transparent);
+      outline-offset: 4px;
+    }
 
     .toggles { display: flex; gap: 26px; margin-top: 30px; }
 
@@ -430,6 +483,7 @@
         linear-gradient(var(--field-grid-line) 1px, transparent 1px),
         linear-gradient(90deg, var(--field-grid-line) 1px, transparent 1px);
       background-size: 48px 48px;
+      overflow: hidden;
     }
 
     canvas { display: block; width: 100%; height: clamp(420px, 48vh, 500px); }
@@ -673,7 +727,15 @@
     @media (max-width: 1020px) {
       .instrument { grid-template-columns: 1fr; }
       .seam { display: none; }
-      .stage { margin-top: 56px; }
+      .stage { order: 1; grid-column: auto; grid-row: auto; margin-top: 0; }
+      .controls {
+        order: 2;
+        grid-column: auto;
+        grid-row: auto;
+        margin-top: 36px;
+        padding-top: 24px;
+        border-top: 1px solid var(--rule);
+      }
       .story-band { grid-template-columns: 1fr; }
       .story-band + .story-band { margin-left: 0; }
       .boundary { margin-left: 0; }
@@ -688,8 +750,30 @@
       .page-tools { align-items: stretch; }
       .tool-link, .theme-toggle { justify-content: center; }
       .tool-link span, .theme-toggle span { display: none; }
+      .stage-title h2 { font-size: clamp(25px, 8vw, 38px); }
+      .claim-strip { gap: 0 18px; }
+      canvas { height: clamp(360px, 72vh, 460px); }
+      .field-legend {
+        position: static;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px 12px;
+        margin: 0 14px;
+        padding: 13px 0 14px;
+        border-top: 1px solid var(--rule);
+        border-left: 0;
+        background: transparent;
+      }
+      .hover-card {
+        width: min(230px, calc(100% - 28px));
+        padding: 12px 0 11px 14px;
+      }
       .reading-rail { grid-template-columns: 1fr; }
       .reading-row { border-right: 0; }
+      .slider-grid { gap: 14px; margin-top: 24px; }
+      .lens-list { margin-top: 24px; }
+      .lens-button { grid-template-columns: 32px 1fr; }
+      .lens-button em { grid-column: 2; text-align: left; }
+      .toggles { gap: 22px; margin-top: 24px; }
       .band { grid-template-columns: 1fr; gap: 6px; }
       .band strong { text-align: left; }
       .verdict-row { grid-template-columns: 1fr; gap: 8px; }
@@ -748,6 +832,41 @@
     </aside>
 
     <section class="instrument" aria-label="Interactive Slab2 convergence instrument">
+      <section class="stage reveal" aria-labelledby="stage-heading">
+        <div class="section-mark">02 · Field</div>
+        <div class="stage-title">
+          <h2 id="stage-heading">Slab-aware aftershock field</h2>
+          <p id="stage-description">Most aftershocks sit inside or near the Cotabato Slab2 region, but their depths do not form a simple slab-interface-only story.</p>
+          <div class="claim-strip" aria-label="Claim status">
+            <span class="observed">Observed catalog</span>
+            <span class="modeled">Modeled Slab2</span>
+            <span class="inferred">Inferred corridor</span>
+            <span class="boundary-flag">Not prediction</span>
+          </div>
+        </div>
+
+        <div class="field-shell">
+          <canvas id="field" aria-label="Animated conceptual field of aftershock particles, Slab2 contours, and corridor alignment"></canvas>
+          <div class="axis-label north">north&ndash;south corridor</div>
+          <div class="axis-label depth">modeled slab depth</div>
+          <div class="axis-label mainshock">&#9733; mainshock reference</div>
+          <div class="field-legend" aria-label="Canvas legend">
+            <div class="legend-item"><i class="event"></i><span>event particle</span></div>
+            <div class="legend-item"><i class="near"></i><span>near slab top</span></div>
+            <div class="legend-item"><i class="slab"></i><span>Slab2 contour</span></div>
+            <div class="legend-item"><i class="axis"></i><span>PCA axis</span></div>
+          </div>
+          <div class="hover-card" id="hover-card" hidden aria-hidden="true"></div>
+        </div>
+
+        <div class="reading-rail" aria-label="Core report metrics">
+          <div class="reading-row"><span>events total</span><strong>900</strong><small>PHIVOLCS-derived public-page scaffold</small></div>
+          <div class="reading-row"><span>valid slab2 match</span><strong>815</strong><small>nearest modeled slab node found</small></div>
+          <div class="reading-row"><span>median node distance</span><strong>3.14 km</strong><small>strong spatial coverage context</small></div>
+          <div class="reading-row"><span>median depth delta</span><strong>&minus;28.8 km</strong><small>events mostly above slab top</small></div>
+        </div>
+      </section>
+
       <aside class="controls reveal">
         <div class="section-mark">01 · Instrument</div>
         <h2>One sequence, five lenses.</h2>
@@ -784,41 +903,6 @@
       </aside>
 
       <div class="seam" aria-hidden="true"></div>
-
-      <section class="stage reveal" aria-labelledby="stage-heading">
-        <div class="section-mark">02 · Field</div>
-        <div class="stage-title">
-          <h2 id="stage-heading">Slab-aware aftershock field</h2>
-          <p id="stage-description">Most aftershocks sit inside or near the Cotabato Slab2 region, but their depths do not form a simple slab-interface-only story.</p>
-          <div class="claim-strip" aria-label="Claim status">
-            <span class="observed">Observed catalog</span>
-            <span class="modeled">Modeled Slab2</span>
-            <span class="inferred">Inferred corridor</span>
-            <span class="boundary-flag">Not prediction</span>
-          </div>
-        </div>
-
-        <div class="field-shell">
-          <canvas id="field" aria-label="Animated conceptual field of aftershock particles, Slab2 contours, and corridor alignment"></canvas>
-          <div class="axis-label north">north&ndash;south corridor</div>
-          <div class="axis-label depth">modeled slab depth</div>
-          <div class="axis-label mainshock">&#9733; mainshock reference</div>
-          <div class="field-legend" aria-label="Canvas legend">
-            <div class="legend-item"><i class="event"></i><span>event particle</span></div>
-            <div class="legend-item"><i class="near"></i><span>near slab top</span></div>
-            <div class="legend-item"><i class="slab"></i><span>Slab2 contour</span></div>
-            <div class="legend-item"><i class="axis"></i><span>PCA axis</span></div>
-          </div>
-          <div class="hover-card" id="hover-card" hidden aria-hidden="true"></div>
-        </div>
-
-        <div class="reading-rail" aria-label="Core report metrics">
-          <div class="reading-row"><span>events total</span><strong>900</strong><small>PHIVOLCS-derived public-page scaffold</small></div>
-          <div class="reading-row"><span>valid slab2 match</span><strong>815</strong><small>nearest modeled slab node found</small></div>
-          <div class="reading-row"><span>median node distance</span><strong>3.14 km</strong><small>strong spatial coverage context</small></div>
-          <div class="reading-row"><span>median depth delta</span><strong>&minus;28.8 km</strong><small>events mostly above slab top</small></div>
-        </div>
-      </section>
     </section>
 
     <section class="story" aria-label="Report explanation">
@@ -1101,8 +1185,9 @@
       context.stroke();
       context.setLineDash([]);
       context.fillStyle = palette.trenchLabel;
-      context.font = "9.5px JetBrains Mono, ui-monospace, monospace";
-      context.fillText("conceptual offshore structure trace", width * 0.64, height * 0.155);
+      context.font = width < 680 ? "8.5px JetBrains Mono, ui-monospace, monospace" : "9.5px JetBrains Mono, ui-monospace, monospace";
+      const trenchText = width < 680 ? "offshore structure trace" : "conceptual offshore structure trace";
+      context.fillText(trenchText, width * (width < 680 ? 0.58 : 0.64), height * 0.155);
       context.restore();
     }
 
@@ -1251,8 +1336,13 @@
       }
 
       const delta = Math.round(nearest.particle.slabOffset * 82);
-      const left = Math.min(Math.max(18, nearest.x + 18), width - 256);
-      const top = Math.min(Math.max(18, nearest.y - 12), height - 128);
+      const cardWidth = Math.min(232, Math.max(204, width - 36));
+      const cardHeight = 126;
+      const leftCandidate = nearest.x > width * 0.58 ? nearest.x - cardWidth - 20 : nearest.x + 20;
+      const topCandidate = nearest.y > height * 0.58 ? nearest.y - cardHeight - 18 : nearest.y + 18;
+      const left = Math.min(Math.max(14, leftCandidate), Math.max(14, width - cardWidth - 14));
+      const top = Math.min(Math.max(14, topCandidate), Math.max(14, height - cardHeight - 14));
+      hoverCard.style.width = cardWidth + "px";
       hoverCard.style.left = left + "px";
       hoverCard.style.top = top + "px";
       hoverCard.innerHTML =
@@ -1267,7 +1357,7 @@
 
     function drawParticles() {
       let nearest = null;
-      let nearestDistance = 18;
+      let nearestDistance = width < 680 ? 24 : 18;
 
       for (const particle of particles) {
         if (!paused) updateParticle(particle);
@@ -1379,12 +1469,15 @@
       resetParticles();
     });
 
-    canvas.addEventListener("pointermove", (event) => {
+    function updatePointerFromEvent(event) {
       const rect = canvas.getBoundingClientRect();
       pointer.x = event.clientX - rect.left;
       pointer.y = event.clientY - rect.top;
       pointer.active = true;
-    });
+    }
+
+    canvas.addEventListener("pointermove", updatePointerFromEvent);
+    canvas.addEventListener("pointerdown", updatePointerFromEvent);
 
     canvas.addEventListener("pointerleave", () => {
       pointer.active = false;
