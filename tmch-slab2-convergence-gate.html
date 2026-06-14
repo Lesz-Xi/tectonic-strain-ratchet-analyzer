@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TMCH Slab2 Convergence Gate v0.1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --sumi: #0b0b0a;
+      --bone: #e9e2d3;
+      --bone-soft: #c9c1b0;
+      --stone: #948c7c;
+      --dim: #5d574d;
+      --rule: rgba(233, 226, 211, 0.12);
+      --rule-strong: rgba(233, 226, 211, 0.24);
+      --moss: #8fae94;
+      --brass: #b59560;
+      --rust: #c4674f;
+      --water: #7aa7b5;
+      --violet: #9b8cc0;
+      --serif: "Shippori Mincho", "Noto Serif JP", Georgia, serif;
+      --sans: "Zen Kaku Gothic New", "M PLUS 1p", Inter, system-ui, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--sumi);
+      color: var(--bone);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        repeating-linear-gradient(0deg, transparent 0 3px, rgba(233, 226, 211, 0.006) 3px 4px),
+        repeating-linear-gradient(90deg, transparent 0 3px, rgba(233, 226, 211, 0.004) 3px 4px);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      width: min(1280px, calc(100vw - 48px));
+      margin: 0 auto;
+      padding: clamp(64px, 9vw, 128px) 0 96px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 500;
+      letter-spacing: 0.005em;
+    }
+
+    p { margin: 0; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 860ms var(--ease), transform 860ms var(--ease);
+    }
+
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+    .register {
+      display: inline-grid;
+      grid-template-columns: 40px auto;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 34px;
+      color: var(--brass);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .register::before { content: ""; height: 1px; background: var(--brass); opacity: 0.6; }
+
+    .masthead { max-width: 760px; }
+
+    h1 {
+      font-size: clamp(26px, 3.2vw, 44px);
+      line-height: 1.32;
+    }
+
+    .lede {
+      max-width: 640px;
+      margin-top: 28px;
+      color: var(--bone-soft);
+      font-family: var(--serif);
+      font-size: clamp(15px, 1.5vw, 18px);
+      line-height: 1.85;
+    }
+
+    .claim-register {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 28px;
+      max-width: 640px;
+      margin-top: 40px;
+      padding-top: 18px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .claim-register span {
+      color: var(--stone);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      line-height: 2.5;
+    }
+
+    .claim-register b { color: var(--bone); font-weight: 500; }
+
+    .boundary {
+      max-width: 600px;
+      margin: clamp(72px, 9vw, 130px) 0 0 clamp(0px, 8vw, 116px);
+      padding-left: 26px;
+      border-left: 1px solid rgba(196, 103, 79, 0.55);
+    }
+
+    .boundary p { color: var(--bone-soft); font-size: 14.5px; line-height: 1.85; }
+    .boundary strong { color: var(--rust); font-weight: 500; }
+
+    .boundary small {
+      display: block;
+      margin-top: 16px;
+      color: var(--stone);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .section-mark {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 30px;
+      color: var(--stone);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .section-mark::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+      transform: translateY(-3px);
+    }
+
+    .instrument {
+      display: grid;
+      grid-template-columns: minmax(280px, 360px) 1px minmax(0, 1fr);
+      gap: 0 clamp(28px, 4vw, 56px);
+      margin-top: clamp(88px, 11vw, 150px);
+      padding-top: 26px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .seam {
+      background: linear-gradient(180deg, transparent, var(--rule) 12%, var(--rule) 88%, transparent);
+    }
+
+    .controls h2 { font-size: clamp(20px, 2vw, 27px); line-height: 1.45; margin-bottom: 22px; }
+    .controls .explain { color: var(--bone-soft); font-size: 14px; line-height: 1.8; }
+
+    .operator-note {
+      margin-top: 26px;
+      padding: 18px 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      color: var(--stone);
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .operator-note strong { color: var(--brass); font-weight: 500; }
+
+    .lens-list { display: grid; margin-top: 30px; }
+
+    .lens-button {
+      position: relative;
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      gap: 14px;
+      align-items: baseline;
+      width: 100%;
+      padding: 15px 2px 14px;
+      border: 0;
+      border-bottom: 1px solid var(--rule);
+      background: transparent;
+      color: var(--stone);
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--sans);
+      transition: color 240ms var(--ease);
+    }
+
+    .lens-button::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 100%;
+      height: 1px;
+      background: var(--brass);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 320ms var(--ease);
+    }
+
+    .lens-button:hover, .lens-button:focus-visible { color: var(--bone); outline: none; }
+    .lens-button:hover::after, .lens-button:focus-visible::after { transform: scaleX(0.24); }
+    .lens-button[aria-pressed="true"] { color: var(--bone); }
+    .lens-button[aria-pressed="true"]::after { transform: scaleX(1); }
+
+    .lens-button .index {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--dim);
+      transition: color 240ms var(--ease);
+    }
+
+    .lens-button[aria-pressed="true"] .index { color: var(--brass); }
+    .lens-button strong { font-size: 14px; font-weight: 500; }
+
+    .lens-button em {
+      font-family: var(--mono);
+      font-style: normal;
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    .slider-grid { display: grid; gap: 18px; margin-top: 32px; }
+    .slider-row { display: grid; gap: 9px; }
+
+    .slider-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--stone);
+      font-size: 12.5px;
+    }
+
+    output {
+      color: var(--brass);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+    }
+
+    input[type="range"] { width: 100%; height: 2px; accent-color: var(--brass); }
+
+    .toggles { display: flex; gap: 26px; margin-top: 30px; }
+
+    .plain-button {
+      position: relative;
+      padding: 4px 0;
+      border: 0;
+      background: transparent;
+      color: var(--stone);
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: color 240ms var(--ease);
+    }
+
+    .plain-button::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--water);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 300ms var(--ease);
+    }
+
+    .plain-button:hover, .plain-button:focus-visible { color: var(--bone); outline: none; }
+    .plain-button:hover::after, .plain-button:focus-visible::after { transform: scaleX(1); }
+
+    .stage-title h2 { font-size: clamp(22px, 2.4vw, 32px); line-height: 1.4; }
+
+    .stage-title p {
+      max-width: 640px;
+      margin-top: 14px;
+      color: var(--bone-soft);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .claim-strip { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 20px; }
+
+    .claim-strip span {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim);
+      line-height: 2.2;
+    }
+
+    .claim-strip .observed { color: var(--moss); }
+    .claim-strip .modeled { color: var(--water); }
+    .claim-strip .inferred { color: var(--brass); }
+    .claim-strip .boundary-flag { color: var(--rust); }
+
+    .field-shell {
+      position: relative;
+      margin-top: 30px;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      background:
+        linear-gradient(rgba(233, 226, 211, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(233, 226, 211, 0.022) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    canvas { display: block; width: 100%; height: 540px; }
+
+    .axis-label {
+      position: absolute;
+      pointer-events: none;
+      color: rgba(233, 226, 211, 0.4);
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .axis-label.north { top: 18px; left: 50%; transform: translateX(-50%); }
+    .axis-label.depth { right: 16px; top: 50%; transform: rotate(90deg) translateX(50%); transform-origin: right center; }
+    .axis-label.mainshock { left: 18px; bottom: 16px; color: rgba(196, 103, 79, 0.85); }
+
+    .field-legend {
+      position: absolute;
+      right: 18px;
+      bottom: 14px;
+      display: grid;
+      gap: 7px;
+      padding: 12px 0 12px 16px;
+      border-left: 1px solid var(--rule);
+      background: rgba(11, 11, 10, 0.72);
+    }
+
+    .legend-item {
+      display: grid;
+      grid-template-columns: 14px auto;
+      gap: 9px;
+      align-items: center;
+      color: var(--stone);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .legend-item i { width: 8px; height: 8px; border-radius: 50%; background: var(--stone); }
+    .legend-item i.event { background: var(--moss); }
+    .legend-item i.near { background: var(--brass); box-shadow: 0 0 0 2px rgba(233, 226, 211, 0.28); }
+    .legend-item i.slab { background: var(--water); }
+    .legend-item i.axis { border-radius: 0; width: 14px; height: 1.5px; background: var(--brass); }
+
+    .hover-card {
+      position: absolute;
+      z-index: 4;
+      width: 232px;
+      padding: 14px 0 12px 16px;
+      border-left: 1px solid var(--rule-strong);
+      background: rgba(11, 11, 10, 0.88);
+      pointer-events: none;
+    }
+
+    .hover-card[hidden] { display: none; }
+
+    .hover-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--bone);
+      font-size: 12.5px;
+      font-weight: 500;
+    }
+
+    .hover-card span {
+      display: block;
+      color: var(--stone);
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.07em;
+      line-height: 1.7;
+      text-transform: uppercase;
+    }
+
+    .reading-rail {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .reading-row {
+      padding: 22px 18px 22px 0;
+      border-right: 1px solid var(--rule);
+      padding-left: 18px;
+    }
+
+    .reading-row:first-child { padding-left: 0; }
+    .reading-row:last-child { border-right: 0; }
+
+    .reading-row span {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--stone);
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .reading-row strong {
+      display: block;
+      font-family: var(--serif);
+      font-size: clamp(20px, 2vw, 28px);
+      font-weight: 500;
+      color: var(--bone);
+    }
+
+    .reading-row small { display: block; margin-top: 7px; color: var(--dim); font-size: 11.5px; line-height: 1.5; }
+
+    .story {
+      margin-top: clamp(88px, 11vw, 150px);
+    }
+
+    .story-band {
+      display: grid;
+      grid-template-columns: minmax(0, 0.74fr) minmax(0, 1fr);
+      gap: clamp(32px, 5vw, 72px);
+      padding-top: 26px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .story-band + .story-band { margin-top: clamp(56px, 7vw, 96px); margin-left: clamp(0px, 6vw, 88px); }
+
+    .story-band h2 { font-size: clamp(20px, 2.2vw, 30px); line-height: 1.45; margin-bottom: 18px; }
+    .story-band p { color: var(--bone-soft); font-size: 14px; line-height: 1.85; }
+
+    .band-rail { display: grid; gap: 14px; margin-top: 8px; }
+
+    .band {
+      display: grid;
+      grid-template-columns: 152px 1fr 70px;
+      gap: 14px;
+      align-items: center;
+      color: var(--bone-soft);
+      font-size: 13px;
+    }
+
+    .band strong { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--bone); font-weight: 500; text-align: right; }
+
+    .bar { height: 1.5px; background: rgba(233, 226, 211, 0.1); }
+
+    .bar i {
+      display: block;
+      height: 100%;
+      background: var(--water);
+      transform-origin: left center;
+      transform: scaleX(0);
+      transition: transform 1100ms var(--ease) 220ms;
+    }
+
+    .is-visible .bar i { transform: scaleX(1); }
+    .band:nth-child(2) .bar i { background: var(--brass); }
+    .band:nth-child(3) .bar i { background: var(--violet); }
+
+    .verdict { display: grid; }
+
+    .verdict-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 20px;
+      padding: 18px 0;
+      border-top: 1px solid var(--rule);
+    }
+
+    .verdict-row:first-child { border-top: 0; padding-top: 0; }
+
+    .verdict-row .key {
+      color: var(--stone);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding-top: 3px;
+    }
+
+    .verdict-row p { color: var(--bone-soft); font-size: 13.5px; line-height: 1.75; }
+
+    .sequence { margin-top: clamp(88px, 11vw, 150px); }
+
+    .seam-steps {
+      position: relative;
+      margin-top: 8px;
+      padding-left: 26px;
+      border-left: 1px solid var(--rule);
+      display: grid;
+      gap: clamp(36px, 4.5vw, 56px);
+    }
+
+    .seam-step { position: relative; max-width: 560px; }
+
+    .seam-step::before {
+      content: "";
+      position: absolute;
+      left: -30px;
+      top: 7px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--sumi);
+      border: 1px solid var(--brass);
+    }
+
+    .seam-step .index {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--brass);
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .seam-step strong {
+      display: block;
+      margin-bottom: 8px;
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .seam-step p { color: var(--bone-soft); font-size: 13.5px; line-height: 1.75; }
+
+    .seam-step:nth-child(2) { margin-left: clamp(0px, 4vw, 56px); }
+    .seam-step:nth-child(3) { margin-left: clamp(0px, 8vw, 112px); }
+    .seam-step:nth-child(4) { margin-left: clamp(0px, 4vw, 56px); }
+
+    .colophon {
+      max-width: 620px;
+      margin: clamp(72px, 9vw, 130px) 0 0 auto;
+      padding-top: 22px;
+      border-top: 1px solid var(--rule);
+      color: var(--dim);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 1020px) {
+      .instrument { grid-template-columns: 1fr; }
+      .seam { display: none; }
+      .stage { margin-top: 56px; }
+      .story-band { grid-template-columns: 1fr; }
+      .story-band + .story-band { margin-left: 0; }
+      .boundary { margin-left: 0; }
+      .reading-rail { grid-template-columns: 1fr 1fr; }
+      .reading-row:nth-child(2) { border-right: 0; }
+      .reading-row { padding-left: 0; border-bottom: 1px solid var(--rule); }
+      .seam-step { margin-left: 0 !important; }
+    }
+
+    @media (max-width: 640px) {
+      .reading-rail { grid-template-columns: 1fr; }
+      .reading-row { border-right: 0; }
+      .band { grid-template-columns: 1fr; gap: 6px; }
+      .band strong { text-align: left; }
+      .verdict-row { grid-template-columns: 1fr; gap: 8px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="masthead reveal" aria-labelledby="page-title">
+      <div class="register">TMCH · Slab2 convergence gate · v0.1</div>
+      <h1 id="page-title">The slab is real. The corridor is honest. The cause is still a question.</h1>
+      <p class="lede">An interactive reading of the Sarangani–Cotabato aftershock field against independently modeled subduction geometry — built to keep the hypothesis disciplined, not to make it louder.</p>
+      <div class="claim-register" aria-label="Source and claim summary">
+        <span><b>900</b> PHIVOLCS-derived rows</span>
+        <span><b>Slab2</b> independent geometry</span>
+        <span><b>v0.1</b> exploratory gate</span>
+        <span><b>No</b> prediction claim</span>
+      </div>
+    </section>
+
+    <aside class="boundary reveal" aria-label="Scientific boundary">
+      <p><strong>Boundary.</strong> This page is not an earthquake prediction system, hazard alert, or proof of inherited tectonic memory. It is a convergence gate: a way of testing whether the pattern deserves the next, harder question.</p>
+      <small>Verdict — underdetermined. Strong enough to investigate. Not strong enough to claim.</small>
+    </aside>
+
+    <section class="instrument" aria-label="Interactive Slab2 convergence instrument">
+      <aside class="controls reveal">
+        <div class="section-mark">01 · Instrument</div>
+        <h2>One sequence, five lenses.</h2>
+        <p class="explain" id="lens-copy">Particles stand for aftershocks. The blue lines stand for modeled Slab2 geometry. The brass axis is the measured corridor. Nothing here is raw data; everything here is the report's structure, made visible.</p>
+        <p class="operator-note"><strong>Use it like an instrument.</strong> Switching lenses changes the question, not the verdict. The animation explains the report; it does not add evidence.</p>
+
+        <div class="lens-list" role="group" aria-label="Visualization lens">
+          <button class="lens-button" type="button" data-lens="geometry" aria-pressed="true"><span class="index">01</span><strong>Geometry</strong><em>where</em></button>
+          <button class="lens-button" type="button" data-lens="depth" aria-pressed="false"><span class="index">02</span><strong>Depth offset</strong><em>above / near / below</em></button>
+          <button class="lens-button" type="button" data-lens="corridor" aria-pressed="false"><span class="index">03</span><strong>Corridor</strong><em>179.4&deg; axis</em></button>
+          <button class="lens-button" type="button" data-lens="slab" aria-pressed="false"><span class="index">04</span><strong>Slab match</strong><em>815 / 900</em></button>
+          <button class="lens-button" type="button" data-lens="residual" aria-pressed="false"><span class="index">05</span><strong>Residual</strong><em>what remains</em></button>
+        </div>
+
+        <div class="slider-grid" aria-label="Physics controls">
+          <div class="slider-row">
+            <div class="slider-head"><label for="coupling">Slab coupling</label><output id="coupling-output" for="coupling">58%</output></div>
+            <input id="coupling" type="range" min="0" max="100" value="58" />
+          </div>
+          <div class="slider-row">
+            <div class="slider-head"><label for="residual">Residual drift</label><output id="residual-output" for="residual">34%</output></div>
+            <input id="residual" type="range" min="0" max="100" value="34" />
+          </div>
+          <div class="slider-row">
+            <div class="slider-head"><label for="damping">Damping</label><output id="damping-output" for="damping">82%</output></div>
+            <input id="damping" type="range" min="60" max="96" value="82" />
+          </div>
+        </div>
+
+        <div class="toggles">
+          <button class="plain-button" type="button" id="pause-button">Pause field</button>
+          <button class="plain-button" type="button" id="reset-button">Reset particles</button>
+        </div>
+      </aside>
+
+      <div class="seam" aria-hidden="true"></div>
+
+      <section class="stage reveal" aria-labelledby="stage-heading">
+        <div class="section-mark">02 · Field</div>
+        <div class="stage-title">
+          <h2 id="stage-heading">Slab-aware aftershock field</h2>
+          <p id="stage-description">Most aftershocks sit inside or near the Cotabato Slab2 region, but their depths do not form a simple slab-interface-only story.</p>
+          <div class="claim-strip" aria-label="Claim status">
+            <span class="observed">Observed catalog</span>
+            <span class="modeled">Modeled Slab2</span>
+            <span class="inferred">Inferred corridor</span>
+            <span class="boundary-flag">Not prediction</span>
+          </div>
+        </div>
+
+        <div class="field-shell">
+          <canvas id="field" aria-label="Animated conceptual field of aftershock particles, Slab2 contours, and corridor alignment"></canvas>
+          <div class="axis-label north">north&ndash;south corridor</div>
+          <div class="axis-label depth">modeled slab depth</div>
+          <div class="axis-label mainshock">&#9733; mainshock reference</div>
+          <div class="field-legend" aria-label="Canvas legend">
+            <div class="legend-item"><i class="event"></i><span>event particle</span></div>
+            <div class="legend-item"><i class="near"></i><span>near slab top</span></div>
+            <div class="legend-item"><i class="slab"></i><span>Slab2 contour</span></div>
+            <div class="legend-item"><i class="axis"></i><span>PCA axis</span></div>
+          </div>
+          <div class="hover-card" id="hover-card" hidden aria-hidden="true"></div>
+        </div>
+
+        <div class="reading-rail" aria-label="Core report metrics">
+          <div class="reading-row"><span>events total</span><strong>900</strong><small>PHIVOLCS-derived public-page scaffold</small></div>
+          <div class="reading-row"><span>valid slab2 match</span><strong>815</strong><small>nearest modeled slab node found</small></div>
+          <div class="reading-row"><span>median node distance</span><strong>3.14 km</strong><small>strong spatial coverage context</small></div>
+          <div class="reading-row"><span>median depth delta</span><strong>&minus;28.8 km</strong><small>events mostly above slab top</small></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="story" aria-label="Report explanation">
+      <div class="story-band reveal">
+        <div>
+          <div class="section-mark">03 · Reading</div>
+          <h2>The slab matters, but it does not explain everything.</h2>
+          <p>The sequence is clearly inside the active Cotabato subduction environment, which makes ordinary tectonic coupling the first explanation to respect. But most hypocenters are shallower than the modeled slab top, and the corridor does not simply trace Slab2 strike or contour lines.</p>
+        </div>
+        <div class="band-rail" aria-label="Depth position classes">
+          <div class="band"><span>above slab top</span><div class="bar"><i style="width: 64.62%"></i></div><strong>64.62%</strong></div>
+          <div class="band"><span>near slab top</span><div class="bar"><i style="width: 32.56%"></i></div><strong>32.56%</strong></div>
+          <div class="band"><span>below slab top</span><div class="bar"><i style="width: 2.83%"></i></div><strong>2.83%</strong></div>
+        </div>
+      </div>
+
+      <div class="story-band reveal">
+        <div>
+          <div class="section-mark">04 · Claim ledger</div>
+          <h2>What is observed, what is modeled, what remains.</h2>
+          <p>The gate exists to keep these categories from bleeding into each other.</p>
+        </div>
+        <div class="verdict">
+          <div class="verdict-row"><div class="key">observed</div><p>PHIVOLCS-derived events form a structured aftershock field around Sarangani / Cotabato.</p></div>
+          <div class="verdict-row"><div class="key">modeled</div><p>USGS Slab2 places those events inside or near the Cotabato slab geometry region, with dense nearest-node coverage.</p></div>
+          <div class="verdict-row"><div class="key">inferred</div><p>The aftershock corridor is nearly north&ndash;south at about 179.4&deg;, but local Slab2 strike differs by a median 34.7&deg;.</p></div>
+          <div class="verdict-row"><div class="key">remaining</div><p>TMCH survives only as a residual hypothesis: test bathymetric, gravity, magnetic, ridge, seamount, or buried-lineament structures after active slab and fault mechanics are accounted for.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sequence reveal" aria-label="Convergence gate sequence">
+      <div class="section-mark">05 · How to read the gate</div>
+      <div class="seam-steps">
+        <article class="seam-step"><span class="index">01 / scaffold</span><strong>Start with events.</strong><p>Each dot is an earthquake in the PHIVOLCS-derived working scaffold, not an official aftershock-association export.</p></article>
+        <article class="seam-step"><span class="index">02 / slab</span><strong>Add independent geometry.</strong><p>Slab2 contributes modeled slab depth, strike, dip, uncertainty, and contours &mdash; an outside witness the visual pattern cannot argue with.</p></article>
+        <article class="seam-step"><span class="index">03 / depth</span><strong>Compare vertical position.</strong><p>Most events sit above the modeled slab top, so the simple interface-only interpretation weakens.</p></article>
+        <article class="seam-step"><span class="index">04 / corridor</span><strong>Test the visible line.</strong><p>The measured corridor does not simply match slab strike or depth-contour direction. The line is real-looking; it is not self-explaining.</p></article>
+        <article class="seam-step"><span class="index">05 / residual</span><strong>Only then ask TMCH.</strong><p>If inherited structure exists, it should appear as residual alignment beyond Slab2, active faults, and catalog artifacts.</p></article>
+      </div>
+    </section>
+
+    <p class="colophon reveal">Source report: TMCH Slab2 Alignment v0.1 &mdash; USGS ScienceBase Slab2 Cotabato data release, Hayes 2018, DOI 10.5066/F7PV6JNV; PHIVOLCS-derived 900-row public latest-earthquake scaffold. This page visualizes the report&rsquo;s interpretation; it does not add new scientific evidence.</p>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("field");
+    const context = canvas.getContext("2d");
+    const lensButtons = Array.from(document.querySelectorAll(".lens-button"));
+    const lensCopy = document.getElementById("lens-copy");
+    const stageHeading = document.getElementById("stage-heading");
+    const stageDescription = document.getElementById("stage-description");
+    const coupling = document.getElementById("coupling");
+    const residual = document.getElementById("residual");
+    const damping = document.getElementById("damping");
+    const couplingOutput = document.getElementById("coupling-output");
+    const residualOutput = document.getElementById("residual-output");
+    const dampingOutput = document.getElementById("damping-output");
+    const pauseButton = document.getElementById("pause-button");
+    const resetButton = document.getElementById("reset-button");
+    const hoverCard = document.getElementById("hover-card");
+
+    if (!context) {
+      throw new Error("Canvas rendering context unavailable.");
+    }
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const lensText = {
+      geometry: {
+        title: "Slab-aware aftershock field",
+        description: "Most aftershocks sit inside or near the Cotabato Slab2 region, but their depths do not form a simple slab-interface-only story.",
+        copy: "Particles stand for aftershocks. The blue lines stand for modeled Slab2 geometry. The brass axis is the measured corridor. Nothing here is raw data; everything here is the report's structure, made visible."
+      },
+      depth: {
+        title: "Depth offset: above, near, below",
+        description: "A majority of events are more than 20 km above the modeled slab top. The near-slab subset matters, but it is not the whole field.",
+        copy: "Color now marks vertical relation to the modeled slab top: moss means above, brass means near, violet means below."
+      },
+      corridor: {
+        title: "The corridor is real-looking, not self-explaining",
+        description: "The measured aftershock axis is about 179.4 degrees, but Slab2 strike and contours do not collapse into that same direction.",
+        copy: "The brass line behaves like a descriptive PCA axis: useful for asking questions, not enough to declare a fault, source, or cause."
+      },
+      slab: {
+        title: "Slab2 coverage is strong",
+        description: "815 of 900 events matched a valid Slab2 node, with a median nearest-node distance of 3.14 km.",
+        copy: "This lens pulls particles toward the modeled slab field to show why the active Cotabato subduction environment must be accounted for first."
+      },
+      residual: {
+        title: "The residual is where TMCH is allowed to live",
+        description: "After Slab2 and ordinary tectonic coupling are respected, remaining structure should be tested against bathymetry, gravity, magnetic anomalies, ridges, seamounts, and buried lineaments.",
+        copy: "This lens lets unaccounted particles drift. That drift is not evidence by itself; it marks the next research gate."
+      }
+    };
+
+    const palette = {
+      bone: "#e9e2d3",
+      stone: "#948c7c",
+      moss: "rgba(143, 174, 148, 0.72)",
+      mossSolid: "#8fae94",
+      brass: "#b59560",
+      water: "#7aa7b5",
+      rust: "#c4674f",
+      violet: "#9b8cc0"
+    };
+
+    let width = 0;
+    let height = 0;
+    let activeLens = "geometry";
+    let paused = prefersReducedMotion;
+    let tick = 0;
+    let particles = [];
+    const pointer = { x: -1000, y: -1000, active: false };
+
+    function seededRandom(seed) {
+      let value = seed % 2147483647;
+      if (value <= 0) value += 2147483646;
+      return function next() {
+        value = value * 16807 % 2147483647;
+        return (value - 1) / 2147483646;
+      };
+    }
+
+    const random = seededRandom(20260611);
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      const ratio = window.devicePixelRatio || 1;
+      width = Math.max(320, Math.floor(rect.width));
+      height = Math.max(480, Math.floor(rect.height));
+      canvas.width = Math.floor(width * ratio);
+      canvas.height = Math.floor(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    }
+
+    function makeParticle(index) {
+      const cluster = random();
+      const along = (random() - 0.5) * (cluster > 0.74 ? 0.9 : 0.42);
+      const spread = cluster > 0.74 ? 0.42 : 0.22;
+      const cross = (random() - 0.5) * spread;
+      const depthClassRoll = random();
+      const depthClass = depthClassRoll < 0.6462 ? "above" : depthClassRoll < 0.9718 ? "near" : "below";
+      const magnitude = 1.2 + Math.pow(random(), 2.7) * 4.1;
+      const time = random();
+      const slabOffset = depthClass === "above" ? -0.35 - random() * 0.34 : depthClass === "near" ? (random() - 0.5) * 0.18 : 0.25 + random() * 0.35;
+      const targetX = 0.52 + cross + Math.sin(along * Math.PI) * 0.05;
+      const targetY = 0.5 + along;
+      return {
+        index,
+        x: 0.5 + (random() - 0.5) * 0.86,
+        y: 0.5 + (random() - 0.5) * 0.74,
+        vx: (random() - 0.5) * 0.002,
+        vy: (random() - 0.5) * 0.002,
+        targetX,
+        targetY,
+        depthClass,
+        magnitude,
+        time,
+        slabOffset,
+        phase: random() * Math.PI * 2
+      };
+    }
+
+    function resetParticles() {
+      particles = Array.from({ length: 230 }, (_, index) => makeParticle(index));
+    }
+
+    function getNumericValue(element) {
+      return Number.parseFloat(element.value) / 100;
+    }
+
+    function syncOutputs() {
+      couplingOutput.value = coupling.value + "%";
+      residualOutput.value = residual.value + "%";
+      dampingOutput.value = damping.value + "%";
+    }
+
+    function setLens(nextLens) {
+      activeLens = nextLens;
+      const text = lensText[nextLens];
+      stageHeading.textContent = text.title;
+      stageDescription.textContent = text.description;
+      lensCopy.textContent = text.copy;
+      for (const button of lensButtons) {
+        button.setAttribute("aria-pressed", String(button.dataset.lens === nextLens));
+      }
+    }
+
+    function drawTectonicEnvelope() {
+      const gradient = context.createLinearGradient(0, height * 0.18, width, height * 0.82);
+      gradient.addColorStop(0, "rgba(122, 167, 181, 0.015)");
+      gradient.addColorStop(0.48, "rgba(122, 167, 181, 0.085)");
+      gradient.addColorStop(1, "rgba(181, 149, 96, 0.02)");
+
+      context.save();
+      context.beginPath();
+      context.moveTo(width * 0.12, height * 0.18);
+      context.bezierCurveTo(width * 0.36, height * 0.08, width * 0.68, height * 0.28, width * 0.88, height * 0.18);
+      context.lineTo(width * 0.86, height * 0.84);
+      context.bezierCurveTo(width * 0.62, height * 0.94, width * 0.34, height * 0.72, width * 0.14, height * 0.86);
+      context.closePath();
+      context.fillStyle = gradient;
+      context.fill();
+
+      context.strokeStyle = "rgba(122, 167, 181, 0.16)";
+      context.lineWidth = 1;
+      context.setLineDash([3, 9]);
+      context.stroke();
+      context.setLineDash([]);
+      context.restore();
+    }
+
+    function drawTrenchTrace() {
+      context.save();
+      context.strokeStyle = "rgba(233, 226, 211, 0.14)";
+      context.lineWidth = 1;
+      context.beginPath();
+      for (let step = 0; step <= 90; step += 1) {
+        const ratio = step / 90;
+        const x = width * (0.08 + ratio * 0.84);
+        const y = height * (0.18 + Math.sin(ratio * Math.PI * 1.3 + 0.8) * 0.07 + ratio * 0.08);
+        if (step === 0) context.moveTo(x, y);
+        else context.lineTo(x, y);
+      }
+      context.stroke();
+      context.fillStyle = "rgba(233, 226, 211, 0.34)";
+      context.font = "9px JetBrains Mono, ui-monospace, monospace";
+      context.fillText("conceptual trench / offshore structure trace", width * 0.56, height * 0.21);
+      context.restore();
+    }
+
+    function drawSlabContours() {
+      context.save();
+      context.lineWidth = 1;
+      for (let contour = 0; contour < 7; contour += 1) {
+        const yBase = height * (0.2 + contour * 0.095);
+        const alpha = 0.13 + contour * 0.022;
+        context.strokeStyle = "rgba(122, 167, 181, " + alpha + ")";
+        context.beginPath();
+        for (let step = 0; step <= 120; step += 1) {
+          const x = (step / 120) * width;
+          const y = yBase + Math.sin(step * 0.12 + contour * 0.88 + tick * 0.008) * 16 + Math.cos(step * 0.04 + contour) * 24;
+          if (step === 0) context.moveTo(x, y);
+          else context.lineTo(x, y);
+        }
+        context.stroke();
+        context.fillStyle = "rgba(122, 167, 181, " + Math.min(0.5, alpha + 0.18) + ")";
+        context.font = "9px JetBrains Mono, ui-monospace, monospace";
+        context.fillText("-" + (20 + contour * 20) + " km", 16, yBase - 6);
+      }
+      context.restore();
+    }
+
+    function drawCorridor() {
+      const centerX = width * 0.53;
+      const top = height * 0.1;
+      const bottom = height * 0.9;
+      const lean = width * 0.018;
+      context.save();
+      context.strokeStyle = "rgba(181, 149, 96, 0.7)";
+      context.lineWidth = 1.6;
+      context.beginPath();
+      context.moveTo(centerX - lean, top);
+      context.lineTo(centerX + lean, bottom);
+      context.stroke();
+      context.strokeStyle = "rgba(181, 149, 96, 0.1)";
+      context.lineWidth = 30;
+      context.beginPath();
+      context.moveTo(centerX - lean, top);
+      context.lineTo(centerX + lean, bottom);
+      context.stroke();
+      context.restore();
+    }
+
+    function drawMainshock() {
+      const x = width * 0.36;
+      const y = height * 0.52;
+      const outer = 15;
+      const inner = 6.4;
+      context.save();
+      context.translate(x, y);
+      context.rotate(-Math.PI / 2);
+      context.beginPath();
+      for (let i = 0; i < 10; i += 1) {
+        const radius = i % 2 === 0 ? outer : inner;
+        const angle = i * Math.PI / 5;
+        const px = Math.cos(angle) * radius;
+        const py = Math.sin(angle) * radius;
+        if (i === 0) context.moveTo(px, py);
+        else context.lineTo(px, py);
+      }
+      context.closePath();
+      context.fillStyle = palette.rust;
+      context.strokeStyle = "rgba(233, 226, 211, 0.85)";
+      context.lineWidth = 1.6;
+      context.fill();
+      context.stroke();
+      context.restore();
+    }
+
+    function particleTarget(particle) {
+      const slabCoupling = getNumericValue(coupling);
+      const residualDrift = getNumericValue(residual);
+      const timeWave = Math.sin(tick * 0.01 + particle.phase) * 0.018;
+      const slabY = 0.22 + particle.targetX * 0.48 + Math.sin(particle.targetX * 9 + tick * 0.006) * 0.045;
+      const corridorX = 0.53 + (particle.targetY - 0.5) * 0.045;
+      let x = particle.targetX;
+      let y = particle.targetY;
+
+      if (activeLens === "slab") {
+        y = y * (1 - slabCoupling) + (slabY + particle.slabOffset * 0.24) * slabCoupling;
+        x = x * 0.72 + corridorX * 0.28;
+      }
+
+      if (activeLens === "depth") {
+        const classY = particle.depthClass === "above" ? 0.28 : particle.depthClass === "near" ? 0.52 : 0.76;
+        y = y * 0.46 + classY * 0.54;
+        x = 0.18 + particle.time * 0.68;
+      }
+
+      if (activeLens === "corridor") {
+        x = x * 0.42 + corridorX * 0.58;
+        y = particle.targetY + timeWave;
+      }
+
+      if (activeLens === "residual") {
+        const orbital = particle.index % 3 === 0 ? -1 : 1;
+        x = particle.targetX + Math.sin(tick * 0.009 + particle.phase) * residualDrift * 0.16 * orbital;
+        y = particle.targetY + Math.cos(tick * 0.007 + particle.phase) * residualDrift * 0.13;
+      }
+
+      if (activeLens === "geometry") {
+        x += Math.sin(tick * 0.008 + particle.phase) * 0.012;
+        y += Math.cos(tick * 0.007 + particle.phase) * 0.012;
+      }
+
+      return { x: Math.max(0.05, Math.min(0.95, x)), y: Math.max(0.08, Math.min(0.92, y)) };
+    }
+
+    function colorForParticle(particle) {
+      if (activeLens === "depth") {
+        if (particle.depthClass === "above") return palette.mossSolid;
+        if (particle.depthClass === "near") return palette.brass;
+        return palette.violet;
+      }
+      if (activeLens === "slab" && particle.depthClass === "near") return palette.water;
+      if (activeLens === "residual" && particle.depthClass !== "near") return "rgba(233, 226, 211, 0.38)";
+      const warm = particle.time > 0.56;
+      return warm ? "rgba(181, 149, 96, 0.72)" : palette.moss;
+    }
+
+    function updateParticle(particle) {
+      const target = particleTarget(particle);
+      const stiffness = activeLens === "residual" ? 0.004 : 0.008;
+      const friction = getNumericValue(damping);
+      particle.vx = (particle.vx + (target.x - particle.x) * stiffness) * friction;
+      particle.vy = (particle.vy + (target.y - particle.y) * stiffness) * friction;
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+    }
+
+    function classLabel(depthClass) {
+      if (depthClass === "above") return "above modeled slab top";
+      if (depthClass === "near") return "within +/-20 km slab top";
+      return "below modeled slab top";
+    }
+
+    function syncHoverCard(nearest) {
+      if (!hoverCard) return;
+      if (!nearest || !pointer.active) {
+        hoverCard.hidden = true;
+        hoverCard.setAttribute("aria-hidden", "true");
+        return;
+      }
+
+      const delta = Math.round(nearest.particle.slabOffset * 82);
+      const left = Math.min(Math.max(18, nearest.x + 18), width - 256);
+      const top = Math.min(Math.max(18, nearest.y - 12), height - 128);
+      hoverCard.style.left = left + "px";
+      hoverCard.style.top = top + "px";
+      hoverCard.innerHTML =
+        "<strong>Conceptual event particle</strong>" +
+        "<span>class: " + classLabel(nearest.particle.depthClass) + "</span>" +
+        "<span>magnitude scale: M" + nearest.particle.magnitude.toFixed(1) + "</span>" +
+        "<span>approx delta: " + (delta > 0 ? "+" : "") + delta + " km</span>" +
+        "<span>visual aid, not source row</span>";
+      hoverCard.hidden = false;
+      hoverCard.setAttribute("aria-hidden", "false");
+    }
+
+    function drawParticles() {
+      let nearest = null;
+      let nearestDistance = 18;
+
+      for (const particle of particles) {
+        if (!paused) updateParticle(particle);
+        const x = particle.x * width;
+        const y = particle.y * height;
+        const radius = 1.6 + particle.magnitude * 0.68;
+        context.beginPath();
+        context.arc(x, y, radius, 0, Math.PI * 2);
+        context.fillStyle = colorForParticle(particle);
+        context.fill();
+        if (particle.depthClass === "near") {
+          context.strokeStyle = "rgba(233, 226, 211, 0.5)";
+          context.lineWidth = 0.8;
+          context.stroke();
+        }
+
+        if (pointer.active) {
+          const dx = pointer.x - x;
+          const dy = pointer.y - y;
+          const distance = Math.sqrt(dx * dx + dy * dy) - radius;
+          if (distance < nearestDistance) {
+            nearestDistance = distance;
+            nearest = { particle, x, y, radius };
+          }
+        }
+      }
+
+      if (nearest) {
+        context.save();
+        context.beginPath();
+        context.arc(nearest.x, nearest.y, nearest.radius + 7, 0, Math.PI * 2);
+        context.strokeStyle = "rgba(233, 226, 211, 0.7)";
+        context.lineWidth = 1;
+        context.stroke();
+        context.restore();
+      }
+
+      syncHoverCard(nearest);
+    }
+
+    function drawDepthLegend() {
+      if (activeLens !== "depth") return;
+      const items = [
+        ["above slab", palette.mossSolid],
+        ["near slab", palette.brass],
+        ["below slab", palette.violet]
+      ];
+      context.save();
+      context.font = "10px JetBrains Mono, ui-monospace, monospace";
+      items.forEach((item, index) => {
+        const y = height * (0.28 + index * 0.24);
+        context.strokeStyle = "rgba(233, 226, 211, 0.1)";
+        context.beginPath();
+        context.moveTo(width * 0.08, y);
+        context.lineTo(width * 0.92, y);
+        context.stroke();
+        context.fillStyle = item[1];
+        context.fillText(item[0], width * 0.08, y - 10);
+      });
+      context.restore();
+    }
+
+    function drawResidualGate() {
+      if (activeLens !== "residual") return;
+      context.save();
+      context.strokeStyle = "rgba(196, 103, 79, 0.38)";
+      context.setLineDash([8, 8]);
+      context.lineWidth = 1.2;
+      context.strokeRect(width * 0.17, height * 0.18, width * 0.66, height * 0.64);
+      context.setLineDash([]);
+      context.fillStyle = "rgba(196, 103, 79, 0.72)";
+      context.font = "9px JetBrains Mono, ui-monospace, monospace";
+      context.fillText("residual gate: bathymetry + gravity + magnetic + lineament overlays", width * 0.18, height * 0.16);
+      context.restore();
+    }
+
+    function render() {
+      tick += paused ? 0 : 1;
+      context.clearRect(0, 0, width, height);
+      drawTectonicEnvelope();
+      drawTrenchTrace();
+      drawSlabContours();
+      drawCorridor();
+      drawDepthLegend();
+      drawResidualGate();
+      drawParticles();
+      drawMainshock();
+      window.requestAnimationFrame(render);
+    }
+
+    for (const button of lensButtons) {
+      button.addEventListener("click", () => {
+        const nextLens = button.dataset.lens;
+        if (nextLens) setLens(nextLens);
+      });
+    }
+
+    for (const slider of [coupling, residual, damping]) {
+      slider.addEventListener("input", syncOutputs);
+    }
+
+    pauseButton.addEventListener("click", () => {
+      paused = !paused;
+      pauseButton.textContent = paused ? "Resume field" : "Pause field";
+    });
+
+    resetButton.addEventListener("click", () => {
+      resetParticles();
+    });
+
+    canvas.addEventListener("pointermove", (event) => {
+      const rect = canvas.getBoundingClientRect();
+      pointer.x = event.clientX - rect.left;
+      pointer.y = event.clientY - rect.top;
+      pointer.active = true;
+    });
+
+    canvas.addEventListener("pointerleave", () => {
+      pointer.active = false;
+      if (hoverCard) {
+        hoverCard.hidden = true;
+        hoverCard.setAttribute("aria-hidden", "true");
+      }
+    });
+
+    window.addEventListener("resize", resize);
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      }
+    }, { threshold: 0.12 });
+
+    for (const element of document.querySelectorAll(".reveal")) {
+      revealObserver.observe(element);
+    }
+
+    syncOutputs();
+    resize();
+    resetParticles();
+    if (prefersReducedMotion) {
+      pauseButton.textContent = "Resume field";
+      for (const element of document.querySelectorAll(".reveal")) {
+        element.classList.add("is-visible");
+      }
+    }
+    render();
+  </script>
+</body>
+</html>
