@@ -529,7 +529,7 @@ def verify_report(report: str, service_worker: str) -> list[str]:
         "--moss: #7f9878",
         "rel='icon' type='image/png' sizes='64x64' href='/duality-icon-64.png'",
         "rel='apple-touch-icon' href='/duality-icon-192.png'",
-        "class='brand-mark' src='/duality-logo.png'",
+        "class='brand-mark' src='/logo-feat.png'",
         "brandFloat",
         "brand-title",
         "data-evidence-type",
