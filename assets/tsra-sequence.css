@@ -29,10 +29,12 @@
     padding: clamp(1.6rem, 3.4vw, 2.8rem);
     border: 1px solid var(--line);
     border-radius: var(--plate-radius);
-    background:
-        linear-gradient(135deg, color-mix(in srgb, var(--surface2) 72%, transparent), transparent 58%),
-        var(--paper-warm);
-    box-shadow: var(--shadow-sm);
+    /* Base is var(--bg) itself, not the separate --paper-warm swatch — in dark
+       theme --paper-warm (#100f0e) sits a few points above the true page ground
+       (#0d0c0a), which reads as a visible seam over a plate this large. The
+       diagonal tint still gives it quiet warmth without breaking the field. */
+    background: linear-gradient(135deg, color-mix(in srgb, var(--surface2) 72%, transparent), transparent 58%),
+        var(--bg);
 }
 
 .sequence-hero::after {
@@ -148,24 +150,22 @@
     background: var(--warn);
 }
 
+/* No box: three ruled columns on the open page. Each item carries its own
+   hairline top rule; whitespace, not borders, separates the columns. */
 .sequence-boundary-strip {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    border: 1px solid var(--line);
-    border-radius: var(--plate-radius);
-    background: var(--surface-soft);
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    padding: .35rem var(--plate-pad) 0;
 }
 
 .sequence-boundary-item {
     min-width: 0;
-    padding: .95rem var(--plate-pad);
+    padding: .8rem 0 0;
+    border-top: 1px solid var(--line);
     color: var(--text-sub);
     font-size: .74rem;
     line-height: 1.5;
-}
-
-.sequence-boundary-item + .sequence-boundary-item {
-    border-left: 1px solid var(--line);
 }
 
 .sequence-boundary-item strong {
@@ -181,15 +181,16 @@
 .sequence-metrics {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--field-gap);
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    padding: .5rem var(--plate-pad) .9rem;
 }
 
+/* Stat block, not a card: hairline top rule, open ground, the numeral carries
+   the weight. The rule is the only drawn structure. */
 .sequence-metric {
     min-width: 0;
-    padding: 1.05rem var(--plate-pad);
-    border: 1px solid var(--line);
-    border-radius: var(--plate-radius);
-    background: var(--surface);
+    padding: .8rem 0 0;
+    border-top: 1px solid var(--line);
 }
 
 .sequence-metric-label {
@@ -209,11 +210,11 @@
     font-size: .7rem;
 }
 
+/* Open plate: a single strong top rule announces the section, same grammar as
+   the .card override layer. The hero stays the one framed anchor per surface. */
 .sequence-activity-card {
-    padding: var(--plate-pad);
-    border: 1px solid var(--line);
-    border-radius: var(--plate-radius);
-    background: var(--surface);
+    padding: 1.35rem var(--plate-pad) .4rem;
+    border-top: 1px solid var(--line-strong);
 }
 
 .sequence-card-head {
@@ -586,7 +587,7 @@
     border-radius: var(--plate-radius);
     background:
         linear-gradient(120deg, color-mix(in srgb, var(--surface2) 72%, transparent), transparent 64%),
-        var(--paper-warm);
+        var(--bg);
 }
 
 .releases-title {
@@ -638,15 +639,14 @@
 .release-branch-list {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--field-gap);
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    padding: .5rem var(--plate-pad) .9rem;
 }
 
 .release-branch {
     min-width: 0;
-    padding: var(--plate-pad);
-    border: 1px solid var(--line);
-    border-radius: var(--plate-radius);
-    background: var(--surface);
+    padding: .9rem 0 0;
+    border-top: 1px solid var(--line-strong);
 }
 
 .release-branch-head {
@@ -830,15 +830,15 @@
     gap: .55rem;
 }
 
+/* Naked form row — the inputs carry their own borders; the container needs no
+   box of its own, just a hairline rule to open the control band. */
 .official-ledger-filters {
     display: grid;
     grid-template-columns: repeat(4, minmax(145px, 1fr)) auto;
     gap: .65rem;
     align-items: end;
-    padding: .9rem;
-    border: 1px solid var(--line);
-    border-radius: var(--plate-radius);
-    background: var(--surface-soft);
+    padding: .9rem 0 .2rem;
+    border-top: 1px solid var(--line);
 }
 
 .official-ledger-filter {
@@ -979,7 +979,11 @@
     padding: clamp(1.6rem, 3.2vw, 2.6rem);
     border: 1px solid var(--line);
     border-radius: var(--plate-radius);
-    background: linear-gradient(135deg, var(--paper-warm), var(--surface));
+    /* Same construction as the other heroes: tint fades out over a var(--bg)
+       base. The previous two-stop bg -> surface2 gradient never faded, so the
+       far side of the plate stayed permanently lifted off the page ground. */
+    background: linear-gradient(135deg, color-mix(in srgb, var(--surface2) 72%, transparent), transparent 58%),
+        var(--bg);
 }
 
 .archive-title {
@@ -1104,6 +1108,28 @@
     line-height: 1.55;
 }
 
+/* Current-context preface for preserved artifacts: the artifact text below stays
+   exactly as written; this ruled note updates only how it should be read. */
+.archive-reading-context {
+    max-width: 900px;
+    padding: .8rem var(--plate-pad) 0;
+    border-top: 1px solid var(--line);
+    color: var(--text-sub);
+    font-size: .74rem;
+    line-height: 1.6;
+}
+
+.archive-reading-context strong {
+    display: block;
+    margin-bottom: .12rem;
+    color: var(--accent2);
+    font-family: var(--mono);
+    font-size: .62rem;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
 .archive-claim-ceiling p {
     margin-top: .7rem;
     color: var(--text-sub);
@@ -1218,7 +1244,7 @@
     border-radius: var(--plate-radius);
     background:
         linear-gradient(120deg, color-mix(in srgb, var(--surface2) 70%, transparent), transparent 66%),
-        var(--paper-warm);
+        var(--bg);
 }
 
 .method-title {
@@ -1277,14 +1303,13 @@
 .method-metrics {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--field-gap);
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    padding: .5rem var(--plate-pad) .9rem;
 }
 
 .method-metric {
-    padding: 1.05rem var(--plate-pad);
-    border: 1px solid var(--line);
-    border-radius: var(--plate-radius);
-    background: var(--surface);
+    padding: .8rem 0 0;
+    border-top: 1px solid var(--line);
 }
 
 .method-metric strong {
@@ -1453,11 +1478,6 @@
     .sequence-boundary-strip,
     .sequence-activity-reading {
         grid-template-columns: 1fr;
-    }
-
-    .sequence-boundary-item + .sequence-boundary-item {
-        border-left: 0;
-        border-top: 1px solid var(--line);
     }
 }
 

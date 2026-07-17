@@ -5396,6 +5396,10 @@
             <div><span>Historical artifact</span><strong>This disclosure preserves TSRA’s early framing. Current scope and limits are defined by Sequence and Method.</strong></div>
             <button type='button' onclick="switchTab('archive',event)">Back to Archive</button>
         </div>
+        <div class='archive-reading-context'>
+            <strong>Reading context · after the 982-row review</strong>
+            TSRA no longer opens watch windows, re-anchors cycles, or maintains observation timing state. The instrument is now a static, source-bounded observatory of the reviewed PHIVOLCS catalog. This disclosure is preserved to show the tool’s original purpose and boundary language; the current scope is defined by Sequence and Method, and official guidance remains with PHIVOLCS.
+        </div>
         <div class='card'>
             <div class='disclosure-wrap'>
                 <div class='disclosure-head'>
@@ -5510,6 +5514,10 @@
         <div class='legacy-surface-boundary legacy-surface-boundary-critical' role='note'>
             <div><span>Superseded interpretation</span><strong>This report contains claims that do not survive the expanded-catalog audit. Preserve it as history; do not use it for prediction, safety, or current sequence interpretation.</strong></div>
             <button type='button' onclick="switchTab('archive',event)">Back to Archive</button>
+        </div>
+        <div class='archive-reading-context'>
+            <strong>Reading context · after the 982-row review</strong>
+            The expanded catalog did not validate a single-period clock. The 35.55-minute baseline, its multiplier windows, and the 88.9% fit survive below as the record of how the investigation began — not as current interpretation. The current organizing model is punctuated aftershock decay with spatially distinct microevent and strong-release populations; see Sequence and Method. All figures below, including the stated mainshock magnitude, are preserved exactly as originally written and were not re-verified by the review.
         </div>
         <div class='card field-report-card'>
 
@@ -6118,7 +6126,7 @@
             applyLowDataMode(enabled);
         }
 
-        const TSRA_APP_VERSION = 'tsra-field-cache-v129';
+        const TSRA_APP_VERSION = 'tsra-field-cache-v133';
         const TSRA_VERSION_URL = '/tsra-version.json';
         const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
         let tsraReloadingForUpdate = false;
