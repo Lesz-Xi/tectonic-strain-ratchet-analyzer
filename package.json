@@ -1,11 +1,12 @@
 {
-  "name": "earth-py",
-  "version": "1.0.0",
-  "description": "",
+  "name": "tsra-sequence-observatory",
+  "version": "0.2.0",
+  "description": "Static, source-bounded observatory for the Sarangani–Cotabato earthquake sequence.",
   "main": "index.js",
   "scripts": {
     "start": "node viewer-server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test tests/tsra-sequence.test.js && python3 -m unittest discover -v tests",
+    "verify": "python3 tools/tsra_build.py verify && python3 tools/tsra_update.py verify && npm test && git diff --check"
   },
   "keywords": [],
   "author": "",

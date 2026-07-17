@@ -1,7 +1,7 @@
 {
   "name": "TSRA — Tectonic Strain Ratchet Analyzer",
   "short_name": "TSRA",
-  "description": "Observation-first seismic timing report with offline app-shell support for low-signal field access.",
+  "description": "Source-bounded observatory for the Sarangani–Cotabato earthquake sequence, daily activity, significant releases, and evidence limits.",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",

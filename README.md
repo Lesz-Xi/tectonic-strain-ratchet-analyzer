@@ -1,107 +1,156 @@
 # TSRA — Tectonic Strain Ratchet Analyzer
 
-A field-built aftershock forecasting tool derived from personal observation during the **June 8–10, 2026 earthquake sequence** along the Cotabato Subduction Zone, Sarangani Segment, Philippines.
+TSRA is a **static, source-bounded sequence observatory** for public PHIVOLCS earthquake bulletin rows in the Sarangani–Cotabato research area.
 
-Built from intuition first. Formalized into physics second.
+It began as an investigation of an apparent 35.55-minute aftershock rhythm. The expanded catalog does **not** validate a continuing single-period clock. The current representation centers sequence decay, spatial branching, significant releases, provenance, capture limits, and uncertainty.
 
----
+> **Safety boundary:** TSRA is not an earthquake warning system, prediction service, magnitude forecast, or substitute for PHIVOLCS advisories and civil-defense instructions.
 
-## What It Does
+## Current Evidence Snapshot
 
-TSRA fits a **stick-slip physics model** to a manually-recorded timeline of seismic events and forecasts the next aftershock release windows. The core idea: tectonic faults don't release stress randomly — they follow a rhythm. Find the baseline pulse period, and the next windows become predictable.
+Dataset: `tsra-sarangani-cotabato-sequence-v0.2`
 
-The model identified a **~35.5-minute baseline pulse** in this fault segment. Subsequent aftershocks arrived at 1×, 3.5×, 7×, and 9.5× multiples of that pulse — with 87.7% predictive alignment across 9 confirmed events.
+- **982** deduplicated public PHIVOLCS rows
+- **12** directly reviewed final PHIVOLCS bulletins at M4.5+
+- **35** M4+ rows
+- **5** M5+ rows
+- **2** M6+ rows
+- **18** daily activity records
+- **3** research branches
 
----
+Coverage is deliberately bounded:
 
-## Features
+- Area of interest: `4.2–6.2°N, 124.5–126.0°E`
+- Start: June 30, 2026 at 08:00 PHT
+- Capture: July 17, 2026 at 12:23 PHT
+- Last included core-area row: July 17, 2026 at 07:02 PHT
 
-- **Stick-slip model fitting** — derives baseline pulse from observed event intervals
-- **Live countdown dashboard** — pending windows update every second in-browser
-- **Dark / Light theme** — warm charcoal dark, washi-paper light, toggle persists via localStorage
-- **Clickable stat cards** — expand any metric into a plain-language modal explanation
-- **Chart explainer** — sawtooth waveform described in plain terms for general audiences
-- **Live viewer count** — real-time cross-machine viewer tracking via WebSocket server; falls back to BroadcastChannel for same-browser tabs
-- **Origin disclosure** — honest account of the intuition and manual observation that started this
+“All data” means all deduplicated public PHIVOLCS rows found inside that declared area and interval. It does not mean all earthquakes everywhere, an officially complete sequence, or automatic official aftershock association.
 
----
+## What the Application Shows
 
-## Stack
+### Sequence
 
-| Layer | Tech |
+The reviewed snapshot, capture boundaries, daily activity, evidence totals, and current interpretation:
+
+> **Punctuated aftershock decay with spatially distinct microevent and strong-release populations; no validated single-period clock.**
+
+### Releases
+
+Branch-level summaries and the 12 directly inspected final M4.5+ PHIVOLCS bulletins. PHIVOLCS and USGS values remain source-specific; TSRA does not create hybrid event solutions.
+
+### Ledger
+
+A lazy-loaded, filterable view of all 982 official rows. The complete CSV stays outside the initial PWA shell.
+
+The Ledger also contains a device-local **Private observation notebook**. These records:
+
+- remain under `tsraObservationLedger.v1` in browser storage;
+- are user-entered and private to the device;
+- are not submitted to PHIVOLCS;
+- are never counted as official events or automatic sequence evidence;
+- do not need to reference a model window.
+
+### Method
+
+An inspectable audit of the original clock hypothesis:
+
+- fitted historical baseline: **35.552 minutes**;
+- rounded null-test baseline: **35.55 minutes**;
+- inherited tolerance: **±12 minutes**;
+- null occupancy: `24 / 35.55 = 67.5%`;
+- original selected-event result: **8/9 intervals inside tolerance**;
+- threshold-specific catalog tests and limitations;
+- preserved 11-event investigation with explicit provenance boundaries.
+
+The historical fit is retained as a falsifiable research trace, not operational authority.
+
+### Archive
+
+The original chart, field report, learning modules, origin disclosure, and TMCH Slab2 convergence-gate artifact remain inspectable behind an explicit historical boundary. Archived claims may be obsolete and do not govern the current instrument.
+
+## Architecture
+
+TSRA intentionally remains small and static:
+
+| Layer | Implementation |
 |---|---|
-| Analysis | Python 3 (`matplotlib`) |
-| Dashboard | Vanilla HTML / CSS / JS — zero framework |
-| Live viewers | Node.js + `ws` WebSocket server |
-| Deployment | Vercel (static) |
+| Application shell | `seismic_report.html` |
+| Sequence rendering | `assets/tsra-sequence.js` |
+| Sequence styles | `assets/tsra-sequence.css` |
+| Reviewed evidence | `data/sequence-v0.2/` |
+| Dataset contract | `tools/tsra_build.py` |
+| Shell/PWA contract | `tools/tsra_update.py verify` |
+| Offline shell | `service-worker.js` |
+| Tests | Node test runner + Python `unittest` |
 
----
+There is no application database, map library, framework, automatic PHIVOLCS ingestion, or server-side evidence mutation.
 
-## Local Setup
+## Run Locally
 
-**Python analysis (regenerate chart + HTML):**
-
-```bash
-cd "Earth py"
-python3 -m venv .venv
-source .venv/bin/activate
-pip install matplotlib
-python3 gemini-code-1781025686774.py
-open seismic_report.html
-```
-
-**Live viewer server (optional — cross-machine viewer count):**
+The application fetches reviewed JSON and CSV files, so serve the repository over HTTP rather than opening the HTML through `file://`.
 
 ```bash
-npm install
-node viewer-server.js
+cd /Users/lesz/Developer/Mother-Ana
+python3 -m http.server 8000
 ```
 
-Server runs on `ws://localhost:5173`. Open the dashboard on any machine on the same network and the viewer count updates live.
+Then open:
 
----
+```text
+http://localhost:8000/seismic_report.html
+```
 
-## Deploy to Vercel
+The optional `viewer-server.js` is not part of the evidence pipeline.
 
-The dashboard (`seismic_report.html`) is a fully self-contained static file. No build step required.
+## Verification
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Lesz-Xi/tectonic-strain-ratchet-analyzer)
-
-Or via CLI:
+Run the complete contract before shipping:
 
 ```bash
-npm i -g vercel
-vercel
+python3 tools/tsra_build.py verify
+python3 tools/tsra_update.py verify
+npm test
+git diff --check
 ```
 
-> **Note:** The WebSocket viewer server (`viewer-server.js`) requires a persistent Node.js environment and cannot run on Vercel's serverless infrastructure. On Vercel, the dashboard will automatically fall back to BroadcastChannel-based tab counting within the same browser session.
+Or:
 
----
+```bash
+npm run verify
+```
 
-## Event Log
+The verifiers check dataset integrity, counts, chronology, area bounds, conservation totals, significant-event provenance, historical-method invariants, claim boundaries, retired clock surfaces, JavaScript syntax, PWA version synchronization, and tests.
 
-| # | Label | Time (PHT) | Interval | Multiplier |
-|---|---|---|---|---|
-| 0 | Mainshock | Jun 8 · 07:37 AM | — | — |
-| 1 | A1 | Jun 8 · 01:12 PM | 334.3 min | 9.5× |
-| 2 | A2 | Jun 8 · 05:16 PM | 244.0 min | 7.0× |
-| 3 | A3 | Jun 8 · 05:51 PM | 35.0 min | 1.0× |
-| 4 | A4 | Jun 8 · 06:26 PM | 35.0 min | 1.0× |
-| 5 | A5 | Jun 8 · 10:30 PM | 244.0 min | 7.0× |
-| 6 | A6 | Jun 10 · 12:36 AM | 126.0 min | 3.5× |
-| 7 | A7 | Jun 10 · 02:12 AM | 96.0 min | ~3.5× early |
-| 8 | A8 | Jun 10 · 02:55 AM | 43.0 min | 1.0× |
-| 9 | A9 | Jun 10 · 03:26 AM | 31.0 min | 1.0× |
-| 10 | A10 | Jun 10 · 03:36 AM | 10.0 min | sub-pulse |
+## Updating Reviewed Evidence
 
----
+The production snapshot is intentionally not mutated by a live scraper.
 
-## Disclosure
+A new version requires a reviewed evidence bundle:
 
-This tool was not built from a textbook. It began as intuition on the morning of June 8, 2026 — a feeling that the aftershocks were not arriving randomly, that there was a rhythm underneath the noise. I started recording times manually. The intervals started lining up: 35 minutes, then 7× that, then 9.5× that. The model is the formalization of that observation.
+1. capture and preserve source material;
+2. deduplicate rows using an explicit key;
+3. keep preliminary and final source revisions distinct;
+4. calculate summaries from the new catalog;
+5. create a new versioned dataset directory;
+6. update file sizes and SHA-256 values in its manifest;
+7. extend the verifier for any new contract fields;
+8. run the full verification suite;
+9. advance the synchronized PWA cache version.
 
-This is an **observational field tool**, not a certified scientific instrument. It should not replace official PHIVOLCS advisories, civil defense protocols, or professional seismological guidance. The pattern observed is consistent with well-documented stick-slip tectonic mechanics — but earthquake behavior is never fully deterministic.
+Do not regenerate `seismic_report.html` with `gemini-code-1781025686774.py` or `pattern-v3.py`. Those scripts encode the retired countdown-first representation and are preserved only as historical source artifacts.
 
----
+## Legacy Material
 
-*Last updated: June 10, 2026 · Cotabato Subduction Zone, Sarangani Segment*
+The following files are non-authoritative historical artifacts:
+
+- `gemini-code-1781025686774.py`
+- `pattern-v3.py`
+- `pattern.md`
+- `Rythmic-Seismic-Discharge.md`
+
+They document how the original hypothesis formed. They must not overwrite the reviewed application shell or be cited as validation of a deterministic fault clock.
+
+## License
+
+ISC, as declared in `package.json`.

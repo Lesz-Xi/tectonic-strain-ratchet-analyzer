@@ -6,14 +6,16 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>TSRA &mdash; Tectonic Strain Ratchet Analyzer</title>
     <meta name='theme-color' content='#0d0c0a'>
-    <meta name='description' content='TSRA is an observational timing report for confirmed events, felt observations, and phase-sensitive watch windows.'>
+    <meta name='description' content='TSRA is a source-bounded observatory for the Sarangani–Cotabato earthquake sequence, its daily decay, significant releases, and evidence limits.'>
     <link rel='manifest' href='/manifest.webmanifest'>
+    <link rel='icon' type='image/svg+xml' href='/tsra-mark.svg'>
     <link rel='icon' type='image/png' sizes='64x64' href='/duality-icon-64.png'>
     <link rel='icon' type='image/png' sizes='192x192' href='/duality-icon-192.png'>
     <link rel='apple-touch-icon' href='/duality-icon-192.png'>
     <link
         href='https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap'
         rel='stylesheet'>
+    <link rel='stylesheet' href='/assets/tsra-sequence.css'>
     <style>
         *,
         *::before,
@@ -43,10 +45,21 @@
             --surface-soft: var(--ash-panel-soft);
             --paper-warm: var(--sumi-panel);
             --paper-warm-soft: var(--ash-panel);
-            --line: rgba(233, 226, 211, .12);
-            --line-strong: rgba(233, 226, 211, .24);
+            --line: rgba(233, 226, 211, .085);
+            --line-strong: rgba(233, 226, 211, .17);
             --border: var(--line);
-            --border-sub: rgba(233, 226, 211, .07);
+            --border-sub: rgba(233, 226, 211, .05);
+            /* Plate rhythm — one radius, one padding scale, one gap across every surface. */
+            --plate-radius: 10px;
+            --plate-pad: clamp(1rem, 2.2vw, 1.6rem);
+            --field-gap: clamp(.5rem, 1.1vw, .75rem);
+            /* Magnitude ramp — ash → moss-grey → moss → brass → rust.
+               Energy reads as heat and luminance inside the kuro/brass/moss family. */
+            --seq-below-m2: rgba(233, 226, 211, .12);
+            --seq-m2: #4d574f;
+            --seq-m3: #7f9878;
+            --seq-m4: #b89455;
+            --seq-m5: #c4674f;
             --accent: var(--old-brass);
             --accent2: var(--moss);
             --warn: var(--rust);
@@ -83,10 +96,19 @@
             --surface-soft: rgba(249, 246, 238, .55);
             --paper-warm: #f3eee2;
             --paper-warm-soft: #eae3d3;
-            --line: rgba(33, 30, 25, .13);
-            --line-strong: rgba(33, 30, 25, .24);
-            --border: rgba(33, 30, 25, .13);
-            --border-sub: rgba(33, 30, 25, .08);
+            --line: rgba(33, 30, 25, .095);
+            --line-strong: rgba(33, 30, 25, .18);
+            --border: rgba(33, 30, 25, .095);
+            --border-sub: rgba(33, 30, 25, .06);
+            --plate-radius: 10px;
+            --plate-pad: clamp(1rem, 2.2vw, 1.6rem);
+            --field-gap: clamp(.5rem, 1.1vw, .75rem);
+            /* Same ramp on paper: quiet ink → moss-grey → moss → brass → rust. */
+            --seq-below-m2: rgba(33, 30, 25, .17);
+            --seq-m2: #9aa396;
+            --seq-m3: #6f8f6d;
+            --seq-m4: #a98337;
+            --seq-m5: #a9573f;
             --accent: #8c7142;
             --accent2: #5d7f63;
             --warn: #a9573f;
@@ -133,9 +155,10 @@
             position: fixed;
             inset: 0;
             pointer-events: none;
-            opacity: .022;
+            opacity: .03;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-            mix-blend-mode: overlay;
+            /* No blend mode: overlay blending forces whole-page recomposite on scroll. */
+            transform: translateZ(0);
             z-index: 0
         }
 
@@ -166,47 +189,19 @@
             gap: .75rem
         }
 
-        .brand-mark,
-        .brand-mark-light {
-            width: clamp(70px, 8vw, 104px);
-            height: clamp(58px, 6.1vw, 76px);
+        /* Equalizer mark — a rhythm read, in the same brass-over-ash language as the
+           magnitude ramp. Strokes inherit currentColor so the theme drives the mark. */
+        .brand-mark {
+            width: clamp(30px, 3vw, 38px);
+            height: clamp(30px, 3vw, 38px);
             display: block;
-            object-fit: contain;
             flex: 0 0 auto;
-            transform-origin: 50% 50%;
-            animation: brandFloat 12s var(--ease) infinite;
-            filter: drop-shadow(0 8px 14px rgba(0, 0, 0, .22)) saturate(1.02);
-            will-change: transform
+            color: var(--accent);
+            overflow: visible
         }
 
-        .brand-mark-light {
-            display: none
-        }
-
-        [data-theme='light'] .brand-mark {
-            display: none
-        }
-
-        [data-theme='light'] .brand-mark-light {
-            display: block;
-            filter: drop-shadow(0 8px 17px rgba(95, 72, 32, .16)) saturate(1.04) contrast(1.03)
-        }
-
-        @keyframes brandFloat {
-            0%,
-            100% {
-                transform: translateY(0)
-            }
-            50% {
-                transform: translateY(-1px)
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .brand-mark,
-            .brand-mark-light {
-                animation: none
-            }
+        .brand-mark .brand-mark-quiet {
+            stroke: var(--muted)
         }
 
         .brand-text {
@@ -4148,8 +4143,29 @@
 
     <header>
         <div class='header-left'>
-            <img class='brand-mark' src='/logo-feat.png' alt='TSRA' width='1374' height='1145'>
-            <img class='brand-mark-light' src='/logo-feat.png' alt='' aria-hidden='true' width='1374' height='1145'>
+            <svg class='brand-mark' viewBox='0 0 48 48' role='img' aria-label='TSRA'>
+                <g fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='4'>
+                    <path class='brand-mark-quiet' d='M5 42H10' />
+                    <path class='brand-mark-quiet' d='M5 36H10' />
+                    <path class='brand-mark-quiet' d='M5 30H10' />
+                    <path class='brand-mark-quiet' d='M5 24H10' />
+                    <path d='M16 42H21' />
+                    <path d='M16 36H21' />
+                    <path d='M16 30H21' />
+                    <path d='M16 24H21' />
+                    <path d='M16 18H21' />
+                    <path d='M16 12H21' />
+                    <path d='M16 6H21' />
+                    <path class='brand-mark-quiet' d='M27 42H32' />
+                    <path class='brand-mark-quiet' d='M27 36H32' />
+                    <path class='brand-mark-quiet' d='M27 30H32' />
+                    <path d='M38 42H43' />
+                    <path d='M38 36H43' />
+                    <path d='M38 30H43' />
+                    <path d='M38 24H43' />
+                    <path d='M38 18H43' />
+                </g>
+            </svg>
             <h1 class='brand-text'><span class='brand-title'>TSRA</span><span class='brand-sub'>Tectonic Strain Ratchet Analyzer</span></h1>
             <span class='zone-tag'>Cotabato · Sarangani</span>
         </div>
@@ -4215,16 +4231,16 @@
     </section>
 
     <section class='source-certainty-register' aria-label='Source and certainty legend'>
-        <div class='source-certainty-kicker'>What this means</div>
+        <div class='source-certainty-kicker'>Evidence grammar</div>
         <div class='source-certainty-list'>
-            <span class='evidence-chip'><strong>Confirmed</strong> official seismic record</span>
-            <span class='evidence-chip'><strong>Felt-only</strong> local observation · not confirmed</span>
-            <span class='evidence-chip'><strong>Elapsed</strong> local no-shake outcome</span>
-            <span class='evidence-chip'><strong>Model window</strong> generated watch · not warning</span>
+            <span class='evidence-chip'><strong>Official row</strong> PHIVOLCS public bulletin record</span>
+            <span class='evidence-chip'><strong>Final association</strong> directly inspected bulletin statement</span>
+            <span class='evidence-chip'><strong>Inference</strong> bounded interpretation, not official classification</span>
+            <span class='evidence-chip'><strong>Local note</strong> private observation · never merged automatically</span>
         </div>
     </section>
 
-    <div class='stats'>
+    <div class='stats legacy-stats' aria-label='Historical clock metrics'>
         <div class='stat' onclick="openModal('pulse')">
             <div class='stat-hint'>inspect</div>
             <div class='stat-icon' aria-hidden='true'><svg viewBox='0 0 24 24'><path d='M3 13c2.2-5.6 4.4-5.6 6.6 0s4.4 5.6 6.6 0S20.6 7.4 22 10.2'/><path d='M3 17h18'/></svg></div>
@@ -4256,170 +4272,263 @@
     </div>
 
     <div class='tabs'>
-        <button class='tab-btn active' onclick="switchTab('now',event)">Now</button>
-        <button class='tab-btn' onclick="switchTab('events',event)">Ledger</button>
-        <button class='tab-btn' onclick="switchTab('rhythm',event)">Rhythm</button>
-        <button class='tab-btn' onclick="switchTab('calibration',event)">Calibration</button>
-        <button class='tab-btn' onclick="switchTab('chart',event)">Chart</button>
-        <button class='tab-btn' onclick="switchTab('field-report',event)">Field Report</button>
-        <button class='tab-btn' onclick="switchTab('learning',event)">Learning</button>
-        <button class='tab-btn' onclick="switchTab('origin',event)">Origin</button>
-        <a class='tab-btn' href='/tmch-slab2-convergence-gate.html' title='Open standalone TMCH Slab2 convergence gate archive'>Archive</a>
+        <button class='tab-btn active' data-tab='sequence' onclick="switchTab('sequence',event)">Sequence</button>
+        <button class='tab-btn' data-tab='releases' onclick="switchTab('releases',event)">Releases</button>
+        <button class='tab-btn' data-tab='events' onclick="switchTab('events',event)">Ledger</button>
+        <button class='tab-btn' data-tab='method' onclick="switchTab('method',event)">Method</button>
+        <button class='tab-btn' data-tab='archive' onclick="switchTab('archive',event)">Archive</button>
     </div>
 
-    <div class='tab-panel active' id='tab-now'>
-        <div class='card now-card'>
-            <div class='now-shell'>
-                <section class='now-primary' aria-labelledby='now-title'>
-                    <svg class='phase-curve' viewBox='0 0 220 86' aria-hidden='true' focusable='false'>
-                        <path class='phase-axis' d='M22 70 C 58 67, 78 58, 104 49 C 132 39, 158 31, 198 25'/>
-                        <path class='phase-curve-line phase-curve-line-soft' d='M20 75 C 60 71, 82 62, 108 53 C 137 43, 160 37, 202 32'/>
-                        <path class='phase-curve-line' d='M24 68 C 61 63, 83 55, 108 45 C 139 33, 164 27, 200 23'/>
-                        <g class='phase-point is-active' data-phase='1.0' transform='translate(34 68)'>
-                            <circle r='3.2'/><text x='-15' y='13'>1.0×</text>
-                        </g>
-                        <g class='phase-point' data-phase='3.5' transform='translate(82 55)'>
-                            <circle r='3.2'/><text x='-16' y='15'>3.5×</text>
-                        </g>
-                        <g class='phase-point' data-phase='7.0' transform='translate(136 34)'>
-                            <circle r='3.2'/><text x='-14' y='-13'>7.0×</text>
-                        </g>
-                        <g class='phase-point' data-phase='9.5' transform='translate(190 26)'>
-                            <circle r='3.2'/><text x='-17' y='-12'>9.5×</text>
-                        </g>
-                    </svg>
-                    <div class='now-kicker' id='now-status'>Next Observation Window</div>
-                    <div class='now-time' id='now-time'>02:58 AM</div>
-                    <div class='now-phase' id='now-title'>1.0&times; · post-02:23 AM observation cycle</div>
-                    <div class='now-remain' id='now-remain'>New watch opened</div>
-                </section>
-                <aside class='now-side' aria-label='Latest observation note'>
-                    <div class='now-note'>
-                        <div class='now-mini-label'>Latest local outcome</div>
-                        <div class='now-note-title'>02:23 AM · no local shake observed</div>
-                        <div class='now-note-body'>The 9.5× extended-phase watch elapsed without a locally felt shake. This is a local observation outcome, not an official confirmation or event record.</div>
-                        <div class='now-boundary'>Observation surface only · not a certified warning system</div>
+    <div class='tab-panel active' id='tab-sequence'>
+        <main class='sequence-root' id='sequence-root' data-state='loading'>
+            <section class='sequence-hero' aria-labelledby='sequence-verdict'>
+                <div class='sequence-hero-main'>
+                    <div class='sequence-kicker'>Bounded sequence state · inference</div>
+                    <h2 class='sequence-verdict' id='sequence-verdict'>Loading the reviewed sequence snapshot…</h2>
+                    <div class='sequence-verdict-class'>
+                        <strong>Claim status</strong>
+                        Derived from a fixed public-catalog capture, not a live warning state.
                     </div>
-                    <div class='now-action-panel'>
-                        <div class='now-mini-label'>Field action</div>
-                        <div class='now-note-body'>Record what happened on this device. Entries stay local and remain separate from confirmed seismic events.</div>
-                        <button class='now-record-btn' id='now-record-outcome' type='button' onclick='openNowOutcomeRecorder()'>Record outcome</button>
-                        <div class='now-link-row' aria-label='Related sections'>
-                            <button class='tab-btn' type='button' onclick="switchTab('events',event)">Ledger</button>
-                            <button class='tab-btn' type='button' onclick="switchTab('rhythm',event)">Rhythm</button>
-                            <button class='tab-btn' type='button' onclick="switchTab('field-report',event)">Report</button>
+                </div>
+                <div class='sequence-capture-register' aria-label='Snapshot coverage'>
+                    <div class='sequence-status' id='sequence-load-status' aria-live='polite'>Loading reviewed snapshot</div>
+                    <div class='sequence-capture-row'>
+                        <div class='sequence-capture-label'>Captured</div>
+                        <div class='sequence-capture-value' id='sequence-capture-time'>—</div>
+                    </div>
+                    <div class='sequence-capture-row'>
+                        <div class='sequence-capture-label'>Coverage begins</div>
+                        <div class='sequence-capture-value' id='sequence-coverage-start'>—</div>
+                    </div>
+                    <div class='sequence-capture-row'>
+                        <div class='sequence-capture-label'>Last included row</div>
+                        <div class='sequence-capture-value' id='sequence-last-event'>—</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class='sequence-blocked-state' id='sequence-blocked-state' role='alert' hidden></div>
+
+            <div id='sequence-data-content'>
+                <section class='sequence-boundary-strip' aria-label='Dataset boundaries'>
+                    <div class='sequence-boundary-item'>
+                        <strong>Research area</strong>
+                        4.2–6.2°N · 124.5–126.0°E
+                    </div>
+                    <div class='sequence-boundary-item'>
+                        <strong>Association boundary</strong>
+                        AOI inclusion is not an official associated-aftershock flag.
+                    </div>
+                    <div class='sequence-boundary-item'>
+                        <strong>Freshness</strong>
+                        Reviewed static snapshot · never presented as live.
+                    </div>
+                </section>
+
+                <section class='sequence-metrics' aria-label='Sequence evidence metrics'>
+                    <article class='sequence-metric'>
+                        <div class='sequence-metric-label'>Official rows</div>
+                        <div class='sequence-metric-value' id='sequence-total-events'>—</div>
+                        <div class='sequence-metric-note'>Deduplicated inside the declared AOI</div>
+                    </article>
+                    <article class='sequence-metric'>
+                        <div class='sequence-metric-label'>M4 and above</div>
+                        <div class='sequence-metric-value' id='sequence-m4-events'>—</div>
+                        <div class='sequence-metric-note'>Magnitude hierarchy, not felt count</div>
+                    </article>
+                    <article class='sequence-metric'>
+                        <div class='sequence-metric-label'>M5 and above</div>
+                        <div class='sequence-metric-value' id='sequence-m5-events'>—</div>
+                        <div class='sequence-metric-note'>Five stronger releases in the window</div>
+                    </article>
+                    <article class='sequence-metric'>
+                        <div class='sequence-metric-label'>M6 and above</div>
+                        <div class='sequence-metric-value' id='sequence-m6-events'>—</div>
+                        <div class='sequence-metric-note'>Final PHIVOLCS magnitude values</div>
+                    </article>
+                </section>
+
+                <section class='sequence-activity-card' aria-labelledby='sequence-activity-title'>
+                    <header class='sequence-card-head'>
+                        <div>
+                            <div class='sequence-card-kicker'>Daily activity · 18-day bounded view</div>
+                            <h3 class='sequence-card-title' id='sequence-activity-title'>Decay, renewal, and magnitude structure</h3>
+                        </div>
+                        <a class='sequence-download' href='/data/sequence-v0.2/events.csv' download>Download 982-row ledger</a>
+                    </header>
+                    <div class='sequence-chart-wrap' id='sequence-chart-wrap'>
+                        <svg class='sequence-chart' id='sequence-activity-chart' viewBox='0 0 1000 340' aria-busy='true'></svg>
+                        <div class='sequence-chart-tooltip' id='sequence-chart-tooltip' role='presentation' hidden></div>
+                    </div>
+                    <div class='sequence-chart-legend' aria-label='Magnitude legend'>
+                        <span><i class='below-m2'></i>Below M2</span>
+                        <span><i class='m2'></i>M2–2.9</span>
+                        <span><i class='m3'></i>M3–3.9</span>
+                        <span><i class='m4'></i>M4–4.9</span>
+                        <span><i class='m5'></i>M5+</span>
+                        <span><i class='partial'></i>Partial day</span>
+                    </div>
+                    <div class='sequence-activity-reading'>
+                        <div class='sequence-reading-block'>
+                            <strong>Rate reading</strong>
+                            <span id='sequence-activity-note'>Waiting for verified daily activity.</span>
+                        </div>
+                        <div class='sequence-reading-block'>
+                            <strong>Coverage boundary</strong>
+                            <span id='sequence-partial-note'>Waiting for capture metadata.</span>
                         </div>
                     </div>
-                </aside>
+                    <div class='sequence-reading-block'>
+                        <strong>Claim ceiling</strong>
+                        <span id='sequence-claim-boundary'>Waiting for source boundary.</span>
+                    </div>
+                </section>
             </div>
-        </div>
+        </main>
+    </div>
+
+    <div class='tab-panel' id='tab-releases'>
+        <main class='releases-root' aria-labelledby='releases-title'>
+            <section class='releases-hero'>
+                <div>
+                    <div class='sequence-kicker'>Spatial branch reading · bounded inference</div>
+                    <h2 class='releases-title' id='releases-title'>Event volume and stronger releases occupy different parts of the sequence.</h2>
+                    <p class='releases-invariant' id='releases-invariant'>Waiting for verified spatial branches.</p>
+                </div>
+                <aside class='releases-source-boundary'>
+                    <div class='releases-final-number' id='releases-final-count'>—</div>
+                    <div class='releases-final-label'>final M4.5+ bulletins</div>
+                    <p id='releases-association-note'>Waiting for final-bulletin provenance.</p>
+                </aside>
+            </section>
+
+            <section class='release-branch-list' id='release-branch-list' aria-label='Research spatial branches'></section>
+
+            <section class='releases-ledger card' aria-labelledby='releases-ledger-title'>
+                <header class='sequence-card-head'>
+                    <div>
+                        <div class='sequence-card-kicker'>Final PHIVOLCS solutions</div>
+                        <h3 class='sequence-card-title' id='releases-ledger-title'>Significant releases · M4.5 and above</h3>
+                    </div>
+                    <a class='sequence-download' href='/data/sequence-v0.2/significant-events.csv' download>Download final-bulletin ledger</a>
+                </header>
+                <p class='releases-ledger-note'>Magnitude type, value, depth, location, intensity, and source remain specific to each final PHIVOLCS bulletin. Preliminary and USGS values are not silently merged.</p>
+                <div class='releases-table-wrap'>
+                    <table class='releases-table'>
+                        <thead>
+                            <tr>
+                                <th>Time · PHT</th>
+                                <th>Final magnitude</th>
+                                <th>Depth</th>
+                                <th>Final location</th>
+                                <th>Max intensity</th>
+                                <th>Source</th>
+                            </tr>
+                        </thead>
+                        <tbody id='significant-release-body'></tbody>
+                    </table>
+                </div>
+                <div class='releases-boundary'>
+                    <strong>Interpretation boundary</strong>
+                    The branches are transparent latitude-based research groups, not named faults, rupture segments, or official PHIVOLCS cluster classifications.
+                </div>
+            </section>
+        </main>
     </div>
 
     <div class='tab-panel' id='tab-events'>
-        <div class='card ledger-card'>
-            <details class='ledger-disclosure' open>
-                <summary class='ledger-summary'>
-                    <span class='ledger-summary-main'><span class='ledger-kicker'>Confirmed Event Log</span><strong>Confirmed seismic sequence</strong></span>
-                    <span class='ledger-summary-meta'>11 confirmed rows</span>
-                </summary>
-                <div class='ledger-disclosure-body'>
-                    <p class='ledger-summary-copy'>Open by default for immediate sequence review; collapse it when you want a shorter Ledger read. These rows stay separate from local observation outcomes.</p>
-                    <div class='ledger-table-wrap'>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Label</th>
-                        <th>Timestamp</th>
-                        <th>Interval</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id='confirmed-event-body'>
-                    <tr>
-                        <td><span class='badge badge-ms'>MS</span></td>
-                        <td>Jun 08 &middot; 07:37 AM</td>
-                        <td class='mono'>&mdash;</td>
-                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>A1</span></td>
-                        <td>Jun 08 &middot; 01:12 PM</td>
-                        <td class='mono'>334.3 min</td>
-                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>A2</span></td>
-                        <td>Jun 08 &middot; 05:16 PM</td>
-                        <td class='mono'>244.0 min</td>
-                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>A3</span></td>
-                        <td>Jun 08 &middot; 05:51 PM</td>
-                        <td class='mono'>35.0 min</td>
-                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>A4</span></td>
-                        <td>Jun 08 &middot; 06:26 PM</td>
-                        <td class='mono'>35.0 min</td>
-                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>A5</span></td>
-                        <td>Jun 08 &middot; 10:30 PM</td>
-                        <td class='mono'>244.0 min</td>
-                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>A6</span></td>
-                        <td>Jun 10 &middot; 12:36 AM</td>
-                        <td class='mono'>126.0 min</td>
-                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>A7</span></td>
-                        <td>Jun 10 &middot; 02:12 AM</td>
-                        <td class='mono'>96.0 min <span style='color:var(--warn);font-size:.63rem'>&minus;28 min
-                                early</span></td>
-                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>A8</span></td>
-                        <td>Jun 10 &middot; 02:55 AM</td>
-                        <td class='mono'>43.0 min <span style='color:var(--text-sub);font-size:.63rem'>+8 min</span>
-                        </td>
-                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>A9</span></td>
-                        <td>Jun 10 &middot; 03:26 AM</td>
-                        <td class='mono'>31.0 min <span style='color:var(--warn);font-size:.63rem'>&minus;4 min
-                                early</span></td>
-                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class='badge badge-as'>A10</span></td>
-                        <td>Jun 10 &middot; 03:36 AM</td>
-                        <td class='mono'>10.0 min <span style='color:var(--accent2);font-size:.63rem'>sub-pulse</span>
-                        </td>
-                        <td><span class='pill confirmed'>&#10003; Confirmed</span></td>
-                    </tr>
-                </tbody>
-            </table>
-                    </div>
+        <section class='card official-ledger-card' aria-labelledby='official-ledger-title'>
+            <header class='official-ledger-head'>
+                <div>
+                    <div class='sequence-card-kicker'>Verified PHIVOLCS catalog · lazy loaded</div>
+                    <h2 class='sequence-card-title' id='official-ledger-title'>Official event ledger</h2>
+                    <p class='official-ledger-lede'>All 982 deduplicated public bulletin rows inside the declared research AOI. Inclusion here is not an official associated-aftershock flag.</p>
                 </div>
-            </details>
-        </div>
+                <div class='official-ledger-head-actions'>
+                    <span class='sequence-status' id='official-ledger-status' aria-live='polite'>Open Ledger to load catalog</span>
+                    <a class='sequence-download' href='/data/sequence-v0.2/events.csv' download>Download complete CSV</a>
+                </div>
+            </header>
+
+            <div class='official-ledger-blocked' id='official-ledger-blocked' role='alert' hidden></div>
+
+            <div id='official-ledger-content' hidden>
+                <div class='official-ledger-filters' aria-label='Official catalog filters'>
+                    <label class='official-ledger-filter'>
+                        <span>From date · PHT</span>
+                        <input id='ledger-date-start' type='date' min='2026-06-30' max='2026-07-17'>
+                    </label>
+                    <label class='official-ledger-filter'>
+                        <span>Through date · PHT</span>
+                        <input id='ledger-date-end' type='date' min='2026-06-30' max='2026-07-17'>
+                    </label>
+                    <label class='official-ledger-filter'>
+                        <span>Minimum magnitude</span>
+                        <select id='ledger-magnitude-filter'>
+                            <option value=''>All magnitudes</option>
+                            <option value='2'>M2+</option>
+                            <option value='3'>M3+</option>
+                            <option value='4'>M4+</option>
+                            <option value='4.5'>M4.5+</option>
+                            <option value='5'>M5+</option>
+                            <option value='6'>M6+</option>
+                        </select>
+                    </label>
+                    <label class='official-ledger-filter'>
+                        <span>Research branch</span>
+                        <select id='ledger-branch-filter'>
+                            <option value='all'>All branches</option>
+                            <option value='southOffshore'>South offshore</option>
+                            <option value='balutCentral'>Balut central</option>
+                            <option value='glanMaasimNorth'>Glan–Maasim north</option>
+                        </select>
+                    </label>
+                    <button class='official-ledger-reset' id='ledger-filter-reset' type='button'>Reset filters</button>
+                </div>
+
+                <div class='official-ledger-result-line'>
+                    <span id='official-ledger-results'>Waiting for catalog rows.</span>
+                    <span>100 rows per page · source links open PHIVOLCS</span>
+                </div>
+
+                <div class='official-ledger-table-wrap'>
+                    <table class='official-ledger-table'>
+                        <thead>
+                            <tr>
+                                <th>Time · PHT</th>
+                                <th>Magnitude</th>
+                                <th>Depth</th>
+                                <th>Research branch</th>
+                                <th>PHIVOLCS location</th>
+                                <th>Source</th>
+                            </tr>
+                        </thead>
+                        <tbody id='official-ledger-body'></tbody>
+                    </table>
+                </div>
+
+                <div class='official-ledger-pagination' aria-label='Official ledger pages'>
+                    <button id='ledger-page-prev' type='button'>Previous</button>
+                    <span id='official-ledger-page'>Page 1 of 1</span>
+                    <button id='ledger-page-next' type='button'>Next</button>
+                </div>
+
+                <div class='releases-boundary'>
+                    <strong>Source boundary</strong>
+                    Public PHIVOLCS rows are official seismic records. Except for the separately inspected 12 final M4.5+ bulletins, this ledger does not assign row-level membership in the June aftershock sequence.
+                </div>
+            </div>
+        </section>
         <div class='card ledger-card' style='margin-top:1rem'>
             <details class='ledger-disclosure'>
                 <summary class='ledger-summary'>
-                    <span class='ledger-summary-main'><span class='ledger-kicker'>Observation Outcome Log</span><strong>Local observation outcomes</strong></span>
+                    <span class='ledger-summary-main'><span class='ledger-kicker'>Separate local record</span><strong>Private observation notebook</strong></span>
                     <span class='ledger-summary-meta' id='outcome-ledger-status'>0 local records</span>
                 </summary>
                 <div class='ledger-disclosure-body'>
                     <div class='outcome-ledger-toolbar'>
-                        <div class='outcome-ledger-copy'>Local outcome records are stored on this device and remain separate from confirmed seismic events.</div>
+                        <div class='outcome-ledger-copy'>Historical local notes and private device records remain physically separate from the official PHIVOLCS catalog. They are never counted as official events or automatic sequence evidence.</div>
+                        <button class='record-outcome-btn' type='button' onclick='openPrivateObservationRecorder()'>Add private observation</button>
                     </div>
                     <div class='ledger-table-wrap'>
             <table>
@@ -4427,8 +4536,8 @@
                     <tr>
                         <th>Source</th>
                         <th>Report Time</th>
-                        <th>Linked Watch</th>
-                        <th>Timing</th>
+                        <th>Context</th>
+                        <th>Relation</th>
                         <th>Outcome</th>
                         <th>Status</th>
                     </tr>
@@ -5058,100 +5167,133 @@
         </div>
     </div>
 
-    <div class='tab-panel' id='tab-rhythm'>
-        <div class='grid' style='grid-template-columns:1fr 2fr;align-items:start'>
-            <div class='hero-window' id='next-window-hero'>
-                <div class='hero-label' id='hero-label'>Next Observation Window</div>
-                <div class='hero-time' id='hero-time'>02:58 AM</div>
-                <div class='hero-remain' id='hero-remain'>Post-02:23 AM cycle</div>
-            </div>
-            <div class='card pending-card'>
-                <div class='card-title pending-card-title'><span>Provisional Observation Windows</span><span class='pending-card-note'>Post-02:23 AM cycle · new observation open</span></div>
-                <table id='pending-table'>
-                    <thead>
-                        <tr>
-                            <th>Phase</th>
-                            <th>Window</th>
-                            <th>Watch Time</th>
-                            <th>Remaining</th>
-                            <th>Observation Class</th>
-                            <th>Status</th>
-                            <th>Record</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-arrival='2026-06-30T02:58:33' data-evidence-type='model-window' data-certainty='generated-watch' data-official-status='not-official'>
-                            <td><span class='mult-badge'>1.0&times;</span></td>
-                            <td>35.6 min</td>
-                            <td class='mono'>Jun 30 &middot; 02:58 AM</td>
-                            <td class='countdown' data-arrival='2026-06-30T02:58:33'>&mdash;</td>
-                            <td>First post-anchor observation watch<span class='evidence-mini'>Model window · generated · not warning</span></td>
-                            <td class='status-cell' data-arrival='2026-06-30T02:58:33'>&mdash;</td>
-                            <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
-                        </tr>
-                        <tr data-arrival='2026-06-30T04:27:25' data-evidence-type='model-window' data-certainty='generated-watch' data-official-status='not-official'>
-                            <td><span class='mult-badge'>3.5&times;</span></td>
-                            <td>124.4 min</td>
-                            <td class='mono'>Jun 30 &middot; 04:27 AM</td>
-                            <td class='countdown' data-arrival='2026-06-30T04:27:25'>&mdash;</td>
-                            <td>Phase-sensitive observation watch<span class='evidence-mini'>Model window · generated · not warning</span></td>
-                            <td class='status-cell' data-arrival='2026-06-30T04:27:25'>&mdash;</td>
-                            <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
-                        </tr>
-                        <tr data-arrival='2026-06-30T06:31:51' data-evidence-type='model-window' data-certainty='generated-watch' data-official-status='not-official'>
-                            <td><span class='mult-badge'>7.0&times;</span></td>
-                            <td>248.9 min</td>
-                            <td class='mono'>Jun 30 &middot; 06:31 AM</td>
-                            <td class='countdown' data-arrival='2026-06-30T06:31:51'>&mdash;</td>
-                            <td>Long-phase observation watch<span class='evidence-mini'>Model window · generated · not warning</span></td>
-                            <td class='status-cell' data-arrival='2026-06-30T06:31:51'>&mdash;</td>
-                            <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
-                        </tr>
-                        <tr data-arrival='2026-06-30T08:00:44' data-evidence-type='model-window' data-certainty='generated-watch' data-official-status='not-official'>
-                            <td><span class='mult-badge'>9.5&times;</span></td>
-                            <td>337.7 min</td>
-                            <td class='mono'>Jun 30 &middot; 08:00 AM</td>
-                            <td class='countdown' data-arrival='2026-06-30T08:00:44'>&mdash;</td>
-                            <td>Extended-phase observation watch<span class='evidence-mini'>Model window · generated · not warning</span></td>
-                            <td class='status-cell' data-arrival='2026-06-30T08:00:44'>&mdash;</td>
-                            <td><button class='record-outcome-btn' type='button' onclick='openOutcomeRecorder(this)'>Record outcome</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class='card full anchor-card'>
-                <div class='card-title'>Latest Observation Anchor</div>
-                <div class='anchor-summary'>
-                    <div class='anchor-field'>
-                        <div class='anchor-label'>Anchor source</div>
-                        <div class='anchor-value strong'>Post-02:23 AM observation cycle · elapsed watch anchor</div>
-                    </div>
-                    <div class='anchor-field'>
-                        <div class='anchor-label'>Report time</div>
-                        <div class='anchor-value mono'>Jun 30 · 02:23 AM</div>
-                    </div>
-                    <div class='anchor-field'>
-                        <div class='anchor-label'>Window relation</div>
-                        <div class='anchor-value'>No local shake observed; new observation pattern opened</div>
-                    </div>
-                    <div class='anchor-field'>
-                        <div class='anchor-label'>Next watch center</div>
-                        <div class='anchor-value mono strong'>02:58 AM · band ~02:47&ndash;03:10 AM</div>
-                    </div>
-                    <div class='anchor-field'>
-                        <div class='anchor-label'>Evidence status</div>
-                        <div class='anchor-value'><span class='pill pending-pill'>New observation cycle · local anchor</span></div>
-                    </div>
-                    <div class='anchor-field' data-evidence-type='local-elapsed-anchor' data-certainty='observational-local' data-official-status='not-official'>
-                        <div class='anchor-label'>What this means</div>
-                        <div class='anchor-value'>Local elapsed/no-shake outcome · observational certainty · not official · used only as a pattern anchor</div>
-                    </div>
+    <div class='tab-panel' id='tab-method'>
+        <main class='method-root' aria-labelledby='method-title'>
+            <section class='method-hero'>
+                <div>
+                    <div class='sequence-kicker'>Historical hypothesis audit</div>
+                    <h2 class='method-title' id='method-title'>A useful early observation, preserved without countdown authority.</h2>
+                    <p class='method-verdict' id='method-verdict'>Waiting for the reviewed method record.</p>
                 </div>
-            </div>
-        </div>
+                <aside class='method-equation' aria-label='Null occupancy calculation'>
+                    <div class='method-equation-label'>Permissive phase occupancy</div>
+                    <div class='method-equation-value'>24 ÷ 35.55</div>
+                    <div class='method-equation-result' id='method-null-occupancy'>—</div>
+                    <p>A ±12-minute band occupies most of each 35.55-minute cycle before any earthquake is observed.</p>
+                </aside>
+            </section>
+
+            <section class='method-metrics' aria-label='Historical method metrics'>
+                <article class='method-metric'>
+                    <span>Fitted baseline</span>
+                    <strong id='method-baseline'>—</strong>
+                    <p>Original selected-event least-squares value.</p>
+                </article>
+                <article class='method-metric'>
+                    <span>Acceptance band</span>
+                    <strong id='method-tolerance'>—</strong>
+                    <p>A wide descriptive tolerance, not a warning interval.</p>
+                </article>
+                <article class='method-metric'>
+                    <span>Uniform null occupancy</span>
+                    <strong id='method-null-occupancy-card'>—</strong>
+                    <p>Chance phase coverage from the rounded 35.55-minute baseline.</p>
+                </article>
+                <article class='method-metric'>
+                    <span>Selected calibration</span>
+                    <strong id='method-selected-fit'>—</strong>
+                    <p id='method-selected-note'>Waiting for original investigation data.</p>
+                </article>
+            </section>
+
+            <section class='method-grid'>
+                <article class='card method-explanation'>
+                    <div class='sequence-card-kicker'>Why the early fit looked persuasive</div>
+                    <h3 class='sequence-card-title'>Selection, fitting, and tolerance compressed the search.</h3>
+                    <ol>
+                        <li>The baseline and multiplier classes were fitted from a small selected sequence.</li>
+                        <li>The ±12-minute band covers approximately 67.5% of every rounded cycle.</li>
+                        <li>Aftershocks are temporally clustered, so independent uniform-phase assumptions are not physically adequate.</li>
+                        <li>Mixing northern microevents with southern strong releases can create alignments that do not belong to one source clock.</li>
+                    </ol>
+                </article>
+                <article class='card method-decision'>
+                    <div class='sequence-card-kicker'>Operational decision</div>
+                    <h3 class='sequence-card-title'>Retain the hypothesis; remove the forecast behavior.</h3>
+                    <p>35.55 minutes remains visible because it records how the investigation began. It no longer generates watches, re-anchors cycles, marks events imminent, or controls safety-facing state.</p>
+                    <div class='method-decision-line'><strong>Current organizing model</strong><span>Punctuated aftershock decay with spatially distinct subclusters.</span></div>
+                </article>
+            </section>
+
+            <section class='card method-table-card' aria-labelledby='method-threshold-title'>
+                <header class='sequence-card-head'>
+                    <div>
+                        <div class='sequence-card-kicker'>Expanded catalog test</div>
+                        <h3 class='sequence-card-title' id='method-threshold-title'>Threshold-specific interval audit</h3>
+                    </div>
+                    <span class='method-table-note'>Descriptive p-values · not an independent ETAS/Omori comparison</span>
+                </header>
+                <div class='method-table-wrap'>
+                    <table class='method-table'>
+                        <thead>
+                            <tr>
+                                <th>Threshold</th>
+                                <th>Events</th>
+                                <th>Median spacing</th>
+                                <th>Within ±12 min</th>
+                                <th>Null occupancy</th>
+                                <th>Descriptive p</th>
+                                <th>Reading</th>
+                            </tr>
+                        </thead>
+                        <tbody id='method-threshold-body'></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class='card method-table-card' aria-labelledby='method-original-title'>
+                <header class='sequence-card-head'>
+                    <div>
+                        <div class='sequence-card-kicker'>Original page provenance</div>
+                        <h3 class='sequence-card-title' id='method-original-title'>The selected 11-event investigation</h3>
+                    </div>
+                    <span class='method-table-note' id='method-timestamp-boundary'>Waiting for timestamp boundary.</span>
+                </header>
+                <div class='method-table-wrap'>
+                    <table class='method-table method-original-table'>
+                        <thead>
+                            <tr>
+                                <th>Label</th>
+                                <th>Displayed time · PHT</th>
+                                <th>Selected interval</th>
+                                <th>Nearest phase</th>
+                                <th>Offset</th>
+                                <th>Historical result</th>
+                            </tr>
+                        </thead>
+                        <tbody id='method-original-body'></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class='method-boundaries'>
+                <article class='card'>
+                    <div class='sequence-card-kicker'>Limitations carried forward</div>
+                    <ul id='method-limitations'></ul>
+                </article>
+                <article class='card method-claim-ceiling'>
+                    <div class='sequence-card-kicker'>Claim ceiling</div>
+                    <p>The historical alignment does not establish a deterministic recurrence period, earthquake prediction capability, magnitude forecast, named controlling structure, or official sequence completeness.</p>
+                </article>
+            </section>
+        </main>
     </div>
 
-    <div class='tab-panel' id='tab-chart'>
+    <div class='tab-panel legacy-panel' id='tab-chart'>
+        <div class='legacy-surface-boundary' role='note'>
+            <div><span>Historical artifact</span><strong>This timing chart is preserved as provenance. It is not a current forecast or validated fault clock.</strong></div>
+            <button type='button' onclick="switchTab('archive',event)">Back to Archive</button>
+        </div>
         <div class='card dashboard-card'>
             <div class='card-title'>Dashboard Chart</div>
             <div class='dashboard-chart-frame'>
@@ -5198,89 +5340,62 @@
         </div>
     </div>
 
-    <div class='tab-panel' id='tab-calibration'>
-        <div class='grid calibration-shell'>
-            <section class='card full calibration-hero' data-evidence-type='calibration-derived' data-certainty='computed-from-page-log' data-official-status='not-official'>
-                <div class='card-title'><span>Calibration Ledger</span><span class='pending-card-note'>Computed from existing logs · not warning</span></div>
-                <p class='calibration-lede'>This tab measures the distance between TSRA's fitted phase clock and the records already on this page. It does not add confirmed events, does not read private notes off-device, and does not certify a safety decision. It only asks: when the pattern named a phase window, how close did the observed record land?</p>
-                <div class='calibration-metrics' aria-label='Calibration metrics'>
-                    <div class='calibration-metric'>
-                        <div class='calibration-label'>Confirmed hit rate</div>
-                        <div class='calibration-value' id='calibration-hit-rate'>—</div>
-                        <div class='calibration-note' id='calibration-hit-detail'>Waiting for log scan</div>
-                        <div class='calibration-meter' aria-hidden='true'><span id='calibration-hit-meter'></span></div>
-                    </div>
-                    <div class='calibration-metric'>
-                        <div class='calibration-label'>Median offset</div>
-                        <div class='calibration-value' id='calibration-median-offset'>—</div>
-                        <div class='calibration-note'>Absolute center-to-record offset across standard confirmed intervals.</div>
-                    </div>
-                    <div class='calibration-metric'>
-                        <div class='calibration-label'>Local outcomes</div>
-                        <div class='calibration-value' id='calibration-local-count'>—</div>
-                        <div class='calibration-note' id='calibration-local-detail'>Felt-only and elapsed records stay separate.</div>
-                    </div>
-                    <div class='calibration-metric'>
-                        <div class='calibration-label'>Current clock</div>
-                        <div class='calibration-value' id='calibration-clock-state'>—</div>
-                        <div class='calibration-note' id='calibration-clock-detail'>Baseline and pending windows checked from DOM.</div>
-                    </div>
+    <div class='tab-panel' id='tab-archive'>
+        <main class='archive-root' aria-labelledby='archive-title'>
+            <section class='archive-hero'>
+                <div>
+                    <div class='sequence-kicker'>Historical material · non-operational</div>
+                    <h2 class='archive-title' id='archive-title'>The earlier interpretation remains inspectable, but it no longer governs the instrument.</h2>
+                    <p>These surfaces preserve how the 35.55-minute hypothesis was originally seen, explained, and communicated. They are provenance—not current sequence state, prediction evidence, or safety guidance.</p>
+                </div>
+                <div class='archive-boundary'>
+                    <strong>Current authority</strong>
+                    <span>Sequence for reviewed state</span>
+                    <span>Method for the clock audit</span>
+                    <span>PHIVOLCS for official guidance</span>
                 </div>
             </section>
 
-            <section class='card'>
-                <div class='card-title'>Confirmed Phase Fit</div>
-                <table aria-label='Confirmed event phase calibration'>
-                    <thead>
-                        <tr>
-                            <th>Event</th>
-                            <th>Observed Interval</th>
-                            <th>Nearest Phase</th>
-                            <th>Offset</th>
-                            <th>Band</th>
-                        </tr>
-                    </thead>
-                    <tbody id='calibration-confirmed-body'></tbody>
-                </table>
+            <section class='archive-grid' aria-label='Historical TSRA surfaces'>
+                <button class='archive-card' type='button' onclick="switchTab('chart',event)">
+                    <span>01 · Visual artifact</span>
+                    <strong>Historical timing chart</strong>
+                    <span class='archive-card-copy'>The original sawtooth and phase-marker representation, retained to show the model’s inherited visual logic.</span>
+                </button>
+                <button class='archive-card' type='button' onclick="switchTab('field-report',event)">
+                    <span>02 · Superseded narrative</span>
+                    <strong>Original field report</strong>
+                    <span class='archive-card-copy'>The early explanatory essay, including claims that no longer meet the evidence standard established by the 982-row review.</span>
+                </button>
+                <button class='archive-card' type='button' onclick="switchTab('learning',event)">
+                    <span>03 · Historical media</span>
+                    <strong>Learning modules</strong>
+                    <span class='archive-card-copy'>Narrated conceptual material preserved with its original framing; useful as development history, not source evidence.</span>
+                </button>
+                <button class='archive-card' type='button' onclick="switchTab('origin',event)">
+                    <span>04 · Origin trace</span>
+                    <strong>Original disclosure</strong>
+                    <span class='archive-card-copy'>The field-observation origin of TSRA and the boundary language used before the sequence-observatory refactor.</span>
+                </button>
+                <a class='archive-card' href='/tmch-slab2-convergence-gate.html'>
+                    <span>05 · Separate research artifact</span>
+                    <strong>TMCH Slab2 convergence gate</strong>
+                    <span class='archive-card-copy'>A standalone archive retained at its authored route and kept outside the current sequence data contract.</span>
+                </a>
             </section>
 
-            <section class='card'>
-                <div class='card-title'>Outcome Balance</div>
-                <table aria-label='Observation outcome calibration'>
-                    <thead>
-                        <tr>
-                            <th>Record Type</th>
-                            <th>Count</th>
-                            <th>Calibration Meaning</th>
-                        </tr>
-                    </thead>
-                    <tbody id='calibration-outcome-body'></tbody>
-                </table>
+            <section class='card archive-claim-ceiling'>
+                <div class='sequence-card-kicker'>Archive claim ceiling</div>
+                <p>Archived language and graphics may contain obsolete assumptions, selected-event reasoning, provisional tectonic attribution, or predictive framing. Their presence records the investigation; it does not validate those claims.</p>
             </section>
-
-            <section class='card full' data-evidence-type='calibration-boundary' data-certainty='method-note' data-official-status='not-official'>
-                <div class='card-title'>What this means</div>
-                <ul class='calibration-audit-list'>
-                    <li><strong>Useful signal</strong><span id='calibration-verdict'>The ledger has not run yet.</span></li>
-                    <li><strong>Excluded from fit</strong>Sub-pulses are displayed but excluded from the standard-phase score because they do not represent the 1.0×, 3.5×, 7.0×, or 9.5× phase classes.</li>
-                    <li><strong>Safety boundary</strong>This calibration is observational analysis only: not a certified warning system and never enough for safety decisions by itself.</li>
-                </ul>
-            </section>
-        </div>
+        </main>
     </div>
 
-
-
-    <div class='tab-panel' id='tab-forecast'>
-        <div class='card full'>
-            <div class='card-title'>TMCH Slab2 Convergence Gate Archive</div>
-            <p class='report-text'>The convergence-gate archive lives as its original standalone HTML artifact. Open it separately to preserve the authored canvas, spacing, and concept boundary.</p>
-            <p class='report-text'><a class='record-outcome-btn' href='/tmch-slab2-convergence-gate.html'>Open standalone archive</a></p>
-            <p class='safety-note'>Standalone route: /tmch-slab2-convergence-gate.html</p>
+    <div class='tab-panel legacy-panel' id='tab-origin'>
+        <div class='legacy-surface-boundary' role='note'>
+            <div><span>Historical artifact</span><strong>This disclosure preserves TSRA’s early framing. Current scope and limits are defined by Sequence and Method.</strong></div>
+            <button type='button' onclick="switchTab('archive',event)">Back to Archive</button>
         </div>
-    </div>
-
-    <div class='tab-panel' id='tab-origin'>
         <div class='card'>
             <div class='disclosure-wrap'>
                 <div class='disclosure-head'>
@@ -5317,7 +5432,11 @@
         </div>
     </div>
 
-    <div class='tab-panel' id='tab-learning'>
+    <div class='tab-panel legacy-panel' id='tab-learning'>
+        <div class='legacy-surface-boundary' role='note'>
+            <div><span>Historical artifact</span><strong>These narrated modules retain provisional rhythm language and are not source evidence or current guidance.</strong></div>
+            <button type='button' onclick="switchTab('archive',event)">Back to Archive</button>
+        </div>
         <div class='learning-media-grid'>
             <div class='learning-cinema' aria-label='Learning guide video slider'>
                 <div class='learning-cinema-head'>
@@ -5387,7 +5506,11 @@
         </div>
     </div>
 
-    <div class='tab-panel' id='tab-field-report'>
+    <div class='tab-panel legacy-panel' id='tab-field-report'>
+        <div class='legacy-surface-boundary legacy-surface-boundary-critical' role='note'>
+            <div><span>Superseded interpretation</span><strong>This report contains claims that do not survive the expanded-catalog audit. Preserve it as history; do not use it for prediction, safety, or current sequence interpretation.</strong></div>
+            <button type='button' onclick="switchTab('archive',event)">Back to Archive</button>
+        </div>
         <div class='card field-report-card'>
 
             <div class='field-report-hero'>
@@ -5492,20 +5615,20 @@
         <div class='outcome-recorder-card' role='dialog' aria-modal='true' aria-labelledby='outcome-recorder-title'>
             <button class='outcome-recorder-close' type='button' onclick='closeOutcomeRecorder()' aria-label='Close outcome recorder'>&times;</button>
             <div class='outcome-recorder-head'>
-                <div class='outcome-recorder-kicker'>Window Outcome Recorder</div>
+                <div class='outcome-recorder-kicker'>Private Observation Notebook</div>
                 <div class='outcome-recorder-title' id='outcome-recorder-title'>Record one local observation</div>
             </div>
-            <div class='outcome-recorder-summary' aria-label='Linked observation window'>
+            <div class='outcome-recorder-summary' aria-label='Private observation context'>
                 <div class='outcome-summary-item'>
-                    <div class='outcome-summary-label'>Phase</div>
+                    <div class='outcome-summary-label'>Record</div>
                     <div class='outcome-summary-value' id='outcome-summary-phase'>&mdash;</div>
                 </div>
                 <div class='outcome-summary-item'>
-                    <div class='outcome-summary-label'>Watch time</div>
+                    <div class='outcome-summary-label'>Model relation</div>
                     <div class='outcome-summary-value' id='outcome-summary-watch'>&mdash;</div>
                 </div>
                 <div class='outcome-summary-item'>
-                    <div class='outcome-summary-label'>Class</div>
+                    <div class='outcome-summary-label'>Evidence class</div>
                     <div class='outcome-summary-value' id='outcome-summary-class'>&mdash;</div>
                 </div>
             </div>
@@ -5525,9 +5648,10 @@
                         </select>
                     </div>
                     <div class='outcome-field'>
-                        <label for='outcome-onset'>When did it happen?</label>
+                        <label for='outcome-onset'>Timing relation</label>
                         <select id='outcome-onset' name='onsetRelation' required>
-                            <option value='watch-center'>Nothing happened during the watch</option>
+                            <option value='not-linked'>Not linked to a model window</option>
+                            <option value='watch-center'>Nothing happened during the historical watch</option>
                             <option value='early-band'>Before the watch time</option>
                             <option value='near-center'>Around the watch time</option>
                             <option value='late-band'>After the watch time</option>
@@ -5994,7 +6118,7 @@
             applyLowDataMode(enabled);
         }
 
-        const TSRA_APP_VERSION = 'tsra-field-cache-v121';
+        const TSRA_APP_VERSION = 'tsra-field-cache-v129';
         const TSRA_VERSION_URL = '/tsra-version.json';
         const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
         let tsraReloadingForUpdate = false;
@@ -6270,13 +6394,20 @@
         })();
 
         // ── Tabs ──────────────────────────────────────────────────────────────────
-        function switchTab(name, e) {
-            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('tab-' + name).classList.add('active');
-            e.currentTarget.classList.add('active');
-            if (name === 'calibration') renderCalibrationLedger();
-            recordFieldMemory('tab-opened', { name });
+        function switchTab(name, event) {
+            const panel = document.getElementById('tab-' + name);
+            if (!panel) return;
+            document.querySelectorAll('.tab-panel').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(button => button.classList.remove('active'));
+            panel.classList.add('active');
+            const legacyNames = new Set(['chart', 'field-report', 'learning', 'origin']);
+            const navigationName = legacyNames.has(name) ? 'archive' : name;
+            const navigationButton = document.querySelector(`.tab-btn[data-tab='${navigationName}']`);
+            if (navigationButton) navigationButton.classList.add('active');
+            if (name === 'events' && window.TSRASequence) {
+                window.TSRASequence.loadLedger(document, window.fetch.bind(window));
+            }
+            recordFieldMemory('tab-opened', { name, navigationName });
         }
 
         // ── Modal ─────────────────────────────────────────────────────────────────
@@ -6329,7 +6460,8 @@
             uncertain: 'Uncertain'
         };
         const OBSERVATION_LEDGER_ONSETS = {
-            'watch-center': 'Nothing happened during the watch',
+            'not-linked': 'Not linked to a model window',
+            'watch-center': 'Nothing happened during the historical watch',
             'early-band': 'Before the watch time',
             'near-center': 'Around the watch time',
             'late-band': 'After the watch time',
@@ -6399,43 +6531,37 @@
             localStorage.setItem(OBSERVATION_LEDGER_KEY, JSON.stringify(normalized));
             return normalized;
         }
-        function getPendingWindowContext(button) {
-            const row = button && button.closest ? button.closest('tr') : null;
-            if (!row) return null;
-            const cells = row.querySelectorAll('td');
-            return {
-                windowArrival: row.dataset.arrival || '',
-                phase: cells[0] ? cells[0].textContent.trim() : '',
-                windowDuration: cells[1] ? cells[1].textContent.trim() : '',
-                watchTime: cells[2] ? cells[2].textContent.trim() : '',
-                observationClass: cells[4] ? cells[4].textContent.trim() : ''
-            };
-        }
         function setText(id, value) {
             const el = document.getElementById(id);
             if (el) el.textContent = value || '—';
         }
-        function openOutcomeRecorder(button) {
-            const context = getPendingWindowContext(button);
+        function openPrivateObservationRecorder() {
+            const context = {
+                windowArrival: '',
+                phase: 'Private observation',
+                windowDuration: '',
+                watchTime: 'Not linked to a model window',
+                observationClass: 'User-entered · local only'
+            };
             const overlay = document.getElementById('outcome-recorder-overlay');
             const form = document.getElementById('outcome-recorder-form');
-            if (!context || !overlay || !form) return;
+            if (!overlay || !form) return;
             outcomeRecorderContext = context;
             outcomeRecorderLastFocus = document.activeElement;
-            setText('outcome-summary-phase', `${context.phase} · ${context.windowDuration}`);
+            setText('outcome-summary-phase', context.phase);
             setText('outcome-summary-watch', context.watchTime);
             setText('outcome-summary-class', context.observationClass);
             form.reset();
             const reportTime = document.getElementById('outcome-report-time');
             if (reportTime) reportTime.value = toDateTimeLocalValue(new Date());
             const onset = document.getElementById('outcome-onset');
-            if (onset) onset.value = 'watch-center';
+            if (onset) onset.value = 'not-linked';
             overlay.classList.add('open');
             overlay.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
             const type = document.getElementById('outcome-type');
             if (type) type.focus();
-            recordFieldMemory('outcome-recorder-opened', context);
+            recordFieldMemory('private-observation-recorder-opened', context);
         }
         function closeOutcomeRecorder() {
             const overlay = document.getElementById('outcome-recorder-overlay');
@@ -6508,7 +6634,6 @@
                 row.append(statusCell);
                 body.append(row);
             });
-            if (typeof renderCalibrationLedger === 'function') renderCalibrationLedger();
         }
         function saveObservationOutcomeRecord(event) {
             event.preventDefault();
@@ -6548,142 +6673,7 @@
         }
         const outcomeRecorderForm = document.getElementById('outcome-recorder-form');
         if (outcomeRecorderForm) outcomeRecorderForm.addEventListener('submit', saveObservationOutcomeRecord);
-        const TSRA_BASELINE_MINUTES = 35.552;
-        const TSRA_PHASE_WINDOWS = [
-            { label: '1.0×', multiplier: 1.0 },
-            { label: '3.5×', multiplier: 3.5 },
-            { label: '7.0×', multiplier: 7.0 },
-            { label: '9.5×', multiplier: 9.5 }
-        ];
-        const TSRA_WINDOW_BAND_MINUTES = 12;
-
-        function clearNode(el) {
-            if (!el) return;
-            while (el.firstChild) el.removeChild(el.firstChild);
-        }
-        function appendCalibrationCell(row, text, className) {
-            const cell = document.createElement('td');
-            if (className) cell.className = className;
-            cell.textContent = text;
-            row.append(cell);
-            return cell;
-        }
-        function nearestPhaseForInterval(intervalMinutes) {
-            return TSRA_PHASE_WINDOWS
-                .map(phase => ({ ...phase, center: TSRA_BASELINE_MINUTES * phase.multiplier, offset: intervalMinutes - TSRA_BASELINE_MINUTES * phase.multiplier }))
-                .sort((a, b) => Math.abs(a.offset) - Math.abs(b.offset))[0];
-        }
-        function median(values) {
-            if (!values.length) return null;
-            const sorted = [...values].sort((a, b) => a - b);
-            const middle = Math.floor(sorted.length / 2);
-            return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
-        }
-        function readConfirmedIntervals() {
-            return Array.from(document.querySelectorAll('#confirmed-event-body tr')).map(row => {
-                const cells = row.querySelectorAll('td');
-                const label = cells[0] ? cells[0].textContent.trim() : '—';
-                const intervalText = cells[2] ? cells[2].textContent.trim() : '';
-                const interval = Number.parseFloat(intervalText);
-                if (!Number.isFinite(interval)) return null;
-                const phase = nearestPhaseForInterval(interval);
-                const absoluteOffset = Math.abs(phase.offset);
-                return {
-                    label,
-                    interval,
-                    nearestPhase: phase,
-                    absoluteOffset,
-                    inBand: absoluteOffset <= TSRA_WINDOW_BAND_MINUTES,
-                    subPulse: /sub-pulse/i.test(intervalText)
-                };
-            }).filter(Boolean);
-        }
-        function syncModelFitSurface(hitRate, hits, standardCount, medianOffset) {
-            const percent = standardCount ? (hitRate * 100).toFixed(1) : '—';
-            const offsetText = medianOffset === null ? 'unknown' : `${medianOffset.toFixed(1)} min`;
-            setText('model-fit-stat', percent);
-            setText('field-report-fit-stat', standardCount ? `${percent}%` : '—');
-            setText('model-fit-stat-sub', standardCount ? `${hits}/${standardCount} inside ±${TSRA_WINDOW_BAND_MINUTES} min · median ${offsetText}` : 'Calibration unavailable');
-            setText('field-report-fit-note', standardCount ? `${hits}/${standardCount} inside band` : 'calibration unavailable');
-            MODAL_DATA.fit.label = 'Calibration-Derived Fit';
-            MODAL_DATA.fit.value = standardCount ? `${percent}%` : '—';
-            MODAL_DATA.fit.body = standardCount
-                ? `<p><strong>${percent}% calibration-derived timing alignment</strong> means ${hits} of ${standardCount} standard confirmed intervals fall inside the current &plusmn;${TSRA_WINDOW_BAND_MINUTES} minute phase band.</p><p>This value is computed from the page&rsquo;s confirmed-event log using the fitted ${TSRA_BASELINE_MINUTES.toFixed(3)} minute baseline and the standard 1.0&times;, 3.5&times;, 7.0&times;, and 9.5&times; phase classes. A10 remains visible but excluded because it is a sub-pulse, not a standard phase interval.</p><p>This does <strong>not</strong> mean the system can predict magnitude, damage, or felt strength. The useful result is narrower and safer: the model may be tracking a rhythm / phase pattern, while safety decisions still require official sources.</p>`
-                : `<p>The calibration-derived fit is unavailable because there are no standard confirmed intervals to score.</p><p>This remains an observational surface only, not a certified warning system.</p>`;
-        }
-
-        function readOutcomeBalance() {
-            const rows = Array.from(document.querySelectorAll('#observation-log-body tr'));
-            const counts = { felt: 0, elapsed: 0, private: 0, pending: 0, other: 0 };
-            rows.forEach(row => {
-                const evidenceType = row.dataset.evidenceType || row.getAttribute('data-evidence-type') || '';
-                const text = row.textContent || '';
-                if (evidenceType === 'local-private-record') counts.private += 1;
-                else if (/local-felt/.test(evidenceType)) counts.felt += 1;
-                else if (/local-elapsed/.test(evidenceType)) counts.elapsed += 1;
-                else if (/pending/i.test(text)) counts.pending += 1;
-                else counts.other += 1;
-            });
-            return counts;
-        }
-        function renderCalibrationLedger() {
-            const confirmedBody = document.getElementById('calibration-confirmed-body');
-            const outcomeBody = document.getElementById('calibration-outcome-body');
-            if (!confirmedBody || !outcomeBody) return;
-            const intervals = readConfirmedIntervals();
-            const standardIntervals = intervals.filter(item => !item.subPulse);
-            const hits = standardIntervals.filter(item => item.inBand).length;
-            const hitRate = standardIntervals.length ? hits / standardIntervals.length : 0;
-            const medianOffset = median(standardIntervals.map(item => item.absoluteOffset));
-            clearNode(confirmedBody);
-            intervals.forEach(item => {
-                const row = document.createElement('tr');
-                appendCalibrationCell(row, item.label, 'mono');
-                appendCalibrationCell(row, `${item.interval.toFixed(1)} min`, 'mono');
-                appendCalibrationCell(row, `${item.nearestPhase.label} · ${item.nearestPhase.center.toFixed(1)} min`, 'mono');
-                appendCalibrationCell(row, `${item.nearestPhase.offset >= 0 ? '+' : '−'}${Math.abs(item.nearestPhase.offset).toFixed(1)} min`, 'mono');
-                const bandCell = appendCalibrationCell(row, item.subPulse ? 'Excluded sub-pulse' : item.inBand ? 'Inside ±12 min' : 'Outside band');
-                const pill = document.createElement('span');
-                pill.className = item.subPulse ? 'pill elapsed-pill' : item.inBand ? 'pill confirmed' : 'pill pending-pill';
-                pill.textContent = bandCell.textContent;
-                bandCell.textContent = '';
-                bandCell.append(pill);
-                confirmedBody.append(row);
-            });
-            const outcomes = readOutcomeBalance();
-            const localTotal = outcomes.felt + outcomes.elapsed + outcomes.private + outcomes.pending + outcomes.other;
-            clearNode(outcomeBody);
-            [
-                ['Felt-only', outcomes.felt, 'Human observation; useful for comparison, not confirmed by itself.'],
-                ['Elapsed / no-shake', outcomes.elapsed, 'Negative local outcomes; useful because quiet windows count too.'],
-                ['Private device records', outcomes.private, 'Local-only notes rendered from browser storage; not submitted.'],
-                ['Pending / other', outcomes.pending + outcomes.other, 'Records that need human review before calibration use.']
-            ].forEach(([label, count, meaning]) => {
-                const row = document.createElement('tr');
-                appendCalibrationCell(row, label);
-                appendCalibrationCell(row, String(count), 'mono');
-                appendCalibrationCell(row, meaning);
-                outcomeBody.append(row);
-            });
-            setText('calibration-hit-rate', standardIntervals.length ? `${(hitRate * 100).toFixed(1)}%` : '—');
-            setText('calibration-hit-detail', `${hits} of ${standardIntervals.length} standard confirmed intervals inside ±${TSRA_WINDOW_BAND_MINUTES} min band`);
-            const meter = document.getElementById('calibration-hit-meter');
-            if (meter) meter.style.width = `${Math.round(hitRate * 100)}%`;
-            setText('calibration-median-offset', medianOffset === null ? '—' : `${medianOffset.toFixed(1)} min`);
-            syncModelFitSurface(hitRate, hits, standardIntervals.length, medianOffset);
-            setText('calibration-local-count', String(localTotal));
-            setText('calibration-local-detail', `${outcomes.felt} felt-only · ${outcomes.elapsed} elapsed · ${outcomes.private} private`);
-            const pendingCount = document.querySelectorAll('#pending-table tbody tr[data-evidence-type="model-window"]').length;
-            setText('calibration-clock-state', `${TSRA_BASELINE_MINUTES.toFixed(3)} min`);
-            setText('calibration-clock-detail', `${pendingCount} generated watch windows checked against current baseline`);
-            const verdict = hitRate >= 0.8
-                ? `The standard-phase record is coherent enough to keep observing: ${hits}/${standardIntervals.length} confirmed intervals fall inside the ±${TSRA_WINDOW_BAND_MINUTES} minute band, with median offset ${medianOffset === null ? 'unknown' : medianOffset.toFixed(1) + ' min'}.`
-                : `The standard-phase record is weak right now: ${hits}/${standardIntervals.length} confirmed intervals fall inside the ±${TSRA_WINDOW_BAND_MINUTES} minute band. Treat the clock as low-confidence until more records accumulate.`;
-            setText('calibration-verdict', verdict);
-        }
-
         renderObservationLedgerEntries();
-        renderCalibrationLedger();
 
         let imagePreviewLastFocus = null;
         function openImagePreview() {
@@ -6717,113 +6707,8 @@
             closeModal();
         });
 
-        // ── Countdown ─────────────────────────────────────────────────────────────
-        function fmtDiff(ms) {
-            if (ms <= 0) return 'elapsed';
-            const s = Math.floor(ms / 1000);
-            const h = Math.floor(s / 3600);
-            const m = Math.floor((s % 3600) / 60);
-            const sec = s % 60;
-            if (h > 0) return `In ${h}h ${m}m`;
-            if (m > 0) return `In ${m}m ${sec}s`;
-            return `In ${sec}s`;
-        }
-        function openNowOutcomeRecorder() {
-            const recordButton = document.querySelector('#pending-table tbody tr[data-now-record="true"] .record-outcome-btn');
-            if (recordButton) openOutcomeRecorder(recordButton);
-        }
-        function setNowRecordState(enabled) {
-            const button = document.getElementById('now-record-outcome');
-            if (!button) return;
-            button.disabled = !enabled;
-            button.textContent = enabled ? 'Record outcome' : 'No active watch to record';
-        }
-        function updatePhaseCurveState(phaseText) {
-            const normalized = String(phaseText || '').replace('×', '').trim();
-            document.querySelectorAll('.phase-point').forEach(point => {
-                const phase = point.dataset.phase || '';
-                point.classList.toggle('is-active', Boolean(phase && normalized.startsWith(phase)));
-            });
-        }
-        function updateCountdowns() {
-            const now = Date.now();
-            let nextArrival = null, nextTime = null, nextRow = null;
-            let latestObservedArrival = null, latestObservedRow = null;
-            document.querySelectorAll('#pending-table tbody tr').forEach(row => {
-                delete row.dataset.nowRecord;
-                const arrival = new Date(row.dataset.arrival);
-                const diff = arrival.getTime() - now;
-                const countdown = row.querySelector('.countdown');
-                const stCell = row.querySelector('.status-cell');
-                if (row.dataset.observed === 'true') {
-                    countdown.textContent = row.dataset.observedReport || 'observed';
-                    stCell.innerHTML = `<span class='pill observed-pill'>${row.dataset.observedLabel || 'Observed'}</span>`;
-                    row.style.opacity = '1';
-                    if (!Number.isNaN(arrival.getTime()) && (!latestObservedArrival || arrival > latestObservedArrival)) {
-                        latestObservedArrival = arrival;
-                        latestObservedRow = row;
-                    }
-                    return;
-                }
-                countdown.textContent = fmtDiff(diff);
-                if (diff <= 0) {
-                    stCell.innerHTML = "<span class='pill elapsed-pill'>Elapsed</span>";
-                    row.style.opacity = '.4';
-                    if (!Number.isNaN(arrival.getTime()) && (!latestObservedArrival || arrival > latestObservedArrival)) {
-                        latestObservedArrival = arrival;
-                        latestObservedRow = row;
-                    }
-                } else if (diff < 20 * 60 * 1000) {
-                    stCell.innerHTML = "<span class='pill active-pill'>&#9679; Observation window open</span>";
-                    if (!nextArrival || arrival < nextArrival) { nextArrival = arrival; nextTime = diff; nextRow = row; }
-                } else {
-                    stCell.innerHTML = "<span class='pill pending-pill'>Pending</span>";
-                    if (!nextArrival || arrival < nextArrival) { nextArrival = arrival; nextTime = diff; nextRow = row; }
-                }
-            });
-            if (nextArrival && nextRow) {
-                const timeLabel = nextArrival.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
-                const remainLabel = fmtDiff(nextTime);
-                const cells = nextRow.querySelectorAll('td');
-                const phaseLabel = cells[0] && cells[4] ? `${cells[0].textContent.trim()} · ${cells[4].textContent.trim()}` : 'Next watch center';
-                nextRow.dataset.nowRecord = 'true';
-                document.getElementById('hero-label').textContent = 'Next Observation Window';
-                document.getElementById('hero-time').textContent = timeLabel;
-                document.getElementById('hero-remain').textContent = remainLabel;
-                document.getElementById('now-time').textContent = timeLabel;
-                document.getElementById('now-remain').textContent = remainLabel;
-                document.getElementById('now-title').textContent = phaseLabel;
-                document.getElementById('now-status').textContent = nextTime < 20 * 60 * 1000 ? 'Active Observation Window' : 'Next Observation Window';
-                updatePhaseCurveState(cells[0] ? cells[0].textContent : '');
-                setNowRecordState(true);
-            } else if (latestObservedRow) {
-                const cells = latestObservedRow.querySelectorAll('td');
-                const watchLabel = cells[2] ? cells[2].textContent.trim().replace('Jun 10 · ', '') : 'Latest watch';
-                const phaseLabel = cells[0] && cells[4] ? `${cells[0].textContent.trim()} · ${cells[4].textContent.trim()}` : 'Latest observation outcome';
-                const outcomeLabel = latestObservedRow.dataset.observedLabel || 'Elapsed';
-                document.getElementById('hero-label').textContent = 'Latest Observation Outcome';
-                document.getElementById('hero-time').textContent = watchLabel;
-                document.getElementById('hero-remain').textContent = outcomeLabel;
-                document.getElementById('now-status').textContent = 'Active Observation Window · elapsed';
-                document.getElementById('now-time').textContent = watchLabel;
-                document.getElementById('now-remain').textContent = outcomeLabel;
-                document.getElementById('now-title').textContent = phaseLabel;
-                updatePhaseCurveState(cells[0] ? cells[0].textContent : '');
-                setNowRecordState(false);
-            } else {
-                document.getElementById('hero-label').textContent = 'Latest Observation Outcome';
-                document.getElementById('hero-time').textContent = '—';
-                document.getElementById('hero-remain').textContent = 'No listed outcomes';
-                document.getElementById('now-status').textContent = 'Active Observation Window · unavailable';
-                document.getElementById('now-time').textContent = '—';
-                document.getElementById('now-remain').textContent = 'No listed outcomes';
-                document.getElementById('now-title').textContent = 'Ledger remains available for local notes';
-                updatePhaseCurveState('');
-                setNowRecordState(false);
-            }
-        }
-        setInterval(updateCountdowns, 1000); updateCountdowns();
     </script>
+    <script src='/assets/tsra-sequence.js'></script>
 </body>
 
 </html>

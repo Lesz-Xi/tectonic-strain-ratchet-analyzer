@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""
-Tectonic Strain Ratchet Analyzer (TSRA)
-Sarangani Sequence (June 8-9, 2026) Aftershock Observation Pattern Solver
-Zero-dependency core implementation with conditional high-fidelity plotting.
+"""LEGACY / NON-AUTHORITATIVE TSRA GENERATOR.
+
+Preserved to document the original June 2026 clock investigation. Do not run
+this script to regenerate production ``seismic_report.html``: it encodes the
+retired countdown-first representation and claims superseded by the reviewed
+``data/sequence-v0.2`` catalog and Method audit.
 """
 
 import os

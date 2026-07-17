@@ -1,193 +1,178 @@
-# TSRA — Tectonic Strain Ratchet Analyzer
-## Session State & Handoff Document
-**Last Updated:** 2026-06-10 · 03:12 AM PHT  
-**Fault Zone:** Cotabato Subduction Zone — Sarangani Segment  
-**Session Status:** 🟢 Active Monitoring
+# TSRA — Current Session State
 
----
+**Last updated:** 2026-07-17
+**Repository:** `/Users/lesz/Developer/Mother-Ana`
+**Branch:** `main` tracking `origin/main`
+**Application state:** reviewed static sequence observatory
+**Dataset:** `tsra-sarangani-cotabato-sequence-v0.2`
 
-## 1. What This Project Does
+## 1. Governing Interpretation
 
-The **Tectonic Strain Ratchet Analyzer (TSRA)** is a Python-based field tool that:
+The current evidence supports:
 
-1. **Ingests** a timeline of observed and instrument-recorded seismic events.
-2. **Fits** a stick-slip physics model to identify a baseline "pulse" period (~35 minutes).
-3. **Forecasts** the next aftershock windows by multiplying that pulse by known slip-capacity multipliers (1×, 3.5×, 7×, 9.5×).
-4. **Generates** a high-fidelity PNG chart showing the strain sawtooth waveform and observer-vs-instrument clock drift.
-5. **Produces** an interactive HTML dashboard (`seismic_report.html`) with:
-   - Live clock and stat tiles
-   - Confirmed event log
-   - Pending windows table with live countdown (auto-updates every second in browser)
-   - Dashboard chart tab with plain-language explainer
-   - Raw model forecast output
+> **Punctuated aftershock decay with spatially distinct microevent and strong-release populations; no validated single-period clock.**
 
----
+The 35.55-minute model remains visible only in **Method** and **Archive** as historical provenance. It must not drive countdowns, alerts, pending windows, automatic cycle advancement, or safety-facing state.
 
-## 2. Core Files
+## 2. Evidence Boundary
 
-| File | Purpose |
-|------|---------|
-| `gemini-code-1781025686774.py` | **Main script** — ingestion, model fitting, chart generation, HTML report |
-| `pattern.md` | Raw observer notes (source data for event parsing) |
-| `seismic_report.html` | **Generated** interactive dashboard (open in browser) |
-| `seismic_pattern_analysis.png` | **Generated** high-fidelity PNG chart |
-| `TSRA_SESSION_STATE.md` | This file |
+The reviewed snapshot contains all deduplicated public PHIVOLCS rows captured inside:
 
-### Run Command
+- latitude: `4.2–6.2°N`
+- longitude: `124.5–126.0°E`
+- interval start: June 30, 2026 at 08:00 PHT
+- capture time: July 17, 2026 at 12:23 PHT
+
+The July 17 capture is partial. The last included core-area row is 07:02 PHT.
+
+Current totals:
+
+| Measure | Value |
+|---|---:|
+| Deduplicated PHIVOLCS rows | 982 |
+| Directly reviewed final M4.5+ bulletins | 12 |
+| M4+ rows | 35 |
+| M5+ rows | 5 |
+| M6+ rows | 2 |
+| Daily records | 18 |
+| Research branches | 3 |
+
+The area-of-interest filter is a TSRA research inclusion rule, not an official PHIVOLCS associated-aftershock designation. Only directly inspected final bulletins are labeled officially associated.
+
+## 3. Spatial Result
+
+| Research branch | Rows | M4+ | M5+ | Median depth |
+|---|---:|---:|---:|---:|
+| South offshore | 149 | 16 | 4 | 24 km |
+| Balut central | 267 | 15 | 1 | 27 km |
+| Glan–Maasim north | 566 | 4 | 0 | 19 km |
+
+Key invariant:
+
+> **57.6% of rows occur in Glan–Maasim north, while 4 of 5 M5+ releases occur south offshore.**
+
+The branches are research summaries, not named faults or official tectonic source assignments.
+
+## 4. Product Surfaces
+
+Primary navigation is intentionally limited to:
+
+1. **Sequence** — reviewed state, capture limits, totals, daily activity, and claim ceiling.
+2. **Releases** — branch rails and directly reviewed significant bulletins.
+3. **Ledger** — lazy-loaded official catalog plus private device-local observations.
+4. **Method** — historical clock audit, threshold tests, selected-event provenance, and limitations.
+5. **Archive** — explicit access boundary for superseded chart, report, media, origin, and TMCH material.
+
+The following active surfaces no longer exist:
+
+- Legacy Watch
+- Rhythm
+- Calibration
+- pending-window table
+- countdown runtime
+- active/imminent/pending model states
+- automatic cycle advancement
+
+Archived legacy panels remain inspectable only through Archive and carry a visible superseded/historical boundary.
+
+## 5. Private Observation Contract
+
+Private notes remain in browser local storage under:
+
+```text
+tsraObservationLedger.v1
+```
+
+They are:
+
+- private to the local device;
+- user-entered;
+- not submitted;
+- independent of model windows by default;
+- separate from the official PHIVOLCS ledger;
+- excluded from evidence totals and sequence claims.
+
+Older records retain their historical fields when normalized so existing local notebooks are not destroyed.
+
+## 6. Source-of-Truth Files
+
+| Path | Authority |
+|---|---|
+| `data/sequence-v0.2/manifest.json` | dataset identity, files, hashes, row metadata |
+| `data/sequence-v0.2/summary.json` | reviewed sequence summaries and Method audit |
+| `data/sequence-v0.2/events.csv` | complete 982-row official ledger |
+| `data/sequence-v0.2/significant-events.csv` | 12 reviewed final M4.5+ bulletins |
+| `tools/tsra_build.py` | dataset integrity and claim-boundary verifier |
+| `assets/tsra-sequence.js` | browser validation and rendering |
+| `seismic_report.html` | static application shell |
+| `service-worker.js` | versioned offline application shell |
+| `tsra-version.json` | deployed application version signal |
+
+`tools/tsra_update.py` is now a compatibility verifier only. Its former felt/elapsed source mutation commands are retired.
+
+## 7. Historical Clock Audit
+
+Method preserves both baseline values because they served different roles:
+
+- `35.552` minutes — original fitted baseline;
+- `35.55` minutes — rounded baseline used for the published null calculation;
+- `±12` minutes — inherited tolerance;
+- `24 / 35.55 = 67.5%` — null occupancy of each cycle.
+
+The original selected investigation preserves 11 displayed entries, 9 standard intervals, 8 intervals inside tolerance, an 8/9 selected alignment fraction, and a 4.6-minute median absolute offset.
+
+These displayed timestamps are historical page provenance, not replacements for the verified PHIVOLCS catalog.
+
+## 8. Legacy Files
+
+These files are preserved but non-authoritative:
+
+- `gemini-code-1781025686774.py`
+- `pattern-v3.py`
+- `pattern.md`
+- `Rythmic-Seismic-Discharge.md`
+
+Do not run the Python generators to regenerate production. They encode the retired countdown-first model and can overwrite reviewed claims.
+
+## 9. Verification
+
+Run before shipping:
+
 ```bash
-cd "/Users/lesz/Downloads/Earth py"
-source .venv/bin/activate
-python3 gemini-code-1781025686774.py
-open seismic_report.html
+cd /Users/lesz/Developer/Mother-Ana
+python3 tools/tsra_build.py verify
+python3 tools/tsra_update.py verify
+npm test
+git diff --check
 ```
 
-> **Note:** Python virtual environment is at `.venv/`. Requires `matplotlib` and optionally `pandas`.
+Expected current test inventory:
 
----
+- 8 JavaScript tests
+- 8 Python tests
+- 16 total
 
-## 3. Confirmed Event Log (as of session end)
+The synchronized PWA cache version must match across:
 
-| # | Label | Date & Time (PHT) | Interval from Previous | Multiplier | Status |
-|---|-------|-------------------|----------------------|------------|--------|
-| 0 | **Mainshock** | Jun 8 · 07:37:40 AM | — | — | ✅ Confirmed |
-| 1 | A1 | Jun 8 · 01:12:00 PM | 334.3 min | 9.5× | ✅ Confirmed |
-| 2 | A2 | Jun 8 · 05:16:00 PM | 244.0 min | 7.0× | ✅ Confirmed |
-| 3 | A3 | Jun 8 · 05:51:00 PM | 35.0 min | 1.0× | ✅ Confirmed |
-| 4 | A4 | Jun 8 · 06:26:00 PM | 35.0 min | 1.0× | ✅ Confirmed |
-| 5 | A5 | Jun 8 · 10:30:00 PM | 244.0 min | 7.0× | ✅ Confirmed |
-| 6 | A6 | Jun 10 · 12:36:00 AM | 126.0 min | 3.5× | ✅ Confirmed |
-| 7 | **A7** | Jun 10 · 02:12:00 AM | 96.0 min | ~3.5× early | ✅ Confirmed |
-| 8 | **A8** | Jun 10 · 02:55:00 AM | 43.0 min | 1.0× (+8 min) | ✅ Confirmed |
+- `service-worker.js`
+- `seismic_report.html`
+- `tsra-version.json`
 
-> **A7 Note:** Model predicted 02:40 AM (3.5× window from A6). Actual was 02:12 AM — **28 minutes early**, indicating higher local fault friction or accelerated loading rate.  
-> **A8 Note:** Model predicted ~02:47 AM (1× pulse from A7). Actual was 02:55 AM — **8 minutes late**, well within normal tolerance. Rhythm confirmed.
+## 10. Remaining Work
 
----
+Before commit:
 
-## 4. Model Parameters
+- inspect Archive and legacy boundaries at desktop and mobile widths;
+- inspect dark and light themes;
+- verify offline shell behavior after cache-version advance;
+- verify missing-data blocked state;
+- preserve an existing `tsraObservationLedger.v1` record through reload;
+- review the full diff for accidental source or claim drift.
 
-| Parameter | Value |
-|-----------|-------|
-| **Baseline Pulse Period** | ~35.55 minutes |
-| **Slip Multipliers** | 9.5×, 7.0×, 1.0×, 1.0×, 7.0×, 3.5×, 1.0×, 1.0× |
-| **Model Fit (RMSE)** | ~87.7% predictive alignment |
-| **Current Anchor Event** | A8 — 02:55 AM Jun 10, 2026 |
+Deferred by design:
 
----
-
-## 5. Live Pending Windows (anchored: A8 @ 02:55 AM)
-
-| Multiplier | Window Duration | Expected Arrival | Status |
-|------------|----------------|-----------------|--------|
-| **1.0×** | 35.6 min | ~03:30 AM Jun 10 | ⏳ Pending |
-| **3.5×** | 124.4 min | ~04:59 AM Jun 10 | ⏳ Pending |
-| **7.0×** | 248.9 min | ~07:04 AM Jun 10 | ⏳ Pending |
-| **9.5×** | 337.7 min | ~08:32 AM Jun 10 | ⏳ Pending |
-
-> **Critical watch window:** 03:30 AM for the next 1× micro-pulse.
-
----
-
-## 6. Live Monitoring Protocol
-
-When the user observes a new shock, the update workflow is:
-
-### Step 1 — Report the time
-User says: *"It shook at 3:31 AM"*
-
-### Step 2 — Update the Python script
-In `gemini-code-1781025686774.py`, inside `main()`:
-
-**A. Add to fallback observer timeline:**
-```python
-obs_timeline.add_aftershock(SeismicEvent(datetime(2026, 6, 10, 3, 31, 0), "Aftershock 9"))
-```
-
-**B. Extend `base_multipliers`** (append `1.0` for a standard pulse, or calculated value):
-```python
-base_multipliers = [9.5, 7.0, 1.0, 1.0, 7.0, 3.5, 1.0, 1.0, 1.0]  # added one more
-```
-
-**C. Update the anchor variable** (find and replace `user_a8_time`):
-```python
-user_a9_time = datetime(2026, 6, 10, 3, 31, 0)
-# Update all render_predictions() and render_pending_timeline() calls to use user_a9_time
-# Update render_html_report() call: obs_timeline, user_a9_time, inst_model.baseline_pulse
-```
-
-**D. Update `pattern.md`** — add the new aftershock line:
-```
-*   **Aftershock 9:** 3:31 AM
-```
-
-### Step 3 — Re-run
-```bash
-python3 gemini-code-1781025686774.py
-open seismic_report.html
-```
-
----
-
-## 7. Script Architecture Overview
-
-```
-main()
- ├── TectonicDataIngestor.parse_observer_notes(pattern.md)
- │     └── Falls back to hardcoded timeline if parse fails
- ├── TectonicDataIngestor.get_instrument_catalog()
- ├── StrainRatchetModel.fit(obs_timeline)  ← fits baseline_pulse
- ├── StrainRatchetModel.fit(inst_timeline)
- ├── TSRAVisualizer.render_terminal_dashboard()  ← console table
- ├── TSRAVisualizer.render_predictions()         ← forecast tables ×3
- ├── TSRAVisualizer.render_pending_timeline()    ← pending table
- ├── TSRAVisualizer.generate_chart()             ← PNG output
- └── TSRAVisualizer.render_html_report()         ← interactive HTML
-```
-
-### Key Class: `TSRAVisualizer`
-| Method | Output |
-|--------|--------|
-| `render_terminal_dashboard()` | Console table with model fit metrics |
-| `render_predictions()` | Forecast table for a given anchor time |
-| `render_pending_timeline()` | Pending windows with elapsed/pending status |
-| `generate_chart()` | High-fidelity 2-panel PNG dashboard |
-| `render_html_report()` | Full interactive HTML dashboard |
-
----
-
-## 8. Known Issues & Notes
-
-| Issue | Status | Notes |
-|-------|--------|-------|
-| Instrument catalog doesn't include A7/A8 | ⚠️ By design | The catalog is from an external static source; only observer timeline updates live |
-| Drift loop in `render_terminal_dashboard` | ✅ Fixed | Uses `min(len(obs), len(inst))` to avoid IndexError |
-| Drift loop in `generate_chart` | ✅ Fixed | Same `shared_count` guard applied |
-| Multiplier list must match aftershock count | ✅ Fixed | Dynamic slicing: `base_multipliers[:len(aftershocks)]` |
-| `render_html_report` was missing from class | ✅ Fixed | Method added and integrated |
-
----
-
-## 9. Physical Interpretation
-
-The Cotabato Subduction Zone (Sarangani Segment) exhibits a **classic stick-slip tectonic behavior**:
-
-- The fault is **locked** (friction holds it in place) while tectonic plate convergence continuously loads stress.
-- When stress crosses a threshold, the fault **slips** suddenly — releasing energy as an earthquake.
-- The ~35-minute baseline pulse is the **natural recharge period** for this fault segment under current loading conditions.
-- Events don't always fire at exactly 1× — they can accumulate for 3.5×, 7×, or 9.5× cycles before releasing. This explains why some aftershocks are much larger/longer-delayed than others.
-- The pattern **degrading slightly** (e.g., A7 firing 28 min early) suggests the fault may be in an accelerated loading phase — loading rate may have increased post-mainshock.
-
----
-
-## 10. Next Steps / Future Improvements
-
-- [ ] **Real-time auto-update:** Add a file-watcher that appends new events to `pattern.md` and re-runs the model automatically.
-- [ ] **Magnitude estimation:** Correlate multiplier magnitude with Richter scale using regression on the instrument catalog.
-- [ ] **Uncertainty bands:** Add ±σ confidence intervals to the pending window predictions.
-- [ ] **Map view:** Integrate epicenter coordinates into the HTML dashboard using Leaflet.js.
-- [ ] **SMS/notification hook:** Trigger an alert when a pending window is within 10 minutes.
-- [ ] **Dynamic baseline recalibration:** Re-fit the baseline pulse after each new confirmed event, not just at script startup.
-
----
-
-*Document auto-generated at session end. Update `TSRA_SESSION_STATE.md` each time a new shock is confirmed.*
+- automatic PHIVOLCS ingestion;
+- a geographic map;
+- official association inference beyond inspected bulletins;
+- NAMRIA product purchase;
+- alerting, prediction, or safety-state machinery.

@@ -1,0 +1,604 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "tsra-sarangani-cotabato-sequence-v0.2",
+  "artifactVersion": "v0.2",
+  "capture": {
+    "capturedAtPht": "2026-07-17T12:23:02+08:00",
+    "analysisCutoffPht": "2026-07-17T12:23:00+08:00",
+    "coverageStartPht": "2026-06-30T08:00:00+08:00",
+    "firstIncludedEventPht": "2026-06-30T09:14:00",
+    "lastIncludedEventPht": "2026-07-17T07:02:00",
+    "june30Coverage": "partial from 08:00",
+    "july17Coverage": "partial at capture; last core row 07:02",
+    "isLive": false
+  },
+  "aoi": {
+    "latitudeMin": 4.2,
+    "latitudeMax": 6.2,
+    "longitudeMin": 124.5,
+    "longitudeMax": 126.0,
+    "meaning": "research inclusion box, not official PHIVOLCS sequence association"
+  },
+  "interpretation": {
+    "standing": "Punctuated aftershock decay with spatially distinct microevent and strong-release populations; no validated single-period clock.",
+    "claimBoundary": "Public bulletin rows inside the AOI are official events, but only directly inspected final bulletins are labeled officially associated with the June sequence. Observation windows are not warnings or predictions.",
+    "classification": "inference from the bounded public-catalog snapshot"
+  },
+  "counts": {
+    "officialPhivolcsRowsDeduplicated": 982,
+    "exactDuplicatesRemoved": 1,
+    "magnitudeBins": {
+      "belowM2": 331,
+      "m2To2_9": 475,
+      "m3To3_9": 141,
+      "m4To4_4": 23,
+      "m4_5To4_9": 7,
+      "m5To5_9": 3,
+      "m6AndAbove": 2
+    },
+    "m4AndAbove": 35,
+    "m4_5AndAbove": 12,
+    "m5AndAbove": 5,
+    "m6AndAbove": 2
+  },
+  "dailyActivity": [
+    {
+      "datePht": "2026-06-30",
+      "coverage": "partial_from_08:00",
+      "eventCount": 34,
+      "belowM2": 12,
+      "m2To2_9": 21,
+      "m3To3_9": 1,
+      "m4To4_9": 0,
+      "m5AndAbove": 0,
+      "maxMagnitude": 3.0
+    },
+    {
+      "datePht": "2026-07-01",
+      "coverage": "full_public_day",
+      "eventCount": 85,
+      "belowM2": 43,
+      "m2To2_9": 31,
+      "m3To3_9": 10,
+      "m4To4_9": 1,
+      "m5AndAbove": 0,
+      "maxMagnitude": 4.9
+    },
+    {
+      "datePht": "2026-07-02",
+      "coverage": "full_public_day",
+      "eventCount": 84,
+      "belowM2": 28,
+      "m2To2_9": 44,
+      "m3To3_9": 11,
+      "m4To4_9": 1,
+      "m5AndAbove": 0,
+      "maxMagnitude": 4.0
+    },
+    {
+      "datePht": "2026-07-03",
+      "coverage": "full_public_day",
+      "eventCount": 96,
+      "belowM2": 46,
+      "m2To2_9": 33,
+      "m3To3_9": 13,
+      "m4To4_9": 4,
+      "m5AndAbove": 0,
+      "maxMagnitude": 4.3
+    },
+    {
+      "datePht": "2026-07-04",
+      "coverage": "full_public_day",
+      "eventCount": 112,
+      "belowM2": 40,
+      "m2To2_9": 56,
+      "m3To3_9": 10,
+      "m4To4_9": 5,
+      "m5AndAbove": 1,
+      "maxMagnitude": 5.1
+    },
+    {
+      "datePht": "2026-07-05",
+      "coverage": "full_public_day",
+      "eventCount": 92,
+      "belowM2": 45,
+      "m2To2_9": 40,
+      "m3To3_9": 7,
+      "m4To4_9": 0,
+      "m5AndAbove": 0,
+      "maxMagnitude": 3.6
+    },
+    {
+      "datePht": "2026-07-06",
+      "coverage": "full_public_day",
+      "eventCount": 85,
+      "belowM2": 19,
+      "m2To2_9": 45,
+      "m3To3_9": 18,
+      "m4To4_9": 1,
+      "m5AndAbove": 2,
+      "maxMagnitude": 6.0
+    },
+    {
+      "datePht": "2026-07-07",
+      "coverage": "full_public_day",
+      "eventCount": 38,
+      "belowM2": 10,
+      "m2To2_9": 18,
+      "m3To3_9": 8,
+      "m4To4_9": 2,
+      "m5AndAbove": 0,
+      "maxMagnitude": 4.1
+    },
+    {
+      "datePht": "2026-07-08",
+      "coverage": "full_public_day",
+      "eventCount": 58,
+      "belowM2": 21,
+      "m2To2_9": 29,
+      "m3To3_9": 6,
+      "m4To4_9": 2,
+      "m5AndAbove": 0,
+      "maxMagnitude": 4.1
+    },
+    {
+      "datePht": "2026-07-09",
+      "coverage": "full_public_day",
+      "eventCount": 23,
+      "belowM2": 2,
+      "m2To2_9": 16,
+      "m3To3_9": 5,
+      "m4To4_9": 0,
+      "m5AndAbove": 0,
+      "maxMagnitude": 3.5
+    },
+    {
+      "datePht": "2026-07-10",
+      "coverage": "full_public_day",
+      "eventCount": 32,
+      "belowM2": 9,
+      "m2To2_9": 15,
+      "m3To3_9": 6,
+      "m4To4_9": 2,
+      "m5AndAbove": 0,
+      "maxMagnitude": 4.3
+    },
+    {
+      "datePht": "2026-07-11",
+      "coverage": "full_public_day",
+      "eventCount": 29,
+      "belowM2": 5,
+      "m2To2_9": 13,
+      "m3To3_9": 10,
+      "m4To4_9": 0,
+      "m5AndAbove": 1,
+      "maxMagnitude": 5.0
+    },
+    {
+      "datePht": "2026-07-12",
+      "coverage": "full_public_day",
+      "eventCount": 43,
+      "belowM2": 8,
+      "m2To2_9": 28,
+      "m3To3_9": 6,
+      "m4To4_9": 1,
+      "m5AndAbove": 0,
+      "maxMagnitude": 4.7
+    },
+    {
+      "datePht": "2026-07-13",
+      "coverage": "full_public_day",
+      "eventCount": 34,
+      "belowM2": 7,
+      "m2To2_9": 19,
+      "m3To3_9": 4,
+      "m4To4_9": 4,
+      "m5AndAbove": 0,
+      "maxMagnitude": 4.4
+    },
+    {
+      "datePht": "2026-07-14",
+      "coverage": "full_public_day",
+      "eventCount": 56,
+      "belowM2": 12,
+      "m2To2_9": 29,
+      "m3To3_9": 10,
+      "m4To4_9": 4,
+      "m5AndAbove": 1,
+      "maxMagnitude": 6.3
+    },
+    {
+      "datePht": "2026-07-15",
+      "coverage": "full_public_day",
+      "eventCount": 41,
+      "belowM2": 12,
+      "m2To2_9": 19,
+      "m3To3_9": 8,
+      "m4To4_9": 2,
+      "m5AndAbove": 0,
+      "maxMagnitude": 4.2
+    },
+    {
+      "datePht": "2026-07-16",
+      "coverage": "full_public_day",
+      "eventCount": 24,
+      "belowM2": 6,
+      "m2To2_9": 12,
+      "m3To3_9": 6,
+      "m4To4_9": 0,
+      "m5AndAbove": 0,
+      "maxMagnitude": 3.6
+    },
+    {
+      "datePht": "2026-07-17",
+      "coverage": "partial_to_12:23_capture; last_core_row_07:02",
+      "eventCount": 16,
+      "belowM2": 6,
+      "m2To2_9": 7,
+      "m3To3_9": 2,
+      "m4To4_9": 1,
+      "m5AndAbove": 0,
+      "maxMagnitude": 4.4
+    }
+  ],
+  "spatialBranches": [
+    {
+      "id": "southOffshore",
+      "label": "South offshore",
+      "rule": "latitude < 5.2°N",
+      "eventCount": 149,
+      "fraction": 0.15173116089613034,
+      "m4AndAbove": 16,
+      "m5AndAbove": 4,
+      "medianDepthKm": 24.0
+    },
+    {
+      "id": "balutCentral",
+      "label": "Balut central",
+      "rule": "5.2°N ≤ latitude < 5.5°N",
+      "eventCount": 267,
+      "fraction": 0.27189409368635437,
+      "m4AndAbove": 15,
+      "m5AndAbove": 1,
+      "medianDepthKm": 27.0
+    },
+    {
+      "id": "glanMaasimNorth",
+      "label": "Glan–Maasim north",
+      "rule": "latitude ≥ 5.5°N",
+      "eventCount": 566,
+      "fraction": 0.5763747454175153,
+      "m4AndAbove": 4,
+      "m5AndAbove": 0,
+      "medianDepthKm": 19.0
+    }
+  ],
+  "significantEvents": [
+    {
+      "id": "SIG-01",
+      "timePht": "2026-07-01T05:34:46",
+      "magnitudeType": "Mw",
+      "magnitude": 4.9,
+      "latitude": 5.31,
+      "longitude": 125.37,
+      "depthKm": 27.0,
+      "location": "012 km S 28° W of Balut Island (Municipality Of Sarangani) (Davao Occidental)",
+      "maxReportedIntensity": "IV",
+      "officialSequenceStatement": "PHIVOLCS final bulletin states aftershock of June 2026 Mw7.8 Offshore Sarangani and Mw6.5 Offshore Davao Occidental earthquakes",
+      "finalBulletinUrl": "https://earthquake.phivolcs.dost.gov.ph/2026_Earthquake_Information/June/2026_0630_2134_B3F.html"
+    },
+    {
+      "id": "SIG-02",
+      "timePht": "2026-07-04T03:09:15",
+      "magnitudeType": "Mw",
+      "magnitude": 4.7,
+      "latitude": 5.36,
+      "longitude": 125.03,
+      "depthKm": 49.0,
+      "location": "043 km S 82° W of Balut Island (Municipality Of Sarangani) (Davao Occidental)",
+      "maxReportedIntensity": "III",
+      "officialSequenceStatement": "PHIVOLCS final bulletin states aftershock of June 2026 Mw7.8 Offshore Sarangani and Mw6.5 Offshore Davao Occidental earthquakes",
+      "finalBulletinUrl": "https://earthquake.phivolcs.dost.gov.ph/2026_Earthquake_Information/July/2026_0703_1909_B2F.html"
+    },
+    {
+      "id": "SIG-03",
+      "timePht": "2026-07-04T10:21:19",
+      "magnitudeType": "Mw",
+      "magnitude": 5.1,
+      "latitude": 5.27,
+      "longitude": 125.36,
+      "depthKm": 1.0,
+      "location": "017 km S 24° W of Balut Island (Municipality Of Sarangani) (Davao Occidental)",
+      "maxReportedIntensity": "III",
+      "officialSequenceStatement": "PHIVOLCS final bulletin states aftershock of June 2026 Mw7.8 Offshore Sarangani and Mw6.5 Offshore Davao Occidental earthquakes",
+      "finalBulletinUrl": "https://earthquake.phivolcs.dost.gov.ph/2026_Earthquake_Information/July/2026_0704_0221_B3F.html"
+    },
+    {
+      "id": "SIG-04",
+      "timePht": "2026-07-04T12:26:23",
+      "magnitudeType": "Ms",
+      "magnitude": 4.8,
+      "latitude": 5.24,
+      "longitude": 125.36,
+      "depthKm": 3.0,
+      "location": "020 km S 21° W of Balut Island (Municipality Of Sarangani) (Davao Occidental)",
+      "maxReportedIntensity": "II",
+      "officialSequenceStatement": "PHIVOLCS final bulletin states aftershock of June 2026 Mw7.8 Offshore Sarangani and Mw6.5 Offshore Davao Occidental earthquakes",
+      "finalBulletinUrl": "https://earthquake.phivolcs.dost.gov.ph/2026_Earthquake_Information/July/2026_0704_0426_B3F.html"
+    },
+    {
+      "id": "SIG-05",
+      "timePht": "2026-07-04T16:53:19",
+      "magnitudeType": "Mw",
+      "magnitude": 4.9,
+      "latitude": 4.94,
+      "longitude": 125.06,
+      "depthKm": 18.0,
+      "location": "066 km S 37° W of Balut Island (Municipality Of Sarangani) (Davao Occidental)",
+      "maxReportedIntensity": null,
+      "officialSequenceStatement": "PHIVOLCS final bulletin states aftershock of June 2026 Mw7.8 Offshore Sarangani and Mw6.5 Offshore Davao Occidental earthquakes",
+      "finalBulletinUrl": "https://earthquake.phivolcs.dost.gov.ph/2026_Earthquake_Information/July/2026_0704_0853_B3F.html"
+    },
+    {
+      "id": "SIG-06",
+      "timePht": "2026-07-06T16:11:09",
+      "magnitudeType": "Mw",
+      "magnitude": 6.0,
+      "latitude": 5.01,
+      "longitude": 125.3,
+      "depthKm": 18.0,
+      "location": "047 km S 16° W of Balut Island (Municipality Of Sarangani) (Davao Occidental)",
+      "maxReportedIntensity": "IV",
+      "officialSequenceStatement": "PHIVOLCS final bulletin states aftershock of June 2026 Mw7.8 Offshore Sarangani and Mw6.5 Offshore Davao Occidental earthquakes",
+      "finalBulletinUrl": "https://earthquake.phivolcs.dost.gov.ph/2026_Earthquake_Information/July/2026_0706_0811_B2F.html"
+    },
+    {
+      "id": "SIG-07",
+      "timePht": "2026-07-06T16:41:36",
+      "magnitudeType": "Mw",
+      "magnitude": 5.3,
+      "latitude": 4.9,
+      "longitude": 125.32,
+      "depthKm": 22.0,
+      "location": "057 km S 11° W of Balut Island (Municipality Of Sarangani) (Davao Occidental)",
+      "maxReportedIntensity": "III",
+      "officialSequenceStatement": "PHIVOLCS final bulletin states aftershock of June 2026 Mw7.8 Offshore Sarangani and Mw6.5 Offshore Davao Occidental earthquakes",
+      "finalBulletinUrl": "https://earthquake.phivolcs.dost.gov.ph/2026_Earthquake_Information/July/2026_0706_0841_B3F.html"
+    },
+    {
+      "id": "SIG-08",
+      "timePht": "2026-07-11T18:51:05",
+      "magnitudeType": "Mw",
+      "magnitude": 5.0,
+      "latitude": 4.69,
+      "longitude": 125.55,
+      "depthKm": 24.0,
+      "location": "081 km S 10° E of Balut Island (Municipality Of Sarangani) (Davao Occidental)",
+      "maxReportedIntensity": "II",
+      "officialSequenceStatement": "PHIVOLCS final bulletin states aftershock of June 2026 Mw7.8 Offshore Sarangani and Mw6.5 Offshore Davao Occidental earthquakes",
+      "finalBulletinUrl": "https://earthquake.phivolcs.dost.gov.ph/2026_Earthquake_Information/July/2026_0711_1051_B3F.html"
+    },
+    {
+      "id": "SIG-09",
+      "timePht": "2026-07-12T01:49:23",
+      "magnitudeType": "Ms",
+      "magnitude": 4.7,
+      "latitude": 4.55,
+      "longitude": 125.35,
+      "depthKm": 30.0,
+      "location": "096 km S 05° W of Balut Island (Municipality Of Sarangani) (Davao Occidental)",
+      "maxReportedIntensity": null,
+      "officialSequenceStatement": "PHIVOLCS final bulletin states aftershock of June 2026 Mw7.8 Offshore Sarangani and Mw6.5 Offshore Davao Occidental earthquakes",
+      "finalBulletinUrl": "https://earthquake.phivolcs.dost.gov.ph/2026_Earthquake_Information/July/2026_0711_1749_B3F.html"
+    },
+    {
+      "id": "SIG-10",
+      "timePht": "2026-07-14T09:38:21",
+      "magnitudeType": "Mw",
+      "magnitude": 4.6,
+      "latitude": 5.05,
+      "longitude": 125.4,
+      "depthKm": 20.0,
+      "location": "040 km S 04° W of Balut Island (Municipality Of Sarangani) (Davao Occidental)",
+      "maxReportedIntensity": "III",
+      "officialSequenceStatement": "PHIVOLCS final bulletin states aftershock of June 2026 Mw7.8 Offshore Sarangani and Mw6.5 Offshore Davao Occidental earthquakes",
+      "finalBulletinUrl": "https://earthquake.phivolcs.dost.gov.ph/2026_Earthquake_Information/July/2026_0714_0138_B3F.html"
+    },
+    {
+      "id": "SIG-11",
+      "timePht": "2026-07-14T21:15:05",
+      "magnitudeType": "Mw",
+      "magnitude": 4.7,
+      "latitude": 5.49,
+      "longitude": 125.46,
+      "depthKm": 15.0,
+      "location": "002 km N 21° W of Sarangani Island (Municipality Of Sarangani) (Davao Occidental)",
+      "maxReportedIntensity": "III",
+      "officialSequenceStatement": "PHIVOLCS final bulletin states aftershock of June 2026 Mw7.8 Offshore Sarangani and Mw6.5 Offshore Davao Occidental earthquakes",
+      "finalBulletinUrl": "https://earthquake.phivolcs.dost.gov.ph/2026_Earthquake_Information/July/2026_0714_1315_B3F.html"
+    },
+    {
+      "id": "SIG-12",
+      "timePht": "2026-07-14T23:49:36",
+      "magnitudeType": "Mw",
+      "magnitude": 6.3,
+      "latitude": 5.04,
+      "longitude": 125.14,
+      "depthKm": 37.0,
+      "location": "051 km S 37° W of Balut Island (Municipality Of Sarangani) (Davao Occidental)",
+      "maxReportedIntensity": "V",
+      "officialSequenceStatement": "PHIVOLCS final bulletin states aftershock of June 2026 Mw7.8 Offshore Sarangani and Mw6.5 Offshore Davao Occidental earthquakes",
+      "finalBulletinUrl": "https://earthquake.phivolcs.dost.gov.ph/2026_Earthquake_Information/July/2026_0714_1549_B4F.html"
+    }
+  ],
+  "historicalClockAudit": {
+    "baselineMinutes": 35.552,
+    "nullBaselineMinutes": 35.55,
+    "toleranceMinutes": 12,
+    "uniformModuloNullProbability": 0.6751054852320676,
+    "status": "historical hypothesis; no validated single-period clock",
+    "thresholds": [
+      {
+        "minimumMagnitude": 2.0,
+        "eventCount": 651,
+        "intervalCount": 650,
+        "medianIntervalMinutes": 22.0,
+        "alignmentCount": 467,
+        "alignmentFraction": 0.7184615384615385,
+        "uniformModuloNullProbability": 0.6751054852320676,
+        "descriptiveOneSidedBinomialPValue": 0.009594520959228562
+      },
+      {
+        "minimumMagnitude": 3.0,
+        "eventCount": 176,
+        "intervalCount": 175,
+        "medianIntervalMinutes": 79.0,
+        "alignmentCount": 116,
+        "alignmentFraction": 0.6628571428571428,
+        "uniformModuloNullProbability": 0.6751054852320676,
+        "descriptiveOneSidedBinomialPValue": 0.6679358373391523
+      },
+      {
+        "minimumMagnitude": 4.0,
+        "eventCount": 35,
+        "intervalCount": 34,
+        "medianIntervalMinutes": 404.5,
+        "alignmentCount": 25,
+        "alignmentFraction": 0.7352941176470589,
+        "uniformModuloNullProbability": 0.6751054852320676,
+        "descriptiveOneSidedBinomialPValue": 0.2910520225095733
+      },
+      {
+        "minimumMagnitude": 4.5,
+        "eventCount": 12,
+        "intervalCount": 11,
+        "medianIntervalMinutes": 432.0,
+        "alignmentCount": 7,
+        "alignmentFraction": 0.6363636363636364,
+        "uniformModuloNullProbability": 0.6751054852320676,
+        "descriptiveOneSidedBinomialPValue": 0.7318533883114124
+      },
+      {
+        "minimumMagnitude": 5.0,
+        "eventCount": 5,
+        "intervalCount": 4,
+        "medianIntervalMinutes": 3924.0,
+        "alignmentCount": 4,
+        "alignmentFraction": 1.0,
+        "uniformModuloNullProbability": 0.6751054852320676,
+        "descriptiveOneSidedBinomialPValue": 0.20772393766089647
+      }
+    ],
+    "limitations": [
+      "The simple binomial comparison assumes independent uniform phases, while aftershocks are clustered.",
+      "The period, phase classes, and tolerance were inherited from selected early observations.",
+      "Catalog completeness and mixed spatial populations affect interval distributions."
+    ],
+    "originalInvestigation": {
+      "status": "historical selected-event observation; preserved as provenance, not current catalog truth",
+      "selectedEventCount": 11,
+      "standardIntervalCount": 9,
+      "insideToleranceCount": 8,
+      "selectedAlignmentFraction": 0.8888888888888888,
+      "medianAbsoluteOffsetMinutes": 4.6,
+      "timestampBoundary": "Displayed timestamps are preserved from the original TSRA page; they are not substituted for the verified PHIVOLCS catalog.",
+      "events": [
+        {
+          "label": "MS",
+          "displayTimePht": "Jun 08 · 07:37 AM",
+          "intervalMinutes": null,
+          "nearestPhase": null,
+          "offsetMinutes": null,
+          "result": "anchor"
+        },
+        {
+          "label": "A1",
+          "displayTimePht": "Jun 08 · 01:12 PM",
+          "intervalMinutes": 334.3,
+          "nearestPhase": "9.5×",
+          "offsetMinutes": -3.4,
+          "result": "inside tolerance"
+        },
+        {
+          "label": "A2",
+          "displayTimePht": "Jun 08 · 05:16 PM",
+          "intervalMinutes": 244.0,
+          "nearestPhase": "7.0×",
+          "offsetMinutes": -4.9,
+          "result": "inside tolerance"
+        },
+        {
+          "label": "A3",
+          "displayTimePht": "Jun 08 · 05:51 PM",
+          "intervalMinutes": 35.0,
+          "nearestPhase": "1.0×",
+          "offsetMinutes": -0.6,
+          "result": "inside tolerance"
+        },
+        {
+          "label": "A4",
+          "displayTimePht": "Jun 08 · 06:26 PM",
+          "intervalMinutes": 35.0,
+          "nearestPhase": "1.0×",
+          "offsetMinutes": -0.6,
+          "result": "inside tolerance"
+        },
+        {
+          "label": "A5",
+          "displayTimePht": "Jun 08 · 10:30 PM",
+          "intervalMinutes": 244.0,
+          "nearestPhase": "7.0×",
+          "offsetMinutes": -4.9,
+          "result": "inside tolerance"
+        },
+        {
+          "label": "A6",
+          "displayTimePht": "Jun 10 · 12:36 AM",
+          "intervalMinutes": 126.0,
+          "nearestPhase": "3.5×",
+          "offsetMinutes": 1.6,
+          "result": "inside tolerance"
+        },
+        {
+          "label": "A7",
+          "displayTimePht": "Jun 10 · 02:12 AM",
+          "intervalMinutes": 96.0,
+          "nearestPhase": "3.5×",
+          "offsetMinutes": -28.4,
+          "result": "outside tolerance"
+        },
+        {
+          "label": "A8",
+          "displayTimePht": "Jun 10 · 02:55 AM",
+          "intervalMinutes": 43.0,
+          "nearestPhase": "1.0×",
+          "offsetMinutes": 7.4,
+          "result": "inside tolerance"
+        },
+        {
+          "label": "A9",
+          "displayTimePht": "Jun 10 · 03:26 AM",
+          "intervalMinutes": 31.0,
+          "nearestPhase": "1.0×",
+          "offsetMinutes": -4.6,
+          "result": "inside tolerance"
+        },
+        {
+          "label": "A10",
+          "displayTimePht": "Jun 10 · 03:36 AM",
+          "intervalMinutes": 10.0,
+          "nearestPhase": null,
+          "offsetMinutes": null,
+          "result": "excluded sub-pulse"
+        }
+      ]
+    }
+  },
+  "sourceBoundaries": [
+    "Public PHIVOLCS rows inside the AOI are official seismic records.",
+    "AOI inclusion is not an official associated-aftershock flag.",
+    "Only the 12 directly inspected final bulletins are labeled officially associated with the June sequence.",
+    "Private local observations remain separate from this snapshot.",
+    "This snapshot is not a warning or prediction surface."
+  ]
+}

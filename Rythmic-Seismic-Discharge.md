@@ -1,3 +1,5 @@
+> **Historical theory draft — non-authoritative.** Preserved as an investigation trace. Claims of mathematically predictable seismic discharge, exact controlling geometry, and a validated fault rhythm are not established by the current evidence and must not guide safety or production behavior.
+
 Tectonic Synchronicity: Rhythmic Seismic Discharge within the Cotabato Trench Divergent Double Subduction System
 
 1. Introduction to the Cotabato Trench Tectonic Framework

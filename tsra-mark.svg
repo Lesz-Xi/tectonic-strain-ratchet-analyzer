@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+	<!-- TSRA equalizer mark. Same geometry and brass-over-ash language as the header
+	     brand mark; colours are baked in because a favicon cannot read page tokens.
+	     The media query lets the tab icon follow the browser's own theme. -->
+	<style>
+		.brass { stroke: #b89455; }
+		.ash { stroke: #6f675a; }
+		@media (prefers-color-scheme: light) {
+			.brass { stroke: #8c7142; }
+			.ash { stroke: #968d7e; }
+		}
+	</style>
+	<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
+		<path class="ash" d="M5 42H10" />
+		<path class="ash" d="M5 36H10" />
+		<path class="ash" d="M5 30H10" />
+		<path class="ash" d="M5 24H10" />
+		<path class="brass" d="M16 42H21" />
+		<path class="brass" d="M16 36H21" />
+		<path class="brass" d="M16 30H21" />
+		<path class="brass" d="M16 24H21" />
+		<path class="brass" d="M16 18H21" />
+		<path class="brass" d="M16 12H21" />
+		<path class="brass" d="M16 6H21" />
+		<path class="ash" d="M27 42H32" />
+		<path class="ash" d="M27 36H32" />
+		<path class="ash" d="M27 30H32" />
+		<path class="brass" d="M38 42H43" />
+		<path class="brass" d="M38 36H43" />
+		<path class="brass" d="M38 30H43" />
+		<path class="brass" d="M38 24H43" />
+		<path class="brass" d="M38 18H43" />
+	</g>
+</svg>

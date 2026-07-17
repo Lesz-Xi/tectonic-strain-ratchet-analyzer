@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "tsra-sarangani-cotabato-sequence-v0.2",
+  "artifactVersion": "v0.2",
+  "status": "reviewed static snapshot; not live",
+  "capture": {
+    "capturedAtPht": "2026-07-17T12:23:02+08:00",
+    "analysisCutoffPht": "2026-07-17T12:23:00+08:00",
+    "coverageStartPht": "2026-06-30T08:00:00+08:00",
+    "firstIncludedEventPht": "2026-06-30T09:14:00",
+    "lastIncludedEventPht": "2026-07-17T07:02:00",
+    "june30Coverage": "partial from 08:00",
+    "july17Coverage": "partial at capture; last core row 07:02",
+    "isLive": false
+  },
+  "aoi": {
+    "latitudeMin": 4.2,
+    "latitudeMax": 6.2,
+    "longitudeMin": 124.5,
+    "longitudeMax": 126.0,
+    "meaning": "research inclusion box, not official PHIVOLCS sequence association"
+  },
+  "standingInterpretation": "Punctuated aftershock decay with spatially distinct microevent and strong-release populations; no validated single-period clock.",
+  "claimBoundary": "Public bulletin rows inside the AOI are official events, but only directly inspected final bulletins are labeled officially associated with the June sequence. Observation windows are not warnings or predictions.",
+  "sourceArtifact": {
+    "name": "tsra_observation_window_update_v0_2",
+    "reviewedOnPht": "2026-07-17",
+    "sourceChannels": [
+      "DOST-PHIVOLCS June 2026 monthly public table",
+      "DOST-PHIVOLCS live public table captured 2026-07-17 12:23 PHT",
+      "12 directly captured PHIVOLCS final bulletins",
+      "USGS ComCat retained separately in the research artifact as a cross-check"
+    ]
+  },
+  "files": [
+    {
+      "path": "summary.json",
+      "mediaType": "application/json",
+      "bytes": 20126,
+      "sha256": "2ac8376caeaef0062cfee1d3502bd7f60cc01b0eb0f08a991cc7cd6e8dc2ef9c",
+      "description": "Derived UI summary; all claims remain bounded by manifest metadata."
+    },
+    {
+      "path": "events.csv",
+      "mediaType": "text/csv",
+      "bytes": 289556,
+      "sha256": "4686d455bb8a60c7d81b959354fc12b2f3dd56099b80ef84741854399c765193",
+      "description": "Deduplicated PHIVOLCS public bulletin rows inside the research AOI.",
+      "dataRows": 982
+    },
+    {
+      "path": "significant-events.csv",
+      "mediaType": "text/csv",
+      "bytes": 4362,
+      "sha256": "006053dbded72df42c4c894446c13b8fc8554486a43c85272d09309ce131d164",
+      "description": "Directly inspected final PHIVOLCS M4.5+ bulletins.",
+      "dataRows": 12
+    }
+  ],
+  "invariants": {
+    "officialEventRows": 982,
+    "significantFinalBulletinRows": 12,
+    "magnitudeBinsConserveToOfficialRows": true,
+    "dailyCountsConserveToOfficialRows": true,
+    "spatialBranchCountsConserveToOfficialRows": true,
+    "eventKeysUnique": true,
+    "eventsChronological": true,
+    "allEventsInsideDeclaredAoi": true
+  }
+}

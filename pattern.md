@@ -1,3 +1,5 @@
+> **Historical source note — non-authoritative.** This document preserves the original selected-event interpretation. Its deterministic rhythm claims were superseded by the reviewed 982-row catalog audit. Do not use it as current sequence evidence, prediction guidance, or a production input.
+
 Based on your handwritten "Earthquake Aftershock Observation" notes, there is indeed a highly structured and repeating 
 **The Observation Timeline**
 Your notebook tracks the initial mainshock and six subsequent aftershocks:
