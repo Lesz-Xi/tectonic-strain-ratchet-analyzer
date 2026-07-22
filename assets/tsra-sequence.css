@@ -263,11 +263,18 @@
     fill: transparent;
 }
 
-.sequence-day-gap {
-    fill: color-mix(in srgb, var(--text-sub) 5%, transparent);
-    stroke: color-mix(in srgb, var(--text-sub) 28%, transparent);
-    stroke-width: .75;
-    stroke-dasharray: 2 4;
+.sequence-gap-band {
+    fill: color-mix(in srgb, var(--text-sub) 3%, transparent);
+    stroke: color-mix(in srgb, var(--text-sub) 34%, transparent);
+    stroke-width: .8;
+    stroke-dasharray: 5 6;
+}
+
+.sequence-gap-label {
+    fill: color-mix(in srgb, var(--muted) 78%, transparent);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .14em;
 }
 
 .sequence-day-group {
@@ -501,19 +508,30 @@
     fill: var(--seq-m5);
 }
 
-.sequence-bar-partial,
-.sequence-bar-anchor {
-    fill: none;
-    stroke-width: 1.5;
-}
-
 .sequence-bar-partial {
+    fill: none;
     stroke: var(--text-sub);
+    stroke-width: 1.5;
     stroke-dasharray: 5 4;
 }
 
-.sequence-bar-anchor {
+.sequence-mainshock-guide {
     stroke: var(--old-brass);
+    stroke-width: 1.2;
+}
+
+.sequence-mainshock-node {
+    fill: var(--paper-warm);
+    stroke: var(--old-brass);
+    stroke-width: 1.5;
+}
+
+.sequence-mainshock-label {
+    fill: var(--old-brass);
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .08em;
 }
 
 .sequence-chart-legend {

@@ -82,6 +82,14 @@ class FakeDocument {
     }
 }
 
+function countSvgClass(element, className) {
+    const ownClass = element.attributes && element.attributes.get('class');
+    const ownCount = ownClass === className ? 1 : 0;
+    return ownCount + element.children.reduce((total, child) => (
+        child instanceof FakeElement ? total + countSvgClass(child, className) : total
+    ), 0);
+}
+
 function ledgerDocument() {
     const documentRef = new FakeDocument();
     [
@@ -200,7 +208,13 @@ test('successful load renders evidence metrics and the activity chart', async ()
     assert.match(documentRef.getElementById('sequence-partial-note').textContent, /Jun 9–29 has no reviewed catalog coverage/i);
     assert.equal(reviewedSummary.dailyActivity[0].coverage, 'anchor_only_mainshock');
     assert.equal(reviewedSummary.dailyActivity[1].coverage, 'not_captured');
-    assert.ok(documentRef.getElementById('sequence-activity-chart').children.length > 30);
+    const chart = documentRef.getElementById('sequence-activity-chart');
+    assert.ok(chart.children.length > 30);
+    assert.equal(countSvgClass(chart, 'sequence-gap-band'), 1);
+    assert.equal(countSvgClass(chart, 'sequence-gap-label'), 1);
+    assert.equal(countSvgClass(chart, 'sequence-mainshock-guide'), 1);
+    assert.equal(countSvgClass(chart, 'sequence-mainshock-label'), 1);
+    assert.equal(countSvgClass(chart, 'sequence-day-gap'), 0);
     assert.equal(documentRef.getElementById('release-branch-list').children.length, 3);
     assert.equal(documentRef.getElementById('significant-release-body').children.length, 17);
     assert.match(documentRef.getElementById('releases-invariant').textContent, /5 of 9 M5\+ releases/i);

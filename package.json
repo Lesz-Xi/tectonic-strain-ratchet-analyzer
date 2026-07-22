@@ -1,6 +1,6 @@
 {
   "name": "tsra-sequence-observatory",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Static, source-bounded observatory for the Sarangani–Cotabato earthquake sequence.",
   "main": "index.js",
   "scripts": {

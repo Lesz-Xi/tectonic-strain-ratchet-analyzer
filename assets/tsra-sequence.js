@@ -329,7 +329,7 @@
 
         const width = 1000;
         const height = 340;
-        const margin = { top: 34, right: 20, bottom: 54, left: 58 };
+        const margin = { top: 52, right: 20, bottom: 54, left: 58 };
         const plotWidth = width - margin.left - margin.right;
         const plotHeight = height - margin.top - margin.bottom;
         const maximum = Math.max(...days.map(day => day.eventCount));
@@ -365,6 +365,43 @@
             });
         }
 
+        const gapRuns = [];
+        for (let index = 0; index < days.length;) {
+            if (days[index].coverage !== 'not_captured') {
+                index += 1;
+                continue;
+            }
+            const start = index;
+            while (index + 1 < days.length && days[index + 1].coverage === 'not_captured') index += 1;
+            gapRuns.push({ start, end: index });
+            index += 1;
+        }
+
+        gapRuns.forEach(run => {
+            const startX = margin.left + run.start * slot;
+            const bandWidth = (run.end - run.start + 1) * slot;
+            const gapGroup = createSvgElement(documentRef, 'g', {
+                class: 'sequence-gap-group',
+                role: 'img',
+                'aria-label': `${formatDay(days[run.start].datePht)} through ${formatDay(days[run.end].datePht)}: no reviewed catalog coverage`
+            });
+            gapGroup.append(createSvgElement(documentRef, 'rect', {
+                x: startX,
+                y: margin.top,
+                width: bandWidth,
+                height: plotHeight,
+                class: 'sequence-gap-band'
+            }));
+            appendSvgText(documentRef, gapGroup, 'NO REVIEWED CATALOG · JUN 9–29', {
+                x: startX + bandWidth / 2,
+                y: margin.top + plotHeight / 2,
+                'text-anchor': 'middle',
+                class: 'sequence-gap-label'
+            });
+            svg.append(gapGroup);
+        });
+
+        let continuousIndex = -1;
         days.forEach((day, index) => {
             const x = margin.left + index * slot + (slot - barWidth) / 2;
             let accumulated = 0;
@@ -389,33 +426,46 @@
                 class: 'sequence-day-hit'
             }));
 
-            if (day.coverage === 'not_captured') {
-                group.append(createSvgElement(documentRef, 'rect', {
-                    x: margin.left + index * slot + 1,
-                    y: margin.top,
-                    width: Math.max(slot - 2, 1),
-                    height: plotHeight,
-                    class: 'sequence-day-gap'
+            if (day.coverage === 'anchor_only_mainshock') {
+                const anchorX = x + barWidth / 2;
+                group.append(createSvgElement(documentRef, 'line', {
+                    x1: anchorX,
+                    x2: anchorX,
+                    y1: margin.top - 8,
+                    y2: margin.top + plotHeight,
+                    class: 'sequence-mainshock-guide'
                 }));
+                group.append(createSvgElement(documentRef, 'circle', {
+                    cx: anchorX,
+                    cy: margin.top - 12,
+                    r: 4,
+                    class: 'sequence-mainshock-node'
+                }));
+                appendSvgText(documentRef, group, `MW ${day.maxMagnitude.toFixed(1)} · MAINSHOCK`, {
+                    x: anchorX + 9,
+                    y: margin.top - 17,
+                    'text-anchor': 'start',
+                    class: 'sequence-mainshock-label'
+                });
+            } else if (day.coverage !== 'not_captured') {
+                STACKS.forEach(stack => {
+                    const value = day[stack.key];
+                    if (!value) return;
+                    const segmentHeight = (value / axisMaximum) * plotHeight;
+                    const y = margin.top + plotHeight - ((accumulated + value) / axisMaximum) * plotHeight;
+                    group.append(createSvgElement(documentRef, 'rect', {
+                        x,
+                        y,
+                        width: barWidth,
+                        height: Math.max(segmentHeight, 1),
+                        rx: 1.5,
+                        class: `sequence-bar ${stack.className}`
+                    }));
+                    accumulated += value;
+                });
             }
 
-            STACKS.forEach(stack => {
-                const value = day[stack.key];
-                if (!value) return;
-                const segmentHeight = (value / axisMaximum) * plotHeight;
-                const y = margin.top + plotHeight - ((accumulated + value) / axisMaximum) * plotHeight;
-                group.append(createSvgElement(documentRef, 'rect', {
-                    x,
-                    y,
-                    width: barWidth,
-                    height: Math.max(segmentHeight, 1),
-                    rx: 1.5,
-                    class: `sequence-bar ${stack.className}`
-                }));
-                accumulated += value;
-            });
-
-            if (day.coverage.startsWith('partial') || day.coverage === 'anchor_only_mainshock') {
+            if (day.coverage.startsWith('partial')) {
                 const totalHeight = (day.eventCount / axisMaximum) * plotHeight;
                 group.append(createSvgElement(documentRef, 'rect', {
                     x: x - 2,
@@ -423,13 +473,21 @@
                     width: barWidth + 4,
                     height: totalHeight + 4,
                     rx: 2,
-                    class: day.coverage === 'anchor_only_mainshock' ? 'sequence-bar-anchor' : 'sequence-bar-partial'
+                    class: 'sequence-bar-partial'
                 }));
             }
-            bindDayTooltip(documentRef, group, day);
-            svg.append(group);
 
-            if (index % 2 === 0 || index === days.length - 1) {
+            if (day.coverage !== 'not_captured') {
+                bindDayTooltip(documentRef, group, day);
+                svg.append(group);
+            }
+
+            if (day.datePht >= '2026-06-30') continuousIndex += 1;
+            const showDate = day.coverage === 'anchor_only_mainshock'
+                || day.datePht === '2026-06-30'
+                || (continuousIndex >= 0 && continuousIndex % 2 === 0)
+                || index === days.length - 1;
+            if (showDate) {
                 appendSvgText(documentRef, svg, formatDay(day.datePht), {
                     x: x + barWidth / 2,
                     y: height - 25,
