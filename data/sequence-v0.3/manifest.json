@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "tsra-sarangani-cotabato-sequence-v0.3",
+  "artifactVersion": "v0.3",
+  "status": "reviewed static snapshot; not live",
+  "capture": {
+    "capturedAtPht": "2026-07-22T23:53:24+08:00",
+    "analysisCutoffPht": "2026-07-22T23:53:24+08:00",
+    "coverageStartPht": "2026-06-08T07:37:00",
+    "continuousCatalogStartPht": "2026-06-30T08:00:00+08:00",
+    "firstIncludedEventPht": "2026-06-08T07:37:00",
+    "lastIncludedEventPht": "2026-07-22T23:14:00",
+    "june8Coverage": "directly reviewed mainshock anchor only",
+    "june9To29Coverage": "not captured; explicit chart gap",
+    "june30Coverage": "partial from 08:00",
+    "july17Coverage": "full public day in the July 22 recapture",
+    "july22Coverage": "partial at capture; last core row 23:14",
+    "isLive": false
+  },
+  "aoi": {
+    "latitudeMin": 4.2,
+    "latitudeMax": 6.2,
+    "longitudeMin": 124.5,
+    "longitudeMax": 126.0,
+    "meaning": "research inclusion box, not official PHIVOLCS sequence association"
+  },
+  "standingInterpretation": "Punctuated aftershock decay with spatially distinct microevent and strong-release populations; no validated single-period clock.",
+  "claimBoundary": "Public bulletin rows inside the AOI are official events, but only directly inspected final bulletins are labeled officially associated with the June sequence. Observation windows are not warnings or predictions.",
+  "sourceArtifact": {
+    "name": "tsra_sequence_snapshot_v0_3",
+    "reviewedOnPht": "2026-07-22",
+    "deduplicationKey": [
+      "time_pht",
+      "latitude",
+      "longitude",
+      "depth_km",
+      "magnitude",
+      "bulletin_url"
+    ],
+    "captureArchive": {
+      "path": "sources/phivolcs-2026-07-22T235324+0800.tar.gz",
+      "bytes": 150930,
+      "sha256": "cb26b27d8af6c8ca8a56e40026616618d032ab84fb1182bc9a8c53d62f83d77c",
+      "contents": "PHIVOLCS live public table, the June 8 Mw7.8 final bulletin, and five newly reviewed M4.5+ final bulletins"
+    },
+    "sourceChannels": [
+      "Directly reviewed DOST-PHIVOLCS June 8 Mw7.8 final bulletin",
+      "Reviewed TSRA v0.2 snapshot through 2026-07-17 07:02 PHT",
+      "DOST-PHIVOLCS live public table captured 2026-07-22 23:53 PHT",
+      "17 directly captured PHIVOLCS final bulletins"
+    ]
+  },
+  "files": [
+    {
+      "path": "summary.json",
+      "mediaType": "application/json",
+      "bytes": 30063,
+      "sha256": "7cfd6af74e806aaf76eb771969a9268cd08382f16a6222bc68e3dd27883a3d2c",
+      "description": "Derived UI summary; all claims remain bounded by manifest metadata."
+    },
+    {
+      "path": "events.csv",
+      "mediaType": "text/csv",
+      "bytes": 354338,
+      "sha256": "30da3e6483f00807ffbd409599734b01c9345925fb521ea0ff73a65cc8136cf5",
+      "description": "Deduplicated PHIVOLCS public bulletin rows inside the research AOI.",
+      "dataRows": 1202
+    },
+    {
+      "path": "significant-events.csv",
+      "mediaType": "text/csv",
+      "bytes": 6106,
+      "sha256": "627ff4a86afa07411c08acf5fa5315626672c9051f322087dc0a036ae04816f8",
+      "description": "Directly inspected final PHIVOLCS M4.5+ bulletins.",
+      "dataRows": 17
+    }
+  ],
+  "invariants": {
+    "officialEventRows": 1202,
+    "significantFinalBulletinRows": 17,
+    "magnitudeBinsConserveToOfficialRows": true,
+    "dailyCountsConserveToOfficialRows": true,
+    "spatialBranchCountsConserveToOfficialRows": true,
+    "eventKeysUnique": true,
+    "eventsChronological": true,
+    "allEventsInsideDeclaredAoi": true
+  }
+}

@@ -4351,10 +4351,10 @@
                 <section class='sequence-activity-card' aria-labelledby='sequence-activity-title'>
                     <header class='sequence-card-head'>
                         <div>
-                            <div class='sequence-card-kicker'>Daily activity · 18-day bounded view</div>
+                            <div class='sequence-card-kicker'>Sequence timeline · mainshock anchor + bounded capture</div>
                             <h3 class='sequence-card-title' id='sequence-activity-title'>Decay, renewal, and magnitude structure</h3>
                         </div>
-                        <a class='sequence-download' href='/data/sequence-v0.2/events.csv' download>Download 982-row ledger</a>
+                        <a class='sequence-download' href='/data/sequence-v0.3/events.csv' download>Download 1,202-row ledger</a>
                     </header>
                     <div class='sequence-chart-wrap' id='sequence-chart-wrap'>
                         <svg class='sequence-chart' id='sequence-activity-chart' viewBox='0 0 1000 340' aria-busy='true'></svg>
@@ -4366,7 +4366,9 @@
                         <span><i class='m3'></i>M3–3.9</span>
                         <span><i class='m4'></i>M4–4.9</span>
                         <span><i class='m5'></i>M5+</span>
+                        <span><i class='anchor'></i>Mainshock anchor</span>
                         <span><i class='partial'></i>Partial day</span>
+                        <span><i class='gap'></i>No reviewed coverage</span>
                     </div>
                     <div class='sequence-activity-reading'>
                         <div class='sequence-reading-block'>
@@ -4410,7 +4412,7 @@
                         <div class='sequence-card-kicker'>Final PHIVOLCS solutions</div>
                         <h3 class='sequence-card-title' id='releases-ledger-title'>Significant releases · M4.5 and above</h3>
                     </div>
-                    <a class='sequence-download' href='/data/sequence-v0.2/significant-events.csv' download>Download final-bulletin ledger</a>
+                    <a class='sequence-download' href='/data/sequence-v0.3/significant-events.csv' download>Download final-bulletin ledger</a>
                 </header>
                 <p class='releases-ledger-note'>Magnitude type, value, depth, location, intensity, and source remain specific to each final PHIVOLCS bulletin. Preliminary and USGS values are not silently merged.</p>
                 <div class='releases-table-wrap'>
@@ -4442,11 +4444,11 @@
                 <div>
                     <div class='sequence-card-kicker'>Verified PHIVOLCS catalog · lazy loaded</div>
                     <h2 class='sequence-card-title' id='official-ledger-title'>Official event ledger</h2>
-                    <p class='official-ledger-lede'>All 982 deduplicated public bulletin rows inside the declared research AOI. Inclusion here is not an official associated-aftershock flag.</p>
+                    <p class='official-ledger-lede'>1,202 deduplicated public bulletin rows inside the declared research AOI: the directly reviewed June 8 mainshock anchor plus continuous capture from June 30 through the partial July 22 snapshot. June 9–29 remains an explicit no-data gap. AOI inclusion is not an official associated-aftershock flag.</p>
                 </div>
                 <div class='official-ledger-head-actions'>
                     <span class='sequence-status' id='official-ledger-status' aria-live='polite'>Open Ledger to load catalog</span>
-                    <a class='sequence-download' href='/data/sequence-v0.2/events.csv' download>Download complete CSV</a>
+                    <a class='sequence-download' href='/data/sequence-v0.3/events.csv' download>Download complete CSV</a>
                 </div>
             </header>
 
@@ -5365,7 +5367,7 @@
                 <button class='archive-card' type='button' onclick="switchTab('field-report',event)">
                     <span>02 · Superseded narrative</span>
                     <strong>Original field report</strong>
-                    <span class='archive-card-copy'>The early explanatory essay, including claims that no longer meet the evidence standard established by the 982-row review.</span>
+                    <span class='archive-card-copy'>The early explanatory essay, including claims that no longer meet the evidence standard established by the 1,202-row review.</span>
                 </button>
                 <button class='archive-card' type='button' onclick="switchTab('learning',event)">
                     <span>03 · Historical media</span>
@@ -5397,7 +5399,7 @@
             <button type='button' onclick="switchTab('archive',event)">Back to Archive</button>
         </div>
         <div class='archive-reading-context'>
-            <strong>Reading context · after the 982-row review</strong>
+            <strong>Reading context · after the 1,202-row review</strong>
             TSRA no longer opens watch windows, re-anchors cycles, or maintains observation timing state. The instrument is now a static, source-bounded observatory of the reviewed PHIVOLCS catalog. This disclosure is preserved to show the tool’s original purpose and boundary language; the current scope is defined by Sequence and Method, and official guidance remains with PHIVOLCS.
         </div>
         <div class='card'>
@@ -5516,7 +5518,7 @@
             <button type='button' onclick="switchTab('archive',event)">Back to Archive</button>
         </div>
         <div class='archive-reading-context'>
-            <strong>Reading context · after the 982-row review</strong>
+            <strong>Reading context · after the 1,202-row review</strong>
             The expanded catalog did not validate a single-period clock. The 35.55-minute baseline, its multiplier windows, and the 88.9% fit survive below as the record of how the investigation began — not as current interpretation. The current organizing model is punctuated aftershock decay with spatially distinct microevent and strong-release populations; see Sequence and Method. All figures below, including the stated mainshock magnitude, are preserved exactly as originally written and were not re-verified by the review.
         </div>
         <div class='card field-report-card'>
@@ -6126,7 +6128,7 @@
             applyLowDataMode(enabled);
         }
 
-        const TSRA_APP_VERSION = 'tsra-field-cache-v133';
+        const TSRA_APP_VERSION = 'tsra-field-cache-v134';
         const TSRA_VERSION_URL = '/tsra-version.json';
         const TSRA_UPDATE_CHECK_INTERVAL = 60 * 1000;
         let tsraReloadingForUpdate = false;

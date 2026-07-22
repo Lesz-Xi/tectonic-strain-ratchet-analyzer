@@ -8,24 +8,27 @@ It began as an investigation of an apparent 35.55-minute aftershock rhythm. The 
 
 ## Current Evidence Snapshot
 
-Dataset: `tsra-sarangani-cotabato-sequence-v0.2`
+Dataset: `tsra-sarangani-cotabato-sequence-v0.3`
 
-- **982** deduplicated public PHIVOLCS rows
-- **12** directly reviewed final PHIVOLCS bulletins at M4.5+
-- **35** M4+ rows
-- **5** M5+ rows
-- **2** M6+ rows
-- **18** daily activity records
+- **1,202** deduplicated public PHIVOLCS rows
+- **1** directly reviewed June 8 Mw7.8 mainshock anchor
+- **17** directly reviewed final PHIVOLCS aftershock bulletins at M4.5+
+- **42** M4+ rows
+- **9** M5+ rows
+- **3** M6+ rows
+- **45** calendar-day chart records: 24 observed dates and 21 explicit no-data gap days
 - **3** research branches
 
 Coverage is deliberately bounded:
 
 - Area of interest: `4.2–6.2°N, 124.5–126.0°E`
-- Start: June 30, 2026 at 08:00 PHT
-- Capture: July 17, 2026 at 12:23 PHT
-- Last included core-area row: July 17, 2026 at 07:02 PHT
+- Sequence anchor: June 8, 2026 at 07:37 PHT — directly reviewed mainshock only
+- Explicit no-data gap: June 9–29, 2026
+- Continuous catalog capture begins: June 30, 2026 at 08:00 PHT
+- Capture: July 22, 2026 at 23:53 PHT
+- Last included core-area row: July 22, 2026 at 23:14 PHT
 
-“All data” means all deduplicated public PHIVOLCS rows found inside that declared area and interval. It does not mean all earthquakes everywhere, an officially complete sequence, or automatic official aftershock association.
+“All data” means the directly reviewed June 8 mainshock anchor plus all deduplicated public PHIVOLCS rows found inside the declared area from the continuous June 30 start through the July 22 capture. It does not imply June 9–29 coverage, all earthquakes everywhere, an officially complete sequence, or automatic official aftershock association.
 
 ## What the Application Shows
 
@@ -37,11 +40,11 @@ The reviewed snapshot, capture boundaries, daily activity, evidence totals, and 
 
 ### Releases
 
-Branch-level summaries and the 12 directly inspected final M4.5+ PHIVOLCS bulletins. PHIVOLCS and USGS values remain source-specific; TSRA does not create hybrid event solutions.
+Branch-level summaries and the 17 directly inspected final M4.5+ aftershock bulletins. The June 8 mainshock remains a separately identified chart and ledger anchor. PHIVOLCS and USGS values remain source-specific; TSRA does not create hybrid event solutions.
 
 ### Ledger
 
-A lazy-loaded, filterable view of all 982 official rows. The complete CSV stays outside the initial PWA shell.
+A lazy-loaded, filterable view of all 1,202 official rows. The complete CSV stays outside the initial PWA shell.
 
 The Ledger also contains a device-local **Private observation notebook**. These records:
 
@@ -78,8 +81,9 @@ TSRA intentionally remains small and static:
 | Application shell | `seismic_report.html` |
 | Sequence rendering | `assets/tsra-sequence.js` |
 | Sequence styles | `assets/tsra-sequence.css` |
-| Reviewed evidence | `data/sequence-v0.2/` |
+| Reviewed evidence | `data/sequence-v0.3/` |
 | Dataset contract | `tools/tsra_build.py` |
+| Preserved source capture | `data/sequence-v0.3/sources/phivolcs-2026-07-22T235324+0800.tar.gz` |
 | Shell/PWA contract | `tools/tsra_update.py verify` |
 | Offline shell | `service-worker.js` |
 | Tests | Node test runner + Python `unittest` |

@@ -184,6 +184,39 @@ def verify_file_manifest(
     return files
 
 
+def verify_source_capture(dataset_dir: Path, manifest: JsonObject, errors: list[str]) -> None:
+    source_artifact = manifest.get("sourceArtifact")
+    if not isinstance(source_artifact, dict):
+        if manifest.get("artifactVersion") == "v0.3":
+            add_error(errors, "v0.3 source artifact metadata is missing")
+        return
+    archive = source_artifact.get("captureArchive")
+    if not isinstance(archive, dict):
+        if manifest.get("artifactVersion") == "v0.3":
+            add_error(errors, "v0.3 source capture metadata is missing")
+        return
+    relative = archive.get("path")
+    if not isinstance(relative, str) or not relative:
+        add_error(errors, "source capture path is invalid")
+        return
+    relative_path = Path(relative)
+    if relative_path.is_absolute() or ".." in relative_path.parts:
+        add_error(errors, "source capture path must remain inside the dataset")
+        return
+    path = dataset_dir / relative_path
+    if not path.is_file():
+        add_error(errors, f"missing source capture: {relative}")
+        return
+    expected_bytes = integer(archive.get("bytes"), "sourceArtifact.captureArchive.bytes", errors)
+    if expected_bytes is not None and path.stat().st_size != expected_bytes:
+        add_error(errors, f"source capture byte-size mismatch: {path.stat().st_size} != {expected_bytes}")
+    expected_hash = archive.get("sha256")
+    if not isinstance(expected_hash, str) or len(expected_hash) != 64:
+        add_error(errors, "source capture SHA-256 is invalid")
+    elif sha256(path) != expected_hash:
+        add_error(errors, "source capture SHA-256 mismatch")
+
+
 def magnitude_bins(magnitudes: Sequence[float]) -> dict[str, int]:
     return {
         "belowM2": sum(value < 2 for value in magnitudes),
@@ -384,17 +417,22 @@ def verify_daily_activity(
         components = [integer(day.get(key), f"dailyActivity[{date}].{key}", errors) for key in component_keys]
         if all(value is not None for value in components) and sum(value for value in components if value is not None) != count:
             add_error(errors, f"daily magnitude classes do not conserve for {date}")
-        maximum = number(day.get("maxMagnitude"), f"dailyActivity[{date}].maxMagnitude", errors)
-        if maximum is not None and date in actual_max and not close_enough(maximum, actual_max[date]):
-            add_error(errors, f"daily maximum mismatch for {date}: {maximum} != {actual_max[date]}")
+        if date in actual_max:
+            maximum = number(day.get("maxMagnitude"), f"dailyActivity[{date}].maxMagnitude", errors)
+            if maximum is not None and not close_enough(maximum, actual_max[date]):
+                add_error(errors, f"daily maximum mismatch for {date}: {maximum} != {actual_max[date]}")
+        elif day.get("maxMagnitude") is not None:
+            add_error(errors, f"daily maximum must be null without captured events: {date}")
         coverage = day.get("coverage")
         if not isinstance(coverage, str) or not coverage:
             add_error(errors, f"missing coverage status for {date}")
+        if date not in actual_counts and (count != 0 or coverage != "not_captured"):
+            add_error(errors, f"uncaptured gap day must be zero and marked not_captured: {date}")
 
     if total != len(events):
         add_error(errors, f"daily activity does not conserve: {total} != {len(events)}")
-    if seen_dates != set(actual_counts):
-        add_error(errors, "daily activity dates do not match event dates")
+    if not set(actual_counts).issubset(seen_dates):
+        add_error(errors, "daily activity is missing one or more event dates")
 
 
 def verify_spatial_branches(
@@ -603,11 +641,19 @@ def verify_historical_clock(
                 if result != expected_result:
                     add_error(errors, f"original investigation tolerance result changed for {event.get('label')}")
 
+    capture = mapping(summary.get("capture"), "summary.capture", errors)
+    analysis_start_raw = audit.get("analysisCoverageStartPht", capture.get("coverageStartPht"))
+    try:
+        analysis_start = datetime.fromisoformat(str(analysis_start_raw)).replace(tzinfo=None)
+    except ValueError:
+        analysis_start = None
+        add_error(errors, "historical clock analysis coverage start is invalid")
+
     parsed_events: list[tuple[datetime, float]] = []
     for index, row in enumerate(events, start=1):
         time = csv_time(row, "time_pht", f"events.csv row {index}", errors)
         magnitude = csv_float(row, "magnitude", f"events.csv row {index}", errors)
-        if time is not None and magnitude is not None:
+        if time is not None and magnitude is not None and (analysis_start is None or time >= analysis_start):
             parsed_events.append((time, magnitude))
 
     threshold_entries = json_array(audit.get("thresholds"), "historicalClockAudit.thresholds", errors)
@@ -683,6 +729,7 @@ def verify_dataset(dataset_dir: Path) -> list[str]:
     manifest = read_json_object(dataset_dir / "manifest.json", errors)
     summary = read_json_object(dataset_dir / "summary.json", errors)
     files = verify_file_manifest(dataset_dir, manifest, errors)
+    verify_source_capture(dataset_dir, manifest, errors)
     events = read_csv_rows(dataset_dir / "events.csv", errors)
     significant_rows = read_csv_rows(dataset_dir / "significant-events.csv", errors)
 
@@ -697,7 +744,7 @@ def verify_dataset(dataset_dir: Path) -> list[str]:
 
 
 def default_dataset_dir() -> Path:
-    return Path(__file__).resolve().parents[1] / "data" / "sequence-v0.2"
+    return Path(__file__).resolve().parents[1] / "data" / "sequence-v0.3"
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -708,7 +755,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--dataset",
         type=Path,
         default=default_dataset_dir(),
-        help="Dataset directory (default: data/sequence-v0.2).",
+        help="Dataset directory (default: data/sequence-v0.3).",
     )
     return parser
 

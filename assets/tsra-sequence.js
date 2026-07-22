@@ -1,10 +1,10 @@
 (function sequenceModule(globalScope) {
     'use strict';
 
-    const SUMMARY_URL = '/data/sequence-v0.2/summary.json';
-    const EVENTS_URL = '/data/sequence-v0.2/events.csv';
-    const EXPECTED_DATASET_ID = 'tsra-sarangani-cotabato-sequence-v0.2';
-    const EXPECTED_EVENT_ROWS = 982;
+    const SUMMARY_URL = '/data/sequence-v0.3/summary.json';
+    const EVENTS_URL = '/data/sequence-v0.3/events.csv';
+    const EXPECTED_DATASET_ID = 'tsra-sarangani-cotabato-sequence-v0.3';
+    const EXPECTED_EVENT_ROWS = 1202;
     const LEDGER_PAGE_SIZE = 100;
     const SVG_NS = 'http://www.w3.org/2000/svg';
     const ledgerState = {
@@ -121,8 +121,8 @@
             }
         }
 
-        if (!Array.isArray(summary.significantEvents) || summary.significantEvents.length !== 12) {
-            errors.push('12 significant final-bulletin events are required');
+        if (!Array.isArray(summary.significantEvents) || summary.significantEvents.length !== 17) {
+            errors.push('17 significant final-bulletin events are required');
         } else {
             summary.significantEvents.forEach((event, index) => {
                 if (!isObject(event)) {
@@ -234,9 +234,11 @@
     }
 
     function coverageNote(day) {
-        if (!day.coverage || !day.coverage.startsWith('partial')) return '';
-        if (day.coverage === 'partial-start') return 'Partial day · capture begins 08:00 PHT';
-        return 'Partial day · capture cut at the snapshot time';
+        if (day.coverage === 'anchor_only_mainshock') return 'Sequence anchor only · not a complete public day';
+        if (day.coverage === 'not_captured') return 'No reviewed catalog coverage';
+        if (day.coverage === 'partial_from_08:00') return 'Partial day · capture begins 08:00 PHT';
+        if (day.coverage === 'partial_at_capture') return 'Partial day · capture cut at the snapshot time';
+        return '';
     }
 
     function bindDayTooltip(documentRef, group, day) {
@@ -339,7 +341,7 @@
         // native hover tooltip for every descendant that doesn't have a nearer one of
         // its own, which collided with the per-bar reading plate below.
         const description = createSvgElement(documentRef, 'desc', { id: 'sequence-chart-description' });
-        description.textContent = 'Stacked daily event counts from June 30 through July 17. June 30 and July 17 are partial observation days.';
+        description.textContent = 'Sequence timeline from the directly reviewed June 8 mainshock anchor through the partial July 22 capture. June 9–29 is marked as an explicit no-data gap; continuous catalog coverage begins June 30 at 08:00 PHT.';
         svg.append(description);
         svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
         svg.setAttribute('role', 'img');
@@ -366,12 +368,16 @@
         days.forEach((day, index) => {
             const x = margin.left + index * slot + (slot - barWidth) / 2;
             let accumulated = 0;
+            const coverage = coverageNote(day);
+            const magnitudeReading = day.maxMagnitude === null
+                ? 'no captured events'
+                : `maximum M${day.maxMagnitude}`;
             const group = createSvgElement(documentRef, 'g', {
                 class: 'sequence-day-group',
                 tabindex: '0',
                 role: 'img',
-                'aria-label': `${formatDay(day.datePht)}: ${day.eventCount} official rows, maximum M${day.maxMagnitude}`
-                    + `${day.coverage.startsWith('partial') ? ', partial day' : ''}. `
+                'aria-label': `${formatDay(day.datePht)}: ${day.eventCount} official rows, ${magnitudeReading}`
+                    + `${coverage ? `, ${coverage}` : ''}. `
                     + describeDay(day).map(row => `${row.label} ${row.value}`).join(', ')
             });
 
@@ -382,6 +388,16 @@
                 height: plotHeight,
                 class: 'sequence-day-hit'
             }));
+
+            if (day.coverage === 'not_captured') {
+                group.append(createSvgElement(documentRef, 'rect', {
+                    x: margin.left + index * slot + 1,
+                    y: margin.top,
+                    width: Math.max(slot - 2, 1),
+                    height: plotHeight,
+                    class: 'sequence-day-gap'
+                }));
+            }
 
             STACKS.forEach(stack => {
                 const value = day[stack.key];
@@ -399,7 +415,7 @@
                 accumulated += value;
             });
 
-            if (day.coverage.startsWith('partial')) {
+            if (day.coverage.startsWith('partial') || day.coverage === 'anchor_only_mainshock') {
                 const totalHeight = (day.eventCount / axisMaximum) * plotHeight;
                 group.append(createSvgElement(documentRef, 'rect', {
                     x: x - 2,
@@ -407,7 +423,7 @@
                     width: barWidth + 4,
                     height: totalHeight + 4,
                     rx: 2,
-                    class: 'sequence-bar-partial'
+                    class: day.coverage === 'anchor_only_mainshock' ? 'sequence-bar-anchor' : 'sequence-bar-partial'
                 }));
             }
             bindDayTooltip(documentRef, group, day);
@@ -856,7 +872,7 @@
         if (ledgerState.promise) return ledgerState.promise;
         ledgerState.status = 'loading';
         const status = documentRef.getElementById('official-ledger-status');
-        if (status) status.textContent = 'Loading 982-row PHIVOLCS snapshot…';
+        if (status) status.textContent = `Loading ${EXPECTED_EVENT_ROWS.toLocaleString()}-row PHIVOLCS snapshot…`;
         ledgerState.promise = (async () => {
             try {
                 const response = await fetchImpl(EVENTS_URL, {
@@ -913,8 +929,9 @@
             + `${average(laterFullDays).toFixed(1)} rows/day from Jul 7–16.`
         );
         setText(documentRef, 'sequence-partial-note',
-            `Jun 30 begins at 08:00 PHT. Jul 17 is partial at the ${formatPht(capture.capturedAtPht)} capture; `
-            + `the last included core-area row is ${formatPht(capture.lastIncludedEventPht)}.`
+            `Jun 8 is a directly reviewed mainshock anchor. Jun 9–29 has no reviewed catalog coverage. `
+            + `Continuous capture begins Jun 30 at 08:00 PHT; Jul 22 is partial at the ${formatPht(capture.capturedAtPht)} capture, `
+            + `with the last included core-area row at ${formatPht(capture.lastIncludedEventPht)}.`
         );
         setText(documentRef, 'sequence-claim-boundary', summary.interpretation.claimBoundary);
         renderActivityChart(documentRef, days);

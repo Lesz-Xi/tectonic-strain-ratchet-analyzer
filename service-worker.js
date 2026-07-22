@@ -1,4 +1,4 @@
-const TSRA_CACHE_VERSION = 'tsra-field-cache-v133';
+const TSRA_CACHE_VERSION = 'tsra-field-cache-v134';
 const CORE_ASSETS = [
   '/',
   '/seismic_report.html',
@@ -7,8 +7,8 @@ const CORE_ASSETS = [
   '/tsra-mark.svg',
   '/assets/tsra-sequence.css',
   '/assets/tsra-sequence.js',
-  '/data/sequence-v0.2/manifest.json',
-  '/data/sequence-v0.2/summary.json',
+  '/data/sequence-v0.3/manifest.json',
+  '/data/sequence-v0.3/summary.json',
   '/tmch-slab2-convergence-gate.html',
   '/duality-logo.png',
   '/duality-logo-light.png',

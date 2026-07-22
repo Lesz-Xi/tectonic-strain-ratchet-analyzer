@@ -10,7 +10,7 @@ from pathlib import Path
 from types import ModuleType
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DATASET = REPO_ROOT / "data" / "sequence-v0.2"
+DATASET = REPO_ROOT / "data" / "sequence-v0.3"
 MODULE_PATH = REPO_ROOT / "tools" / "tsra_build.py"
 
 
@@ -28,7 +28,7 @@ TSRA_BUILD = load_module()
 
 class TsraBuildVerificationTests(unittest.TestCase):
     def copy_dataset(self, destination: Path) -> Path:
-        copied = destination / "sequence-v0.2"
+        copied = destination / "sequence-v0.3"
         shutil.copytree(DATASET, copied)
         return copied
 
@@ -40,7 +40,7 @@ class TsraBuildVerificationTests(unittest.TestCase):
             dataset = self.copy_dataset(Path(temporary))
             summary_path = dataset / "summary.json"
             summary = json.loads(summary_path.read_text(encoding="utf-8"))
-            summary["counts"]["officialPhivolcsRowsDeduplicated"] = 981
+            summary["counts"]["officialPhivolcsRowsDeduplicated"] -= 1
             summary_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
 
             errors = TSRA_BUILD.verify_dataset(dataset)
@@ -50,6 +50,22 @@ class TsraBuildVerificationTests(unittest.TestCase):
                 errors,
             )
             self.assertIn("SHA-256 mismatch for summary.json", errors)
+
+    def test_uncaptured_gap_must_remain_explicit(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            dataset = self.copy_dataset(Path(temporary))
+            summary_path = dataset / "summary.json"
+            summary = json.loads(summary_path.read_text(encoding="utf-8"))
+            gap_day = next(day for day in summary["dailyActivity"] if day["datePht"] == "2026-06-09")
+            gap_day["coverage"] = "full_public_day"
+            summary_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+
+            errors = TSRA_BUILD.verify_dataset(dataset)
+
+            self.assertIn(
+                "uncaptured gap day must be zero and marked not_captured: 2026-06-09",
+                errors,
+            )
 
     def test_original_method_provenance_drift_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

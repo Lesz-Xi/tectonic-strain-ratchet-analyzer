@@ -263,6 +263,13 @@
     fill: transparent;
 }
 
+.sequence-day-gap {
+    fill: color-mix(in srgb, var(--text-sub) 5%, transparent);
+    stroke: color-mix(in srgb, var(--text-sub) 28%, transparent);
+    stroke-width: .75;
+    stroke-dasharray: 2 4;
+}
+
 .sequence-day-group {
     outline: none;
 }
@@ -494,11 +501,19 @@
     fill: var(--seq-m5);
 }
 
-.sequence-bar-partial {
+.sequence-bar-partial,
+.sequence-bar-anchor {
     fill: none;
-    stroke: var(--text-sub);
     stroke-width: 1.5;
+}
+
+.sequence-bar-partial {
+    stroke: var(--text-sub);
     stroke-dasharray: 5 4;
+}
+
+.sequence-bar-anchor {
+    stroke: var(--old-brass);
 }
 
 .sequence-chart-legend {
@@ -528,9 +543,17 @@
 .sequence-chart-legend .m3 { background: var(--seq-m3); }
 .sequence-chart-legend .m4 { background: var(--seq-m4); }
 .sequence-chart-legend .m5 { background: var(--seq-m5); }
+.sequence-chart-legend .anchor {
+    background: transparent;
+    border: 1px solid var(--old-brass);
+}
 .sequence-chart-legend .partial {
     background: transparent;
     border: 1px dashed var(--text-sub);
+}
+.sequence-chart-legend .gap {
+    background: color-mix(in srgb, var(--text-sub) 5%, transparent);
+    border: 1px dashed color-mix(in srgb, var(--text-sub) 55%, transparent);
 }
 
 .sequence-activity-reading {

@@ -6,7 +6,7 @@ const path = require('node:path');
 const test = require('node:test');
 
 const sequence = require('../assets/tsra-sequence.js');
-const summaryPath = path.join(__dirname, '..', 'data', 'sequence-v0.2', 'summary.json');
+const summaryPath = path.join(__dirname, '..', 'data', 'sequence-v0.3', 'summary.json');
 const reviewedSummary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
 
 class FakeClassList {
@@ -194,13 +194,16 @@ test('successful load renders evidence metrics and the activity chart', async ()
 
     assert.equal(result.ok, true);
     assert.equal(documentRef.getElementById('sequence-root').dataset.state, 'ready');
-    assert.equal(documentRef.getElementById('sequence-total-events').textContent, '982');
-    assert.equal(documentRef.getElementById('sequence-m4-events').textContent, '35');
+    assert.equal(documentRef.getElementById('sequence-total-events').textContent, '1202');
+    assert.equal(documentRef.getElementById('sequence-m4-events').textContent, '42');
     assert.match(documentRef.getElementById('sequence-verdict').textContent, /punctuated aftershock decay/i);
+    assert.match(documentRef.getElementById('sequence-partial-note').textContent, /Jun 9–29 has no reviewed catalog coverage/i);
+    assert.equal(reviewedSummary.dailyActivity[0].coverage, 'anchor_only_mainshock');
+    assert.equal(reviewedSummary.dailyActivity[1].coverage, 'not_captured');
     assert.ok(documentRef.getElementById('sequence-activity-chart').children.length > 30);
     assert.equal(documentRef.getElementById('release-branch-list').children.length, 3);
-    assert.equal(documentRef.getElementById('significant-release-body').children.length, 12);
-    assert.match(documentRef.getElementById('releases-invariant').textContent, /4 of 5 M5\+ releases/i);
+    assert.equal(documentRef.getElementById('significant-release-body').children.length, 17);
+    assert.match(documentRef.getElementById('releases-invariant').textContent, /5 of 9 M5\+ releases/i);
     assert.equal(documentRef.getElementById('method-threshold-body').children.length, 5);
     assert.equal(documentRef.getElementById('method-original-body').children.length, 11);
     assert.match(documentRef.getElementById('method-selected-fit').textContent, /8\/9 · 88\.9%/);
@@ -209,19 +212,19 @@ test('successful load renders evidence metrics and the activity chart', async ()
 });
 
 test('official ledger parser preserves all verified rows and newest-first order', () => {
-    const csvText = fs.readFileSync(path.join(__dirname, '..', 'data', 'sequence-v0.2', 'events.csv'), 'utf8');
+    const csvText = fs.readFileSync(path.join(__dirname, '..', 'data', 'sequence-v0.3', 'events.csv'), 'utf8');
 
     const events = sequence.parseOfficialLedger(csvText);
 
-    assert.equal(events.length, 982);
-    assert.equal(events[0].id, 'PHV-0982');
-    assert.equal(events.at(-1).id, 'PHV-0001');
+    assert.equal(events.length, 1202);
+    assert.equal(events[0].id, 'PHV-1201');
+    assert.equal(events.at(-1).id, 'PHV-MAIN-20260608');
     assert.equal(sequence.filterLedgerEvents(events, {
         startDate: '', endDate: '', minimumMagnitude: 5, branch: 'all'
-    }).length, 5);
+    }).length, 9);
     assert.equal(sequence.filterLedgerEvents(events, {
         startDate: '', endDate: '', minimumMagnitude: null, branch: 'southOffshore'
-    }).length, 149);
+    }).length, 183);
     assert.equal(sequence.filterLedgerEvents(events, {
         startDate: '2026-07-14', endDate: '2026-07-14', minimumMagnitude: 4.5, branch: 'all'
     }).length, 3);
@@ -229,7 +232,7 @@ test('official ledger parser preserves all verified rows and newest-first order'
 
 test('lazy ledger load renders one bounded page without touching the sequence path', async () => {
     const documentRef = ledgerDocument();
-    const csvText = fs.readFileSync(path.join(__dirname, '..', 'data', 'sequence-v0.2', 'events.csv'), 'utf8');
+    const csvText = fs.readFileSync(path.join(__dirname, '..', 'data', 'sequence-v0.3', 'events.csv'), 'utf8');
     const fetchImpl = async (url, options) => {
         assert.equal(url, sequence.EVENTS_URL);
         assert.equal(options.headers.Accept, 'text/csv');
@@ -239,10 +242,10 @@ test('lazy ledger load renders one bounded page without touching the sequence pa
     const result = await sequence.loadLedger(documentRef, fetchImpl);
 
     assert.equal(result.ok, true);
-    assert.equal(result.events.length, 982);
+    assert.equal(result.events.length, 1202);
     assert.equal(documentRef.getElementById('official-ledger-body').children.length, 100);
-    assert.match(documentRef.getElementById('official-ledger-results').textContent, /982 matching rows/);
-    assert.equal(documentRef.getElementById('official-ledger-page').textContent, 'Page 1 of 10');
+    assert.match(documentRef.getElementById('official-ledger-results').textContent, /1202 matching rows/);
+    assert.equal(documentRef.getElementById('official-ledger-page').textContent, 'Page 1 of 13');
     assert.equal(documentRef.getElementById('official-ledger-content').hidden, false);
 });
 
